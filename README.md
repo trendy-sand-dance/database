@@ -1,8 +1,8 @@
 <div align=center>
 
 
-# service template 
-This repo contains the basic layout of our backend services, it runs a node server and includes containers for user management and database
+# Database service 
+This repo contains the basic layout of our database services, it runs a node server and includes a SQLite database
 </div>
 
 
