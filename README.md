@@ -9,7 +9,7 @@ This repo contains the basic layout of our backend services, it runs a node serv
 <div align=left>
 
 ## Repo information
-Database holds two tables: user data and game data. 
+The database holds two tables: user data and game data. 
 User management container only accesses the user data table
 
 ** if you want to change the structure of the database table(s), you must delete the db file in the database container: src/database/database.db 
