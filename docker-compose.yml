@@ -9,7 +9,7 @@ services:
       LISTEN_PORT: 3000
       LISTEN_ADDRESS: '0.0.0.0'
     ports:
-      - "8000:3000"
+      - "8002:3000"
     volumes:
       - database_data:/app/src/database
       - ./src:/app/src  # Mount local project folder into the container
