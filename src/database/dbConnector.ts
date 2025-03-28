@@ -25,7 +25,7 @@ async function dbConnector(fastify: FastifyInstance): Promise<void> {
 					username TEXT NOT NULL UNIQUE,
 					avatar TEXT,
 					status BOOLEAN DEFAULT FALSE,
-					position INTEGER AND INTEGER,
+					position INTEGER INTEGER,
 					elo_rating INTEGER
 				);
 			`);
