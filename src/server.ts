@@ -5,7 +5,7 @@ import routes from './routes/routes';
 import pluginCORS from '@fastify/cors';
 import pluginFormbody from '@fastify/formbody';
 import closeWithGrace from 'close-with-grace';
-import prismaPlugin from 'prisma';
+import { PrismaClient } from '@prisma/client';
 
 const ADDRESS: string = process.env.LISTEN_ADDRESS ? process.env.LISTEN_ADDRESS : '0.0.0.0';
 const PORT: number = process.env.LISTEN_PORT ? parseInt(process.env.LISTEN_PORT, 10) : 3000;
@@ -34,7 +34,14 @@ fastify.register(dbConnector);
 console.log("Database connected and registered, user table and game table initialized");
 fastify.register(routes);
 fastify.register(pluginFormbody);
-fastify.register(prismaPlugin);
+
+const prisma = new PrismaClient();
+
+fastify.get("/users", async(request, reply) => {
+	const {name, email} = request.body as { name: string; email: string };
+	const user = await prisma.user.create({ data: {name, email }});
+	reply.send(user);
+});
 
 async function startServer() {
   // Delay is the number of milliseconds for the graceful close to finish
