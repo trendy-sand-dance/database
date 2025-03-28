@@ -17,14 +17,16 @@ async function dbConnector(fastify: FastifyInstance): Promise<void> {
 		console.log("Creating new database at: ", databasePath);
 		db = new Database(databasePath, { verbose: console.log });
 
+		// todo: check the position x,y statement is correct
 		try {
 			db.exec(`
 				CREATE TABLE IF NOT EXISTS gameTable (
 					id INTEGER PRIMARY KEY,
-					random TEXT,
-					something TEXT,
-					element TEXT
-
+					username TEXT NOT NULL UNIQUE,
+					avatar TEXT,
+					status BOOLEAN DEFAULT FALSE,
+					position INTEGER AND INTEGER,
+					elo_rating INTEGER
 				);
 			`);
 			console.log("Created gameTable successfully.");
