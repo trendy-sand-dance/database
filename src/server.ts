@@ -5,7 +5,7 @@ import routes from './routes/routes';
 import pluginCORS from '@fastify/cors';
 import pluginFormbody from '@fastify/formbody';
 import closeWithGrace from 'close-with-grace';
-import { PrismaClient } from '@prisma/client';
+//import prismaPlugin from './database/prismaPlugin';
 
 const ADDRESS: string = process.env.LISTEN_ADDRESS ? process.env.LISTEN_ADDRESS : '0.0.0.0';
 const PORT: number = process.env.LISTEN_PORT ? parseInt(process.env.LISTEN_PORT, 10) : 3000;
@@ -34,13 +34,25 @@ fastify.register(dbConnector);
 console.log("Database connected and registered, user table and game table initialized");
 fastify.register(routes);
 fastify.register(pluginFormbody);
+//fastify.register(prismaPlugin);
 
+//import Fastify from "fastify";
+import { PrismaClient } from "@prisma/client";
+
+//const fastify = Fastify({ logger: true });
 const prisma = new PrismaClient();
 
-fastify.get("/users", async(request, reply) => {
-	const {name, email} = request.body as { name: string; email: string };
-	const user = await prisma.user.create({ data: {name, email }});
-	reply.send(user);
+// Get all users
+fastify.get("/users", async (_, reply) => {
+  const users = await prisma.user.findMany();
+  reply.send(users);
+});
+
+// Create a new user
+fastify.post("/users", async (request, reply) => {
+  const { name, email } = request.body as { name: string; email: string };
+  const user = await prisma.user.create({ data: { name, email } });
+  reply.send(user);
 });
 
 async function startServer() {

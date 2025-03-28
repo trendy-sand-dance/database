@@ -15,6 +15,8 @@ ARG LISTEN_PORT=8000
 ENV LISTEN_ADDRESS=${LISTEN_ADDRESS}
 ENV LISTEN_PORT=${LISTEN_PORT}
 
+RUN npx prisma generate
+
 RUN npm run build
 
 # Stage 2: FIGHT (production)
