@@ -3,7 +3,7 @@ import Database from "better-sqlite3";
 
 declare module "fastify" {
 	interface FastifyInstance {
-		db: Database;
+		//db: Database;
 		prisma: PrismaClient;
 	}
 	interface FastifyRequest {

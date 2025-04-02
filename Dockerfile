@@ -9,13 +9,14 @@ RUN npm install -D
 
 COPY . .
 
+RUN apt-get update -y && apt-get install -y openssl
+RUN npx prisma generate --schema=./prisma/schema.prisma
+
 ARG LISTEN_ADDRESS="0.0.0.0"
 ARG LISTEN_PORT=8000
 
 ENV LISTEN_ADDRESS=${LISTEN_ADDRESS}
 ENV LISTEN_PORT=${LISTEN_PORT}
-
-RUN npx prisma generate
 
 RUN npm run build
 

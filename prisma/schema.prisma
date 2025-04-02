@@ -4,31 +4,32 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:/app/src/database/database.db"
+}
+
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "sqlite"
-  url      = "file:/app/src/database/DatabaseSync.db"
-}
-
 model User {
   id    Int     @id @default(autoincrement())
-  username  String @unique
+  username  String     @unique
   password String
-  email String  @unique
+  email String     @unique
   avatar String
-  status Boolean @default(false)  
-  // syntax for above boolean? && not null?
+  status Boolean     @default(false)  
+  // not null?
 }
 
 model Game {
-	id	Int		@id @default(autoincetrement())
-	username String @unqiue
+	id	Int		@id @default(autoincrement())
+	username String     @unique
 	avatar String
-	status Boolean @default(false)
-	position Int Int
-	// check above syntax
+	status Boolean     @default(false)
+	position Int
+	// check above syntax how to Int Int
 	elo_rating Int
 }
