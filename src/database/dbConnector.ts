@@ -26,8 +26,8 @@ async function dbConnector(fastify: FastifyInstance): Promise<void> {
 			console.error("Error initializing database:", error);
 		  }
 	}
-	fastify.decorate("db", prisma);
-	console.log("Fastify instance has 'db':", fastify.hasDecorator('db'));
+	fastify.decorate("prisma", prisma);
+	console.log("Fastify instance has 'prisma':", fastify.hasDecorator('prisma'));
 
 	fastify.addHook("onClose", (fastify, done) => {
 		prisma.$disconnect();

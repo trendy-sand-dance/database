@@ -30,7 +30,7 @@ fastify.register(pluginCORS), {
 };
 
 fastify.register(dbConnector);
-console.log("Database connected and registered, user table and game table initialized");
+console.log("Database connected and registered, tables initialized");
 fastify.register(routes);
 fastify.register(pluginFormbody);
 
