@@ -15,6 +15,20 @@ datasource db {
 
 model User {
   id    Int     @id @default(autoincrement())
+  username  String @unique
+  password String
   email String  @unique
-  name  String?
+  avatar String
+  status Boolean @default(false)  
+  // syntax for above boolean? && not null?
+}
+
+model Game {
+	id	Int		@id @default(autoincetrement())
+	username String @unqiue
+	avatar String
+	status Boolean @default(false)
+	position Int Int
+	// check above syntax
+	elo_rating Int
 }

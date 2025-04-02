@@ -30,6 +30,5 @@
     "better-sqlite3": "^11.9.0",
     "close-with-grace": "^2.2.0",
     "fastify": "^5.2.1",
-    "fastify-prisma-client": "^6.0.0"
   }
 }
