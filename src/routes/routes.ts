@@ -12,7 +12,8 @@ import {getHome} from "../controllers/dev/getHome.controller";
 	//import {changeUserStatusDev} from "../controllers/dev/user/changeUserStatusDev.controller";
 	//import {editUserDev} from "../controllers/dev/user/editUserDev.controller";
 	// prisma
-	import {getPrisma} from "../database/prisma/prismaMembers";
+	import {addMember} from "../database/prisma/addMember";
+	import {getPrismaUsers} from "../database/prisma/prismaMembers";
 
 // web
 //import {getDashUser} from "../controllers/web/getDashUser.controller";
@@ -32,7 +33,8 @@ async function routes(fastify: FastifyInstance) {
 		//fastify.get('/addGame', addGameData);
 
 		//prisma
-		fastify.get('/prismaUsers', getPrisma);
+		fastify.get('/prismaUsers', getPrismaUsers);
+		fastify.get('/addMember', addMember);
 
 	// web
 	//fastify.get('/dash/:username', getDashUser);

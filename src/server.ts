@@ -1,5 +1,5 @@
 import Fastify, { FastifyInstance } from 'fastify';
-//import dbConnector from './database/dbConnector';
+import dbConnector from './database/dbConnector';
 import routes from './routes/routes';
 
 import pluginCORS from '@fastify/cors';
@@ -29,8 +29,8 @@ fastify.register(pluginCORS), {
   credentials: true
 };
 
-//fastify.register(dbConnector);
-//console.log("Database connected and registered, user table and game table initialized");
+fastify.register(dbConnector);
+console.log("Database connected and registered, user table and game table initialized");
 fastify.register(routes);
 fastify.register(pluginFormbody);
 

@@ -1,10 +1,10 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import prisma from './prisma';
 
-export async function getPrisma(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-
-	const users = await prisma.user.findMany();
-	console.log("getting prisma");
-	return reply.send(users);
-
-};
+export async function getPrismaUsers(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    try {
+        const users = await request.server.prisma.user.findMany();
+        reply.send(users);
+    } catch (error) {
+        reply.status(500).send({ error: 'Failed to fetch users' });
+    }
+}
