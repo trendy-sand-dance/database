@@ -7,4 +7,4 @@ export async function getPrismaUsers(request: FastifyRequest, reply: FastifyRepl
     } catch (error) {
         reply.status(500).send({ error: 'Failed to fetch users' });
     }
-}
+}     
