@@ -1,5 +1,5 @@
 {
-  "name": "service-template",
+  "name": "database",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -30,8 +30,5 @@
     "better-sqlite3": "^11.9.0",
     "close-with-grace": "^2.2.0",
     "fastify": "^5.2.1"
-  },
-  "prisma": {
-    "schema": "database/prisma/schema.prisma"
   }
 }

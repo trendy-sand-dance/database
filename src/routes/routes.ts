@@ -13,6 +13,7 @@ import {getHome} from "../controllers/dev/getHome.controller";
 	//import {editUserDev} from "../controllers/dev/user/editUserDev.controller";
 	// prisma
 	import {addMember} from "../database/prisma/addMember";
+	import {deleteMember} from "../database/prisma/deleteMember";
 	import {getPrismaUsers} from "../database/prisma/prismaMembers";
 
 // web
@@ -35,6 +36,7 @@ async function routes(fastify: FastifyInstance) {
 		//prisma
 		fastify.get('/prismaUsers', getPrismaUsers);
 		fastify.get('/addMember', addMember);
+		fastify.get('/deleteMember', deleteMember);
 
 	// web
 	//fastify.get('/dash/:username', getDashUser);
