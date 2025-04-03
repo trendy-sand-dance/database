@@ -6,6 +6,8 @@
 
 // output   = "app/generated/prisma/client"
 
+// todo better way to have positions (x,y) as one element?
+
 datasource db {
   provider = "sqlite"
   url      = "file:/app/src/database/database.db"
@@ -30,7 +32,8 @@ model Game {
 	username String     @unique
 	avatar String
 	status Boolean     @default(false)
-	position Int
-	// check above syntax how to Int Int
+	positionX Int
+	positionY Int
 	elo_rating Int
 }
+

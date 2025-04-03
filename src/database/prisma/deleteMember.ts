@@ -8,25 +8,28 @@ interface UserRequest {
 	status: boolean;
 }
 
-// Fetch all users
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
+// delete user
 export async function deleteMember(request: FastifyRequest<{ Body: UserRequest }>, reply: FastifyReply): Promise<void> {
     try {
         //const { username, password, email, avatar, status } = request.body;
 		
 		const { username, password, email, avatar, status } = { username: "joppe", password: "pass", email: "something", avatar: "file_path", status: true };
-		 // Insert user into the database
-		 const deletedUser = await request.server.prisma.user.delete({
-            data: {
-                username,
-                password,
-                email, // Now included
-                avatar: avatar || '', // Default empty string if not provided
-                status: status ?? false, // Default to false if not provided
-            },
+		const deletedUser = await prisma.user.delete({
+            where: {
+				username: 'julia',
+				password: 'juul',
+				email: 'julia@email.com',
+				avatar: "file_path_julia",
+				status: true
+			},
         });
-
-		reply.status(201).send(deletedUser);
+		console.log("success!");
+		//reply.status(201).send( { message: 'successfully deleted user' });
     } catch (error) {
-        reply.status(500).send({ error: 'Failed to add user' });
+		console.log("faill");
+        //reply.status(500).send({ error: 'Failed to delete user' });
     }
 }

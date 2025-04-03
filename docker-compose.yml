@@ -1,7 +1,7 @@
 services:
   database:
     container_name: database_container
-    image: database
+    image: better-sqlite3
     build:
       context: .
       target: development
