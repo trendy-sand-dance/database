@@ -11,6 +11,7 @@ COPY . .
 
 RUN apt-get update -y && apt-get install -y openssl
 RUN npx prisma generate --schema=./prisma/schema.prisma
+#RUN npx prisma migrate dev --schema=./prisma/schema.prisma
 
 ARG LISTEN_ADDRESS="0.0.0.0"
 ARG LISTEN_PORT=8000

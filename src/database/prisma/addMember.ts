@@ -13,7 +13,7 @@ export async function addMember(request: FastifyRequest<{ Body: UserRequest }>, 
     try {
         //const { username, password, email, avatar, status } = request.body;
 		
-		const { username, password, email, avatar, status } = { username: "sarah", password: "pass", email: "something", avatar: "file_path", status: true };
+		const { username, password, email, avatar, status } = { username: "joppe", password: "pass", email: "something", avatar: "file_path", status: true };
 		 // Insert user into the database
 		 const newUser = await request.server.prisma.user.create({
             data: {

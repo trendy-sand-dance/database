@@ -30,9 +30,6 @@ fastify.register(pluginCORS), {
 };
 
 fastify.register(dbConnector);
-console.log("Database connected and registered, tables initialized");
-console.log("fastify prisma decoration: ", fastify.prisma);
-console.log("SERVER Fastify instance has 'prisma':", fastify.hasDecorator('prisma'));
 fastify.register(routes);
 fastify.register(pluginFormbody);
 
