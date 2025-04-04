@@ -37,4 +37,4 @@ CMD ["sh", "-c", "npm run start"]
 # Stage 2: EXPERIMENT (development)
 FROM build-stage AS development
 
-CMD [ "npm", "run", "dev", "npx prisma migrate dev --schema=./prisma/schema.prisma" ]
+CMD [ "sh", "-c", "npm run dev" ]

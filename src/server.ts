@@ -30,7 +30,6 @@ fastify.register(pluginCORS), {
 };
 
 fastify.register(dbConnector);
-console.log("server");
 fastify.register(routes);
 fastify.register(pluginFormbody);
 
