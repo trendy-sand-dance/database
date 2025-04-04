@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify';
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 
 // dev
 import {getHome} from "../controllers/dev/getHome.controller";
@@ -24,6 +24,23 @@ async function routes(fastify: FastifyInstance) {
 
 	// dev
 	fastify.get('/', getHome);
+
+	// prisma api testing
+	fastify.get('/users/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+		const { id } = request.params as { id: string };
+		const user = await fastify.prisma.user.findUnique({ where: { id: parseInt(id, 10) } });
+		if (!user) return reply.code(404).send({ error: 'user not found' });
+		reply.send(user);
+	});
+
+	fastify.post('/users', async (request: FastifyRequest, reply: FastifyReply) => {
+		const { email, username } = request.body as { email: string, username: string};
+		const user = await fastify.prisma.user.create({ data: { email, username }});
+		reply.code(201).send(user);
+	});
+
+
+
 		////user table
 		//fastify.get('/userDB', getUserDB);
 		//fastify.get('/addUser', addUserDev);

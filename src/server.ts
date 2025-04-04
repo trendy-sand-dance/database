@@ -23,14 +23,15 @@ const fastify: FastifyInstance = Fastify({
   }
 });
 
+fastify.register(dbConnector);
+fastify.register(routes);
+
 fastify.register(pluginCORS), {
   origin: true, // Specify domains for production
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 };
 
-fastify.register(dbConnector);
-fastify.register(routes);
 fastify.register(pluginFormbody);
 
 async function startServer() {
