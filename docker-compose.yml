@@ -17,7 +17,7 @@ services:
       - /app/node_modules  # Prevent overwriting node_modules
     tty: true
     healthcheck:
-      test: ["CMD", "test", "-f", "/app/src/database/database.db"] # Check if the database file exists
+      test: ["CMD", "test", "-f", "/app/src/database/database.db"]
       interval: 5s
       timeout: 3s
       retries: 5

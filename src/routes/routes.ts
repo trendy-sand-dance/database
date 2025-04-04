@@ -27,6 +27,7 @@ async function routes(fastify: FastifyInstance) {
 
 	// prisma api testing
 	fastify.get('/users/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+		console.log("YAY we reached the database :)");
 		const { id } = request.params as { id: string };
 		const user = await fastify.prisma.user.findUnique({ where: { id: parseInt(id, 10) } });
 		if (!user) return reply.code(404).send({ error: 'user not found' });
