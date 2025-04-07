@@ -4,17 +4,21 @@ import { FastifyInstance } from 'fastify';
 	import {getHome} from "../controllers/dev/getHome.controller";
 	import {viewDB} from "../controllers/dev/userDev/viewDB.controller";
 	import {viewID} from "../controllers/dev/userDev/viewID.controller";
-	//import {addMemberDev} from "../controllers/dev/userDev/addMemberDev.controller";
-	//import {createManyDev} from "../controllers/dev/userDev/createManyDev.controller";
-	//import {deleteMemberDev} from "../controllers/dev/userDev/deleteMemberDev.controller";
 
 	// user endpoints
 	import {register} from "../controllers/user/register.controller";
 	import {login} from "../controllers/user/login.controller";
 	import {logout} from "../controllers/user/logout.controller";
-	
+	import {editUsername} from "../controllers/user/edit.controller"
+	import {editPassword} from "../controllers/user/edit.controller"
+	import {deleteUser} from "../controllers/user/delete.controller"
+		// avatar controllers
+		//import {addAvatar} from "../controllers/user/avatar/addAvatar.controller";
+		//import {editAvatar} from "../controllers/user/avatar/editAvatar.controller";
+		//import {deleteAvatar} from "../controllers/user/avatar/deleteAvatar.controller";
+
 	// web
-	//import {getDashUser} from "../controllers/web/getDashUser.controller";
+	import {dash} from "../controllers/web/dash.controller";
 	
 	// game endpoints
 
@@ -24,19 +28,21 @@ async function routes(fastify: FastifyInstance) {
 	fastify.get('/', getHome);
 	fastify.get('/viewDB', viewDB);
 	fastify.get('/viewID', viewID);
-	//fastify.get('/addMemberDev', addMemberDev(fastify));
-	//fastify.get('/createManyDev', createManyDev(fastify));
-	//fastify.get('/deleteMemberDev', deleteMemberDev(fastify));
 
 	// user management endpoints
 	fastify.post('/register', register);
-	fastify.get('/login', login);
-	fastify.get('/logout', logout);
-
-
+	fastify.post('/login', login);
+	fastify.post('/logout', logout);
+	fastify.post('/editUsername', editUsername);
+	fastify.post('/editPassword', editPassword);
+	fastify.delete('/delete', deleteUser);
+		// avatar controllers
+		// fastify.post('/addAvatar', addAvatar);
+		// fastify.post('/editAvatar', editAvatar);
+		// fastify.delete('/deleteAvatar', deleteAvatar);
 
 	// web
-	//fastify.get('/dash/:username', getDashUser);
+	fastify.get('/dash/:username', dash);
 
 	// game endpoints
 
