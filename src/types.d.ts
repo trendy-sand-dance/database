@@ -8,4 +8,11 @@ declare module "fastify" {
 	interface FastifyRequest {
 		server: FastifyInstance;
 	}
+	interface UserRequest {
+		username: string;
+		password: string;
+		email: string;
+		avatar: string;
+		status: boolean;
+	}
 };

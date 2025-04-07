@@ -1,20 +1,9 @@
-import { FastifyRequest, FastifyReply } from 'fastify';
-
-interface UserRequest {
-	username: string;
-	password: string;
-	email: string;
-	avatar: string;
-	status: boolean;
-}
-
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 
 // create many table members
-export async function createMany(request: FastifyRequest<{ Body: UserRequest }>, reply: FastifyReply): Promise<void> {
+export async function createManyDev(fastify: FastifyInstance, request: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
-		const createMany = await prisma.user.createMany({
+		const createMany = await fastify.prisma.user.createMany({
 			data: [
 				{ username: 'flip', password: 'flop', email: 'flipflop@email.com', avatar: "file_path_flip", status: true},
 				{ username: 'merlin', password: 'merl', email: 'merlin@email.com', avatar: "file_path_merlin", status: true},
@@ -28,4 +17,4 @@ export async function createMany(request: FastifyRequest<{ Body: UserRequest }>,
     } catch (error) {
         reply.status(500).send({ error: 'Failed to add user' });
     }
-}
+};

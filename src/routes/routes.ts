@@ -1,66 +1,45 @@
-import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyInstance } from 'fastify';
 
-// dev
-import {getHome} from "../controllers/dev/getHome.controller";
-	// game table
-	//import {getGameDB} from "../controllers/dev/game/getGameDB.controller";
-	//import {addGameData} from "../controllers/dev/game/addGameData.controller";
-	//// user table
-	//import {getUserDB} from "../controllers/dev/user/getUserDB.controller";
-	//import {addUserDev} from "../controllers/dev/user/addUserDev.controller";
-	//import {delUserDev} from "../controllers/dev/user/delUserDev.controller";
-	//import {changeUserStatusDev} from "../controllers/dev/user/changeUserStatusDev.controller";
-	//import {editUserDev} from "../controllers/dev/user/editUserDev.controller";
-	// prisma
-	import {addMember} from "../database/prisma/addMember";
-	import {deleteMember} from "../database/prisma/deleteMember";
-	import {getPrismaUsers} from "../database/prisma/prismaMembers";
-	import {createMany} from "../database/prisma/createMany";
+	// dev
+	import {getHome} from "../controllers/dev/getHome.controller";
+	import {viewDB} from "../controllers/dev/userDev/viewDB.controller";
+	import {viewID} from "../controllers/dev/userDev/viewID.controller";
+	//import {addMemberDev} from "../controllers/dev/userDev/addMemberDev.controller";
+	//import {createManyDev} from "../controllers/dev/userDev/createManyDev.controller";
+	//import {deleteMemberDev} from "../controllers/dev/userDev/deleteMemberDev.controller";
 
-// web
-//import {getDashUser} from "../controllers/web/getDashUser.controller";
+	// user endpoints
+	import {register} from "../controllers/user/register.controller";
+	import {login} from "../controllers/user/login.controller";
+	import {logout} from "../controllers/user/logout.controller";
+	
+	// web
+	//import {getDashUser} from "../controllers/web/getDashUser.controller";
+	
+	// game endpoints
 
 async function routes(fastify: FastifyInstance) {
 
 	// dev
 	fastify.get('/', getHome);
+	fastify.get('/viewDB', viewDB);
+	fastify.get('/viewID', viewID);
+	//fastify.get('/addMemberDev', addMemberDev(fastify));
+	//fastify.get('/createManyDev', createManyDev(fastify));
+	//fastify.get('/deleteMemberDev', deleteMemberDev(fastify));
 
-	// prisma api testing
-	fastify.get('/users/:id', async (request: FastifyRequest, reply: FastifyReply) => {
-		console.log("YAY we reached the database :)");
-		const { id } = request.params as { id: string };
-		const user = await fastify.prisma.user.findUnique({ where: { id: parseInt(id, 10) } });
-		if (!user) return reply.code(404).send({ error: 'user not found' });
-		reply.send(user);
-	});
-
-	fastify.post('/register', async (request: FastifyRequest, reply: FastifyReply) => {
-		const { username, password, email } = request.body as { username: string, password: string, email: string };
-		const avatar = "something";
-		const user = await fastify.prisma.user.create({ data: { username, password, email, avatar }});
-		reply.code(201).send(user);
-	});
+	// user management endpoints
+	fastify.post('/register', register);
+	fastify.get('/login', login);
+	fastify.get('/logout', logout);
 
 
-
-		////user table
-		//fastify.get('/userDB', getUserDB);
-		//fastify.get('/addUser', addUserDev);
-		//fastify.get('/delUser', delUserDev);
-		//fastify.get('/statUser', changeUserStatusDev);
-		//fastify.get('/eddyUser', editUserDev);
-		//// gametable
-		//fastify.get('/gameDB', getGameDB);
-		//fastify.get('/addGame', addGameData);
-
-		//prisma
-		fastify.get('/prismaUsers', getPrismaUsers);
-		fastify.get('/addMember', addMember);
-		fastify.get('/deleteMember', deleteMember);
-		fastify.get('/createMany', createMany);
 
 	// web
 	//fastify.get('/dash/:username', getDashUser);
+
+	// game endpoints
+
 };
 
 export default routes;

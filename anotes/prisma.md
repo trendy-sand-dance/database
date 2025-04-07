@@ -15,3 +15,6 @@ questions + shit i dont understand about prisma:
 5) how to communicate with prisma via another container (um)?
 
 6) db url in .env?
+
+
+can use: FastifyRequest<{ Body: FastifyReply.UserRequest }>
