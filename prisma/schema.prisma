@@ -22,7 +22,7 @@ model User {
   username  String     @unique
   password String
   email String     @unique
-  avatar String
+  avatar String		@default("img_avatar.png")
   status Boolean     @default(false)  
   // not null?
 }

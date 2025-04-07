@@ -34,9 +34,10 @@ async function routes(fastify: FastifyInstance) {
 		reply.send(user);
 	});
 
-	fastify.post('/users', async (request: FastifyRequest, reply: FastifyReply) => {
-		const { email, username } = request.body as { email: string, username: string};
-		const user = await fastify.prisma.user.create({ data: { email, username }});
+	fastify.post('/register', async (request: FastifyRequest, reply: FastifyReply) => {
+		const { username, password, email } = request.body as { username: string, password: string, email: string };
+		const avatar = "something";
+		const user = await fastify.prisma.user.create({ data: { username, password, email, avatar }});
 		reply.code(201).send(user);
 	});
 
