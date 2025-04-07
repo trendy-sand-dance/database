@@ -10,7 +10,7 @@ import { FastifyInstance } from 'fastify';
 	import {login} from "../controllers/user/login.controller";
 	import {logout} from "../controllers/user/logout.controller";
 	import {editUsername} from "../controllers/user/edit.controller"
-	import {editPassword} from "../controllers/user/edit.controller"
+	//import {editPassword} from "../controllers/user/edit.controller"
 	import {deleteUser} from "../controllers/user/delete.controller"
 		// avatar controllers
 		//import {addAvatar} from "../controllers/user/avatar/addAvatar.controller";
@@ -32,17 +32,17 @@ async function routes(fastify: FastifyInstance) {
 	// user management endpoints
 	fastify.post('/register', register);
 	fastify.post('/login', login);
-	fastify.post('/logout', logout);
-	fastify.post('/editUsername', editUsername);
-	fastify.post('/editPassword', editPassword);
-	fastify.delete('/delete', deleteUser);
+	fastify.get('/logout/:username', logout);
+	fastify.post('/editUsername/:username', editUsername);
+	//fastify.post('/editPassword/:username', editPassword);
+	fastify.delete('/delete/:username', deleteUser);
 		// avatar controllers
-		// fastify.post('/addAvatar', addAvatar);
-		// fastify.post('/editAvatar', editAvatar);
-		// fastify.delete('/deleteAvatar', deleteAvatar);
+		// fastify.post('/addAvatar/:username', addAvatar);
+		// fastify.post('/editAvatar/:username', editAvatar);
+		// fastify.delete('/deleteAvatar/:username', deleteAvatar);
 
 	// web
-	fastify.get('/dash/:username', dash);
+	fastify.get('/dashboard/:username', dash);
 
 	// game endpoints
 

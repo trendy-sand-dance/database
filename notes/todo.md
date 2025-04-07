@@ -44,3 +44,42 @@ Now both projects use the same Prisma client without duplicating schema files.
  ! must have both reply and request if using one of these, with only reply OR request, errors 
 
  ! ? database queries, ? these avtually matter, the amount of them needs to match the values given in the run() that comes after
+
+
+
+
+logging in ->
+
+ frontend-1          | [1]     }
+frontend-1          | [1]     responseTime: 0.6419959962368011
+frontend-1          | [1] [17:15:28 UTC] INFO: incoming request
+frontend-1          | [1]     reqId: "req-q"
+frontend-1          | [1]     req: {
+frontend-1          | [1]       "method": "GET",
+frontend-1          | [1]       "url": "/login-view",
+frontend-1          | [1]       "host": "localhost:8000",
+frontend-1          | [1]       "remoteAddress": "172.18.0.1",
+frontend-1          | [1]       "remotePort": 53026
+frontend-1          | [1]     }
+frontend-1          | [1] [17:15:28 UTC] INFO: request completed
+frontend-1          | [1]     reqId: "req-q"
+frontend-1          | [1]     res: {
+frontend-1          | [1]       "statusCode": 200
+frontend-1          | [1]     }
+frontend-1          | [1]     responseTime: 2.52071800082922
+user_container      | username: hi, password: hi
+frontend-1          | [1] SHOULD GIVE ERRORRRRRRRRRRRRRRRRR
+database_container  | [17:15:31 UTC] INFO: incoming request
+database_container  |     reqId: "req-2"
+database_container  |     req: {
+database_container  |       "method": "POST",
+database_container  |       "url": "/login",
+database_container  |       "host": "database_container:3000",
+database_container  |       "remoteAddress": "172.18.0.2",
+database_container  |       "remotePort": 39434
+database_container  |     }
+database_container  | [17:15:31 UTC] INFO: request completed
+database_container  |     reqId: "req-2"
+database_container  |     res: {
+database_container  |       "statusCode": 500
+database_container  |     }

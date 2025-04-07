@@ -11,7 +11,7 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
 		const { username, password } = request.body as { username: string, password: string };
 		//if (!username || !password)
 				// how do we want to handle this? - frontend ?
-		
+		console.log("herew in db login");
 		const user = await request.server.prisma.user.findUnique({
 			where: { username }
 		});
@@ -20,7 +20,7 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
 		const isPasswordValid = await request.server.prisma.user.compare(password, request.server.prisma.user.password);
 		if (!isPasswordValid)
 			reply.status(500).send({ error: 'wrong password' });
-		
+		console.log("password check good");
 		await request.server.prisma.user.update({
 			where: {
 				username: user,
