@@ -15,6 +15,6 @@
 	  "skipLibCheck": true,
 	  "forceConsistentCasingInFileNames": true
 	},
-	"include": ["src/**/*.ts", "src/server.ts", "src/types.d.ts"],
+	"include": ["src/**/*.ts", "src/server.ts", "src/types.d.ts", "anotes/old_db/addMemberDev.controller.ts", "anotes/old_db/createManyDev.controller.ts", "anotes/old_db/deleteMemberDev.controller.ts"],
 	"exclude": ["node_modules"]
 }

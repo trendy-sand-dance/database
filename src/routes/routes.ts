@@ -1,36 +1,52 @@
 import { FastifyInstance } from 'fastify';
 
-// dev
-import {getHome} from "../controllers/dev/getHome.controller";
-	// game table
-	import {getGameDB} from "../controllers/dev/game/getGameDB.controller";
-	import {addGameData} from "../controllers/dev/game/addGameData.controller";
-	// user table
-	import {getUserDB} from "../controllers/dev/user/getUserDB.controller";
-	import {addUserDev} from "../controllers/dev/user/addUserDev.controller";
-	import {delUserDev} from "../controllers/dev/user/delUserDev.controller";
-	import {changeUserStatusDev} from "../controllers/dev/user/changeUserStatusDev.controller";
-	import {editUserDev} from "../controllers/dev/user/editUserDev.controller";
-
-// web
-import {getDashUser} from "../controllers/web/getDashUser.controller";
-
-async function routes(fastify: FastifyInstance) {
-
 	// dev
-	fastify.get('/', getHome);
-		//user table
-		fastify.get('/userDB', getUserDB);
-		fastify.get('/addUser', addUserDev);
-		fastify.get('/delUser', delUserDev);
-		fastify.get('/statUser', changeUserStatusDev);
-		fastify.get('/eddyUser', editUserDev);
-		// gametable
-		fastify.get('/gameDB', getGameDB);
-		fastify.get('/addGame', addGameData);
+	import {getHome} from "../controllers/dev/getHome.controller";
+	import {viewDB} from "../controllers/dev/userDev/viewDB.controller";
+	import {viewID} from "../controllers/dev/userDev/viewID.controller";
 
 	// web
-	fastify.get('/dash/:username', getDashUser);
+	import {dash} from "../controllers/web/dash.controller";
+	
+	// user endpoints
+	import {register} from "../controllers/user/register.controller";
+	import {login} from "../controllers/user/login.controller";
+	import {logout} from "../controllers/user/logout.controller";
+	import {editUsername} from "../controllers/user/edit.controller"
+	import {editPassword} from "../controllers/user/edit.controller"
+	import {editEmail} from "../controllers/user/edit.controller"
+	import {deleteUser} from "../controllers/user/delete.controller"
+	import {editAvatar} from "../controllers/user/avatar.controller";
+	import {deleteAvatar} from "../controllers/user/avatar.controller";
+
+	// game endpoints
+	// online users, game history, game options...
+	
+
+async function routes(fastify: FastifyInstance) {
+		
+	// dev
+	fastify.get('/', getHome);
+	fastify.get('/viewDB', viewDB);
+	fastify.get('/viewID', viewID);
+	
+	// web
+	fastify.get('/dashboard/:username', dash);
+	
+	// user management endpoints
+	fastify.post('/register', register);
+	fastify.post('/login', login);
+	fastify.get('/logout/:username', logout);
+	fastify.post('/editUsername/:username', editUsername);
+	fastify.post('/editPassword/:username', editPassword);
+	fastify.post('/editEmail/:username', editEmail);
+	fastify.delete('/delete/:username', deleteUser);
+	fastify.post('/editAvatar/:username', editAvatar);
+	fastify.post('/deleteAvatar/:username', deleteAvatar);
+	
+	// game endpoints
+	// online users, game history, game options...
+
 };
 
 export default routes;
