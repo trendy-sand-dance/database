@@ -8,6 +8,7 @@
 
 1)  pass the error code and message from user management to frontend (aka not hardcoded in frontend)
 
+4) prisma migration / error things
 
 2) rest of the um major module:
 ◦ Users can add others as friends and view their online status.
@@ -19,7 +20,6 @@ details, accessible to logged-in users
 3) securely login - password hashing
 
 --- if 2 + 3 complete, usermanagement is basically done
-
 
 
 
