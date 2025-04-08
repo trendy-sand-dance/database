@@ -7,9 +7,7 @@ export const dash = async (request: FastifyRequest, reply: FastifyReply): Promis
 			where: { username }
 		});
 
-		// double check logged in?
-
-		reply.code(201).send(user);
+		reply.code(200).send(user);
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to load user dashboard' });
 	}

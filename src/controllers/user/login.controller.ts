@@ -12,8 +12,8 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
 		//if (!username || !password)
 				// how do we want to handle this? - frontend ?
 		const user = await request.server.prisma.user.findUnique({
-			where: { username: username }});
-
+			where: { username: username, password: password }});
+		console.log("user = ", user.username, " pass = ", user.password, " id = ", user.id);
 		if (user)
 			console.log("FOUND USER");
 		
@@ -30,8 +30,9 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
 		//		status: true
 		//	},
 		//});
+		// only send yay or nee, then dash is triggered to send the specific user via request.params
 		
-		reply.code(201).send(user);
+		reply.code(200);
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to log user in' });
 	}
