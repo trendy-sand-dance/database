@@ -5,6 +5,9 @@ import { FastifyInstance } from 'fastify';
 	import {viewDB} from "../controllers/dev/userDev/viewDB.controller";
 	import {viewID} from "../controllers/dev/userDev/viewID.controller";
 
+	// web
+	import {dash} from "../controllers/web/dash.controller";
+	
 	// user endpoints
 	import {register} from "../controllers/user/register.controller";
 	import {login} from "../controllers/user/login.controller";
@@ -17,8 +20,6 @@ import { FastifyInstance } from 'fastify';
 		//import {editAvatar} from "../controllers/user/avatar/editAvatar.controller";
 		//import {deleteAvatar} from "../controllers/user/avatar/deleteAvatar.controller";
 
-	// web
-	import {dash} from "../controllers/web/dash.controller";
 	
 	// game endpoints
 
@@ -28,6 +29,9 @@ async function routes(fastify: FastifyInstance) {
 	fastify.get('/', getHome);
 	fastify.get('/viewDB', viewDB);
 	fastify.get('/viewID', viewID);
+
+	// web
+	fastify.get('/dashboard/:username', dash);
 
 	// user management endpoints
 	fastify.post('/register', register);
@@ -41,8 +45,6 @@ async function routes(fastify: FastifyInstance) {
 		// fastify.post('/editAvatar/:username', editAvatar);
 		// fastify.delete('/deleteAvatar/:username', deleteAvatar);
 
-	// web
-	fastify.get('/dashboard/:username', dash);
 
 	// game endpoints
 

@@ -1,4 +1,32 @@
 
+**now**
+
+1) check all status codes from working + testing stuff: (registration, login) -- pass the error code and message from user management to frontend (aka not hardcoded)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3) maybe: 		//if (error instanceof request.server.prisma.PrismaClientKnownRequestError) {
+		//	if (error.code === 'P2002')
+		//}
+
+
+
+
+
+
+
 
 **now working on (backend database/usermanagement)** 
 

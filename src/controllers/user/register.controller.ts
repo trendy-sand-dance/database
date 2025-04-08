@@ -1,11 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-/** 
- * @todo  use the userRequest struct somehow instead of creating avatar and status variables 
- * FastifyRequest<{ Body: FastifyReply.UserRequest }>
- * 
-*/
-
 export const register = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { username, password, email } = request.body as { username: string, password: string, email: string };
@@ -19,8 +13,9 @@ export const register = async (request: FastifyRequest, reply: FastifyReply): Pr
 				status
 			},
 		});
-		reply.code(201).send(user);
+		reply.code(201);
 	} catch (error) {
-		reply.status(500).send({ error: 'Failed to add user' });
+		console.error(error);
+		reply.code(500).send({ error: 'Failed to create new user' });
 	}
 };
