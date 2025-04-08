@@ -4,7 +4,8 @@ export const register = async (request: FastifyRequest, reply: FastifyReply): Pr
 	try {
 		const { username, password, email } = request.body as { username: string, password: string, email: string };
 		const { avatar, status } = { avatar: "img_avatar.png", status: false };
-		const user = await request.server.prisma.user.create({
+	
+		await request.server.prisma.user.create({
 			data: {
 				username,
 				password,

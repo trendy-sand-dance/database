@@ -1,15 +1,17 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
 export const deleteUser = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
-    try {
+	try {
 		const { username } = request.params as { username: string };
-		const deletedUser = await request.server.prisma.user.delete({
+	
+		await request.server.prisma.user.delete({
             where: {
 				username: username
 			},
         });
-		reply.code(201).send(deletedUser);
+		reply.code(200);
 	} catch (error) {
-		reply.status(500).send({ error: 'Failed to delete user' });
+		console.error(error);
+		reply.code(500).send({ error: 'Failed to delete user' });
 	}
 };

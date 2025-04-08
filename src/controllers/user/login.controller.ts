@@ -17,9 +17,9 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
 				status: true
 			},
 		});
-
 		reply.code(200);
 	} catch (error) {
+		console.error(error);
 		return reply.code(500).send({ error: 'Failed to log user in' });
 	}
 };
