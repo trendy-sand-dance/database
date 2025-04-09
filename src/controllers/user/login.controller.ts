@@ -11,7 +11,7 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
 			
 		await request.server.prisma.user.update({
 			where: {
-				username: password
+				username: username
 			},
 			data: {
 				status: true
