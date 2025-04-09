@@ -12,10 +12,10 @@ export const logout = async (request: FastifyRequest, reply: FastifyReply): Prom
 				status: false
 			},
 		});
-		reply.code(200);
+		return reply.code(200).send({ message: "Logout successful" });
 	} catch (error) {
 		console.error(error);
-		reply.code(500).send({ error: 'Failed to logout' });
+		return reply.code(500).send({ error: "Failed to logout" });
 	}
 };
 

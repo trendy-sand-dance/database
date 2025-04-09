@@ -11,10 +11,10 @@ export const editAvatar = async (request: FastifyRequest, reply: FastifyReply): 
 				avatar: newAvatar
 			},
         });
-		reply.code(200);
+		return reply.code(200).send({ message: "Edited avatar successfully"});
 	} catch (error) {
 		console.error(error);
-		reply.code(500).send({ error: 'Failed to edit avatar' });
+		return reply.code(500).send({ error: "Failed to edit avatar" });
 	}
 };
 
@@ -28,9 +28,9 @@ export const deleteAvatar = async (request: FastifyRequest, reply: FastifyReply)
 				avatar: "img_avatar.png"
 			},
         });
-		reply.code(200);
+		return reply.code(200).send({ message: "Deleted avatar successfully"});
 	} catch (error) {
 		console.error(error);
-		reply.code(500).send({ error: 'Failed to delete avatar' });
+		return reply.code(500).send({ error: "Failed to delete avatar" });
 	}
 };

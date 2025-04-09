@@ -11,10 +11,10 @@ export const editUsername = async (request: FastifyRequest, reply: FastifyReply)
 				username: newUsername
 			},
         });
-		reply.code(200);
+		return reply.code(200).send({ message: "Edited username successfully"});
 	} catch (error) {
 		console.error(error);
-		reply.code(500).send({ error: 'Failed to edit username' });
+		return reply.code(500).send({ error: "Failed to edit username" });
 	}
 };
 
@@ -29,10 +29,10 @@ export const editPassword = async (request: FastifyRequest, reply: FastifyReply)
 				password: newPassword
 			},
         });
-		reply.code(200);
+		return reply.code(200).send({ message: "Edited password successfully"});
 	} catch (error) {
 		console.error(error);
-		reply.code(500).send({ error: 'Failed to edit password' });
+		return reply.code(500).send({ error: "Failed to edit password" });
 	}
 };
 
@@ -47,9 +47,9 @@ export const editEmail = async (request: FastifyRequest, reply: FastifyReply): P
 				email: newEmail
 			},
         });
-		reply.code(200);
+		return reply.code(200).send({ message: "Edited email successfully"});
 	} catch (error) {
 		console.error(error);
-		reply.code(500).send({ error: 'Failed to edit email' });
+		return reply.code(500).send({ error: "Failed to edit email" });
 	}
 };
