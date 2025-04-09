@@ -1,5 +1,6 @@
-
 **now**
+
+1) test all EPs we got so far (inc avatar uploading + deleting)
 
 2) rest of the um major module:
 	◦ Users can add others as friends and view their online status.
@@ -7,26 +8,27 @@
 	◦ Each user has a Match History including 1v1 games, dates, and relevant details, accessible to logged-in users
 	◦ securely login - password hashing
 
-22) game endpoints in DB
+3) game endpoints in DB
 
-11) swagger
+4) swagger
 
-1) postman
-
-
-4) prisma migration / error things
+5) postman
 
 
+
+**needs to happen**
+
+1) prisma migration / error things
 
 
 
 **future+options**
 
-3) maybe: 		//if (error instanceof request.server.prisma.PrismaClientKnownRequestError) {
+1) maybe use: 		//if (error instanceof request.server.prisma.PrismaClientKnownRequestError) {
 		//	if (error.code === 'P2002')
 		//}
 
-4) use the UserRequest thingy in types.d.ts
+2) use the UserRequest thingy in types.d.ts
 
 
 
@@ -45,4 +47,3 @@
 - database module
 - backend module
 - most of the user management module
-
