@@ -9,9 +9,9 @@ export const dash = async (request: FastifyRequest, reply: FastifyReply): Promis
 			where: { username }
 		});
 
-		reply.code(200).send(user);
+		return reply.code(200).send(user);
 	} catch (error) {
 		console.error(error);
-		reply.code(500).send({ error: 'Failed to load user dashboard' });
+		return reply.code(500).send({ error: "Failed to load user dashboard" });
 	}
 };

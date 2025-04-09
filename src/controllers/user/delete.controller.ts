@@ -9,9 +9,9 @@ export const deleteUser = async (request: FastifyRequest, reply: FastifyReply): 
 				username: username
 			},
         });
-		reply.code(200);
+		return reply.code(200).send({ message: "Deleted user successfully"});
 	} catch (error) {
 		console.error(error);
-		reply.code(500).send({ error: 'Failed to delete user' });
+		return reply.code(500).send({ error: "Failed to delete user" });
 	}
 };

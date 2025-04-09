@@ -14,9 +14,9 @@ export const register = async (request: FastifyRequest, reply: FastifyReply): Pr
 				status
 			},
 		});
-		reply.code(201);
+		return reply.code(201).send({ message: "Registration successful" });
 	} catch (error) {
 		console.error(error);
-		reply.code(500).send({ error: 'Failed to create new user' });
+		return reply.code(500).send({ error: "Failed to create new user" });
 	}
 };

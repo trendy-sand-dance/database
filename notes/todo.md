@@ -3,20 +3,9 @@
 
 1)  pass the error code and message from user management to frontend (aka not hardcoded in frontend)
 
-	fix this from frontend in um/db: 
-		if (response.status === 500)
-				throw ({code: response.status, message: "Internal Server Error"});
-		else if (response.status === 406)
-			throw ({code: response.status, message: "(Not acceptable) Invalid Credentials"});
-		else if (response.status === 200) {
-			return reply.viewAsync("dashboard/dashboard-view.ejs", { username: userInfo.username});
-		}
-
-		if !200
-			throw (with code + message sepcifications)
-		return dash view with good status
-
-
+UPDATE ON ERROR HANDLING ----> 
+	nothing hardcoded now, error codes + message only in db endpoints
+	CAN send response message (not error) from db through um, but if not necessary then wont cause just adding code ? 
 
 4) prisma migration / error things
 

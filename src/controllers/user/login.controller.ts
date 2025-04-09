@@ -17,7 +17,7 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
 				status: true
 			},
 		});
-		reply.code(200).send({ message: "Login successful" });
+		return reply.code(200).send({ message: "Login successful" });
 	} catch (error) {
 		console.error(error);
 		return reply.code(500).send({ error: "Failed to log user in" });
