@@ -7,19 +7,19 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
 		const user = await request.server.prisma.user.findUnique({
 			where: { username: username, password: password }});
 		if (!user)
-			return reply.code(406).send({ error: 'Invalid credentials' });
-
+			return reply.code(406).send({ error: "Invalid credentials" });
+			
 		await request.server.prisma.user.update({
 			where: {
-				username: username
+				username: password
 			},
 			data: {
 				status: true
 			},
 		});
-		reply.code(200);
+		reply.code(200).send({ message: "Login successful" });
 	} catch (error) {
 		console.error(error);
-		return reply.code(500).send({ error: 'Failed to log user in' });
+		return reply.code(500).send({ error: "Failed to log user in" });
 	}
 };
