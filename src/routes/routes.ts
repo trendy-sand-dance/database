@@ -2,22 +2,22 @@ import { FastifyInstance } from 'fastify';
 
 	// dev
 	import {getHome} from "../controllers/dev/getHome.controller";
-	import {viewDB} from "../controllers/dev/userDev/viewDB.controller";
-	import {viewID} from "../controllers/dev/userDev/viewID.controller";
+	import {viewDB} from "../controllers/dev/viewDB.controller";
+	import {viewID} from "../controllers/dev/viewID.controller";
 
 	// web
 	import {dash} from "../controllers/web/dash.controller";
 	
 	// user endpoints
-	import {register} from "../controllers/user/register.controller";
-	import {login} from "../controllers/user/login.controller";
-	import {logout} from "../controllers/user/logout.controller";
-	import {editUsername} from "../controllers/user/edit.controller"
-	import {editPassword} from "../controllers/user/edit.controller"
-	import {editEmail} from "../controllers/user/edit.controller"
-	import {deleteUser} from "../controllers/user/delete.controller"
-	import {editAvatar} from "../controllers/user/avatar.controller";
-	import {deleteAvatar} from "../controllers/user/avatar.controller";
+	import {register} from "../controllers/userManagement/user/register.controller";
+	import {login} from "../controllers/userManagement/user/login.controller";
+	import {logout} from "../controllers/userManagement/user/logout.controller";
+	import {editUsername} from "../controllers/userManagement/user/edit.controller"
+	import {editPassword} from "../controllers/userManagement/user/edit.controller"
+	import {editEmail} from "../controllers/userManagement/user/edit.controller"
+	import {deleteUser} from "../controllers/userManagement/user/delete.controller"
+	import {editAvatar} from "../controllers/userManagement/user/avatar.controller";
+	import {deleteAvatar} from "../controllers/userManagement/user/avatar.controller";
 
 	// game endpoints
 	// online users, game history, game options...

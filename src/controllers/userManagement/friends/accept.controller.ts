@@ -1,0 +1,2 @@
+
+// accept incoming friend requests
