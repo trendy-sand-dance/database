@@ -1,12 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-// output   = "app/generated/prisma/client"
-
-// todo better way to have positions (x,y) as one element?
+//----------------------------------------------
+// general shizzle
 
 datasource db {
   provider = "sqlite"
@@ -17,15 +10,38 @@ generator client {
   provider = "prisma-client-js"
 }
 
+user - 12
+friend ( user 2/ friendship connection is 1)
+
+//----------------------------------------------
+// user management
+
 model User {
-  id    Int     @id @default(autoincrement())
-  username  String     @unique
-  password String
-  email String     @unique
-  avatar String		@default("img_avatar.png")
-  status Boolean     @default(false)  
-  // not null?
+	id				Int			@id @default(autoincrement())
+	username		String		@unique
+	password		String
+	email			String		@unique
+	avatar			String		@default("img_avatar.png")
+	status			Boolean		@default(false) 
+	wins			Int
+	lossess			Int	
+	friends			User[]
 }
+
+//fRequests	could be handled in the relationship status area of friend
+enum RelationshipStatus {
+  ACCEPTED
+  PENDING
+  REJECTED
+}
+
+
+
+//----------------------------------------------
+// game + matches
+
+// make as model that is included in user + game similar to friends
+	//matches - dates + relevant info - where and how do this?
 
 model Game {
 	id	Int		@id @default(autoincrement())
@@ -36,4 +52,10 @@ model Game {
 	positionY Int
 	elo_rating Int
 }
+// todo better way to have positions (x,y) as one element?
+
+
+
+
+
 

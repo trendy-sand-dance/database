@@ -4,9 +4,11 @@
 
 2) rest of the um major module:
 	◦ Users can add others as friends and view their online status.
-	◦ User profiles display stats, such as wins and losses.
 	◦ Each user has a Match History including 1v1 games, dates, and relevant details, accessible to logged-in users
 	◦ securely login - password hashing
+
+	◦ User profiles display stats, such as wins and losses.
+	- when a user logs in, they get their latest stats, during game play etc when these stats change, they are updated and redisplayed via the game server -- ask team
 
 3) game endpoints in DB
 
