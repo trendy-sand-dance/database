@@ -30,7 +30,8 @@
     "@prisma/client": "^6.5.0",
     "better-sqlite3": "^11.9.0",
     "close-with-grace": "^2.2.0",
-    "fastify": "^5.2.1"
+    "fastify": "^5.2.1",
+    "fastify-file-upload": "^4.0.0"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"

@@ -7,34 +7,34 @@ import pluginFormbody from '@fastify/formbody';
 import closeWithGrace from 'close-with-grace';
 import multipart from '@fastify/multipart';
 
+
 const ADDRESS: string = process.env.LISTEN_ADDRESS ? process.env.LISTEN_ADDRESS : '0.0.0.0';
 const PORT: number = process.env.LISTEN_PORT ? parseInt(process.env.LISTEN_PORT, 10) : 3000;
 
 const fastify: FastifyInstance = Fastify({
   logger: {
     transport: {
-      target: 'pino-pretty',
-      options: {
-        translateTime: 'HH:MM:ss Z',
-        ignore: 'pid,hostname',
-        colorize: true,
+		target: 'pino-pretty',
+		options: {
+			translateTime: 'HH:MM:ss Z',
+			ignore: 'pid,hostname',
+			colorize: true,
       }
     },
     level: 'info'
-  }
+}
 });
 
 fastify.register(dbConnector);
+fastify.register(pluginFormbody);
 fastify.register(routes);
+fastify.register(multipart);
 
 fastify.register(pluginCORS), {
-  origin: true, // Specify domains for production
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+	origin: true, // Specify domains for production
+	methods: ['GET', 'POST', 'PUT', 'DELETE'],
+	credentials: true
 };
-
-fastify.register(pluginFormbody);
-fastify.register(multipart);
 
 async function startServer() {
   // Delay is the number of milliseconds for the graceful close to finish

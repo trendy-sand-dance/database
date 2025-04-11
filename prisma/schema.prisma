@@ -26,6 +26,11 @@ model User {
   status Boolean     @default(false)  
   // not null?
 }
+model UploadedFile {
+  id        Int    @id @default(autoincrement())
+  filename  String
+  filePath  String
+}
 
 model Game {
 	id	Int		@id @default(autoincrement())
