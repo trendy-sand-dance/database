@@ -5,19 +5,13 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {viewDB} from "../controllers/dev/userDev/viewDB.controller";
 	import {viewID} from "../controllers/dev/userDev/viewID.controller";
 	import {viewFile} from "../controllers/dev/userDev/viewFile.controller";
-	//import {editAvatar} from "../controllers/dev/userDev/avatar.controller";
 	
 	// web
 	import {dash} from "../controllers/web/dash.controller";
 	
 	// user endpoints
-	import {register} from "../controllers/user/register.controller";
-	import {login} from "../controllers/user/login.controller";
-	import {logout} from "../controllers/user/logout.controller";
-	import {editUsername} from "../controllers/user/edit.controller"
-	import {editPassword} from "../controllers/user/edit.controller"
-	import {editEmail} from "../controllers/user/edit.controller"
-	import {deleteUser} from "../controllers/user/delete.controller"
+	import {register, login, logout} from "../controllers/user/register.controller";
+	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/edit.controller"
 	//import {editAvatar} from "../controllers/user/avatar.controller";
 	import {deleteAvatar} from "../controllers/user/avatar.controller";
 
@@ -33,15 +27,18 @@ const pump = promisify(pipeline);
 
 async function routes(fastify: FastifyInstance) {
 	
-	fastify.post('/upload/:filename', async (request, reply) => {
-		const { filename } = request.params as { filename: string };
+	fastify.post('/editAvatar/:username', async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+		const { username } = request.params as { username: string };
 		
-		const filePath = path.join(__dirname, 'uploads', filename); // Make sure the file path is correct
-		//const filePath = `./uploads/${filename}`;
+		//const filePath = path.join(__dirname, 'uploads', filename); // Make sure the file path is correct
+		const filename = request.body; //only the name part necessary here 
+		const filePath = `./uploads/${filename}`;
 
-		if (!fs.existsSync('/uploads')) {
-			fs.mkdirSync('./uploads');
-		}
+		console.log("filename = ", filename, " filepath = ", filePath);
+
+		//if (!fs.existsSync('/uploads')) {
+		//	fs.mkdirSync('./uploads');
+		//}
 		const data = await request.file();
 		if (!data)
 				return reply.status(404).send("not found");
@@ -62,7 +59,6 @@ async function routes(fastify: FastifyInstance) {
 	fastify.get('/viewDB', viewDB);
 	fastify.get('/viewID', viewID);
 	fastify.get('/viewFile/:username', viewFile);
-	//fastify.get('/editAvatar/:username/:file', editAvatar);
 	
 	// web
 	fastify.get('/dashboard/:username', dash);

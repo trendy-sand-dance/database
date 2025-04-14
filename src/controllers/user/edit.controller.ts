@@ -38,7 +38,7 @@ export const editPassword = async (request: FastifyRequest, reply: FastifyReply)
 
 export const editEmail = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-		const { username } = request.body as { username: string };
+		const { username } = request.params as { username: string };
 		const { newEmail } = request.body as { newEmail: string };
 
 		await request.server.prisma.user.update({
@@ -51,5 +51,21 @@ export const editEmail = async (request: FastifyRequest, reply: FastifyReply): P
 	} catch (error) {
 		console.error(error);
 		return reply.code(500).send({ error: "Failed to edit email" });
+	}
+};
+
+export const deleteUser = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+		const { username } = request.params as { username: string };
+	
+		await request.server.prisma.user.delete({
+            where: {
+				username: username
+			},
+        });
+		return reply.code(200).send({ message: "Deleted user successfully"});
+	} catch (error) {
+		console.error(error);
+		return reply.code(500).send({ error: "Failed to delete user" });
 	}
 };
