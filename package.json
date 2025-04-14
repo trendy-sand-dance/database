@@ -31,7 +31,9 @@
     "better-sqlite3": "^11.9.0",
     "close-with-grace": "^2.2.0",
     "fastify": "^5.2.1",
-    "fastify-file-upload": "^4.0.0"
+    "fastify-file-upload": "^4.0.0",
+    "form-data": "^4.0.2",
+    "node-fetch": "^3.3.2"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"
