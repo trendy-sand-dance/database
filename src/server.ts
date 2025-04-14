@@ -7,7 +7,6 @@ import pluginFormbody from '@fastify/formbody';
 import closeWithGrace from 'close-with-grace';
 import fastifyMultipart from '@fastify/multipart';
 
-
 const ADDRESS: string = process.env.LISTEN_ADDRESS ? process.env.LISTEN_ADDRESS : '0.0.0.0';
 const PORT: number = process.env.LISTEN_PORT ? parseInt(process.env.LISTEN_PORT, 10) : 3000;
 
@@ -27,7 +26,6 @@ const fastify: FastifyInstance = Fastify({
 
 fastify.register(dbConnector);
 fastify.register(pluginFormbody);
-fastify.register(routes);
 fastify.register(fastifyMultipart, {
 	limits: { fileSize: 10 * 1024 * 1024 }
 });
@@ -37,6 +35,8 @@ fastify.register(pluginCORS), {
 	methods: ['GET', 'POST', 'PUT', 'DELETE'],
 	credentials: true
 };
+
+fastify.register(routes);
 
 async function startServer() {
   // Delay is the number of milliseconds for the graceful close to finish

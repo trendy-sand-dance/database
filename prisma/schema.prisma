@@ -29,7 +29,6 @@ model User {
 model UploadedFile {
   id        Int    @id @default(autoincrement())
   filename  String
-  filePath  String
 }
 
 model Game {
