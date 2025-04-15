@@ -5,11 +5,11 @@ import path  from 'path';
 export const editAvatar = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { username } = request.params as { username: string };
+	
 		const avatarFile = await request.file();
 		if (!avatarFile) {
-			return reply.code(500).send('No file uploaded');
+			throw { code: 500, message: "Failed to receive file"};
 		}
-		console.log('Received file:', avatarFile);
 
 		const buffer = await avatarFile.toBuffer();
 		const wrkdir = process.cwd();
@@ -17,16 +17,13 @@ export const editAvatar = async (request: FastifyRequest, reply: FastifyReply): 
 		if (!fs.existsSync(uploadDir)) {
 			fs.mkdirSync(uploadDir, { recursive: true });
 		}
-
 		const filePath = path.join(uploadDir, avatarFile.filename);
-
 		fs.writeFile(filePath, buffer, (err) => {
 		if (err) {
-			console.error('Error writing file:', err);
-			return reply.code(500).send('Error saving file');
+			throw { code: 500, message: "Erroring writing file" };
 		}});
 
-		const filename = data.filename;
+		const filename = avatarFile.filename;
 		const dbRecord = await request.server.prisma.uploadedFile.create({
 			data: { filename }
 		});
