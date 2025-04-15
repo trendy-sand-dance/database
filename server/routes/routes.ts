@@ -2,9 +2,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 
 	// dev
 	import {getHome} from "../controllers/dev/getHome.controller";
-	import {viewDB} from "../controllers/dev/userDev/viewDB.controller";
-	import {viewID} from "../controllers/dev/userDev/viewID.controller";
-	import {viewFile} from "../controllers/dev/userDev/viewFile.controller";
+	import {viewDB, viewID} from "../controllers/dev/userDev/view.controller";
 	
 	// web
 	import {dash} from "../controllers/web/dash.controller";
@@ -24,7 +22,6 @@ async function routes(fastify: FastifyInstance) {
 	fastify.get('/', getHome);
 	fastify.get('/viewDB', viewDB);
 	fastify.get('/viewID', viewID);
-	fastify.get('/viewFile/:username', viewFile);
 	
 	// web
 	fastify.get('/dashboard/:username', dash);

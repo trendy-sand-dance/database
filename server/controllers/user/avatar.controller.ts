@@ -5,21 +5,20 @@ import path  from 'path';
 export const editAvatar = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { username } = request.params as { username: string };
-		const data = await request.file();
-		if (!data) {
-			console.log('No file');
+		const avatarFile = await request.file();
+		if (!avatarFile) {
 			return reply.code(500).send('No file uploaded');
 		}
-		console.log('Received file:', data);
+		console.log('Received file:', avatarFile);
 
-		const buffer = await data.toBuffer();
+		const buffer = await avatarFile.toBuffer();
 		const wrkdir = process.cwd();
 		const uploadDir = path.join(wrkdir, 'uploads');
 		if (!fs.existsSync(uploadDir)) {
 			fs.mkdirSync(uploadDir, { recursive: true });
 		}
 
-		const filePath = path.join(uploadDir, data.filename);
+		const filePath = path.join(uploadDir, avatarFile.filename);
 
 		fs.writeFile(filePath, buffer, (err) => {
 		if (err) {
@@ -38,10 +37,10 @@ export const editAvatar = async (request: FastifyRequest, reply: FastifyReply): 
 			},
 		});
 
-		return reply.code(200).send({ message: "Edited avatar successfully"});
+		return reply.code(200).send({ message: "Uploaded avatar successfully"});
 	} catch (error) {
 		console.error(error);
-		return reply.code(500).send({ error: "Failed to edit avatar" });
+		return reply.code(500).send({ error: "Failed to upload new avatar" });
 	}
 };
 
