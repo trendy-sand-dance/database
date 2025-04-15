@@ -8,16 +8,17 @@ services:
     environment:
       LISTEN_PORT: 3000
       LISTEN_ADDRESS: '0.0.0.0'
-      DATABASE_URL: "file:/app/src/database/database.db" # or the regular file?
+      DATABASE_URL: "file:/app/server/database/database.db" # or the regular file?
     ports:
       - "8002:3000"
     volumes:
-      - database_data:/app/src/database
-      - ./src:/app/src  # Mount local project folder into the container
+      - database_data:/app/server/database
+      - ./server:/app/server  # Mount local project folder into the container
       - /app/node_modules  # Prevent overwriting node_modules
+      - ./uploads:/app/uploads
     tty: true
     healthcheck:
-      test: ["CMD", "test", "-f", "/app/src/database/database.db"]
+      test: ["CMD", "test", "-f", "/app/server/database/database.db"]
       interval: 5s
       timeout: 3s
       retries: 5
