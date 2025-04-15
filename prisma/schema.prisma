@@ -25,15 +25,15 @@ model User {
   avatar String		@default("img_avatar.png")
   status Boolean     @default(false)  
   // not null?
+
+  player Player?
 }
 
-model Game {
-	id	Int		@id @default(autoincrement())
-	username String     @unique
-	avatar String
-	status Boolean     @default(false)
-	positionX Int
-	positionY Int
-	elo_rating Int
-}
+model Player {
+    id            Int   @id @default(autoincrement())
+    userId        Int     @unique
+    x             Int @default(0)
+    y             Int @default(0)
 
+    user          User   @relation(fields: [userId], references: [id])
+}
