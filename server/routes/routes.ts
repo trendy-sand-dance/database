@@ -11,6 +11,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {register, login, logout} from "../controllers/user/register.controller";
 	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/edit.controller"
 	import {editAvatar, deleteAvatar} from "../controllers/user/avatar.controller";
+	import {getImage} from "../controllers/web/image.controller";
 
 // game endpoints
 // online users, game history, game options...
@@ -26,6 +27,7 @@ async function routes(fastify: FastifyInstance) {
 
   // web
   fastify.get('/dashboard/:username', dash);
+  fastify.get('/image/:filename', getImage);
 
   // user management endpoints
   fastify.post('/register', register);

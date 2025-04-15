@@ -3,9 +3,13 @@ import dbConnector from './database/dbConnector';
 import routes from './routes/routes';
 
 import pluginCORS from '@fastify/cors';
+import path from 'node:path';
+import pluginStatic from '@fastify/static';
 import pluginFormbody from '@fastify/formbody';
 import closeWithGrace from 'close-with-grace';
 import fastifyMultipart from '@fastify/multipart';
+
+import { FastifyStaticOptions } from '@fastify/static';
 
 const ADDRESS: string = process.env.LISTEN_ADDRESS ? process.env.LISTEN_ADDRESS : '0.0.0.0';
 const PORT: number = process.env.LISTEN_PORT ? parseInt(process.env.LISTEN_PORT, 10) : 3000;
@@ -35,6 +39,11 @@ fastify.register(pluginCORS), {
 	methods: ['GET', 'POST', 'PUT', 'DELETE'],
 	credentials: true
 };
+
+fastify.register(pluginStatic, {
+	root: path.join(path.dirname(__dirname), 'uploads'),
+  } as FastifyStaticOptions)
+
 
 fastify.register(routes);
 
