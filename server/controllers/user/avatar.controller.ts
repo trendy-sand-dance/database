@@ -3,15 +3,13 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 export const editAvatar = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { username } = request.params as { username: string };
-		const { newAvatar } = request.body as { newAvatar: string };
-		console.log("nfilename in datbase: ", newAvatar);
+		const { filename } = request.body as { filename: string };
 		await request.server.prisma.user.update({
 		where: { username: username },
 		data: {
-			avatar: newAvatar
+			avatar: filename
 			},
 		});
-		console.log("updated user - ", request.server.prisma.user.username, "  ", request.server.prisma.user.avatar);
 		return reply.code(200).send({ message: "Updated avatar successfully"});
 	} catch (error) {
 		console.error(error);
