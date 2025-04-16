@@ -4,13 +4,14 @@ export const editAvatar = async (request: FastifyRequest, reply: FastifyReply): 
 	try {
 		const { username } = request.params as { username: string };
 		const { newAvatar } = request.body as { newAvatar: string };
-
+		console.log("nfilename in datbase: ", newAvatar);
 		await request.server.prisma.user.update({
 		where: { username: username },
 		data: {
 			avatar: newAvatar
 			},
 		});
+		console.log("updated user - ", request.server.prisma.user.username, "  ", request.server.prisma.user.avatar);
 		return reply.code(200).send({ message: "Updated avatar successfully"});
 	} catch (error) {
 		console.error(error);
