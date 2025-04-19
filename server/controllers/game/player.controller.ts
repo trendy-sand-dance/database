@@ -21,11 +21,11 @@ export const getPlayer = async (request: FastifyRequest, reply: FastifyReply): P
 export const updatePlayer = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 
   try {
-    const { username } = request.params as { username: string };
+    const { id } = request.params as { id: number };
     const position = request.body as { x: number, y: number };
 
     await request.server.prisma.user.update({
-      where: { username },
+      where: { id: Number(id) },
       select: {
         player: true,
       },

@@ -1,17 +1,17 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 
-	// dev
-	import {getHome} from "../controllers/dev/getHome.controller";
-	import {viewDB, viewID} from "../controllers/dev/userDev/view.controller";
-	
-	// web
-	import {dash} from "../controllers/web/dash.controller";
-	
-	// user endpoints
-	import {register, login, logout} from "../controllers/user/register.controller";
-	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/edit.controller"
-	import {editAvatar, deleteAvatar} from "../controllers/user/avatar.controller";
-	import {getImage} from "../controllers/web/image.controller";
+// dev
+import { getHome } from "../controllers/dev/getHome.controller";
+import { viewDB, viewID } from "../controllers/dev/userDev/view.controller";
+
+// web
+import { dash } from "../controllers/web/dash.controller";
+
+// user endpoints
+import { register, login, logout } from "../controllers/user/register.controller";
+import { editUsername, editPassword, editEmail, deleteUser } from "../controllers/user/edit.controller"
+import { editAvatar, deleteAvatar } from "../controllers/user/avatar.controller";
+import { getImage } from "../controllers/web/image.controller";
 
 // game endpoints
 // online users, game history, game options...
@@ -45,7 +45,7 @@ async function routes(fastify: FastifyInstance) {
   // game endpoints
   // online users, game history, game options...
   fastify.get('/game/players/:username', getPlayer);
-  fastify.put('/game/players/:username', updatePlayer);
+  fastify.put('/game/players/:id', updatePlayer);
 
 };
 
