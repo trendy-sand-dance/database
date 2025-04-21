@@ -44,3 +44,31 @@ export const updatePlayer = async (request: FastifyRequest, reply: FastifyReply)
     return reply.code(500).send({ error: "Failed to update user" });
   }
 };
+
+export interface Vector2 {
+  x: number;
+  y: number;
+}
+
+// TODO: MAKE THIS SYNC DB FUNCTION WORK
+// export const syncPlayers = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+//
+//   try {
+//
+//     const players = request.body as { players };
+//
+//     for (const [id, position] of players) {
+//       await request.server.prisma.player.update({
+//         where: { id: id },
+//         data: {
+//           x: position.x,
+//           y: position.y,
+//         }
+//       });
+//     }
+//     return reply.code(200);
+//   } catch (error) {
+//     console.error(error);
+//     return reply.code(500).send({ error: "Failed to update user" });
+//   }
+// };
