@@ -15,8 +15,7 @@ import { getImage } from "../controllers/web/image.controller";
 
 // game endpoints
 // online users, game history, game options...
-import { getPlayer, getPlayerInfo, updatePlayer } from "../controllers/game/player.controller";
-
+import { getPlayer, getPlayerInfo, updatePlayer, syncPlayers } from "../controllers/game/player.controller";
 
 async function routes(fastify: FastifyInstance) {
 
@@ -46,6 +45,7 @@ async function routes(fastify: FastifyInstance) {
   // online users, game history, game options...
   fastify.get('/game/players/:username', getPlayer);
   fastify.put('/game/players/:id', updatePlayer);
+  fastify.put('/game/players', syncPlayers);
 
   fastify.get('/game/playerinfo/:id', getPlayerInfo);
 
