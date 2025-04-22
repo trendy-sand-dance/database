@@ -4,8 +4,9 @@ export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Prom
 	try {
 	  const users = await request.server.prisma.user.findMany();
 	  const players = await request.server.prisma.player.findMany();
+	  const friends = await request.server.prisma.user.friends.findMany();
   
-	  reply.send({ users: users, players: players });
+	  reply.send({ users: users, players: players, friends: friends });
 	} catch (error) {
 	  reply.status(500).send({ error: 'Failed to fetch users' });
 	}
