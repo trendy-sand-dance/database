@@ -18,6 +18,25 @@ export const getPlayer = async (request: FastifyRequest, reply: FastifyReply): P
   }
 };
 
+export const getPlayerInfo = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+
+  try {
+    const { id } = request.params as { id: number };
+
+    const user = await request.server.prisma.user.findUnique({
+      where: { id: Number(id) },
+      select: {
+        username: true,
+        avatar: true,
+      },
+    })
+    return reply.code(200).send(user);
+  } catch (error) {
+    console.error(error);
+    return reply.code(500).send({ error: "Failed to load user" });
+  }
+};
+
 export const updatePlayer = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 
   try {

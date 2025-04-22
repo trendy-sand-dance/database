@@ -78,8 +78,6 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
         status: true
       },
     });
-    console.log("DATABASE USER: ", user);
-    console.log("DATABASE PLAYER?: ", user.player);
     return reply.code(200).send(user);
   } catch (error) {
     console.error(error);
