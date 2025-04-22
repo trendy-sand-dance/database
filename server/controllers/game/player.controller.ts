@@ -38,7 +38,7 @@ export const updatePlayer = async (request: FastifyRequest, reply: FastifyReply)
         },
       },
     });
-    return reply.code(204);
+    return reply.code(204).send("Success");
   } catch (error) {
     console.error(error);
     return reply.code(500).send({ error: "Failed to update user" });
@@ -50,25 +50,50 @@ export interface Vector2 {
   y: number;
 }
 
-// TODO: MAKE THIS SYNC DB FUNCTION WORK
-// export const syncPlayers = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
-//
-//   try {
-//
-//     const players = request.body as { players };
-//
-//     for (const [id, position] of players) {
-//       await request.server.prisma.player.update({
-//         where: { id: id },
-//         data: {
-//           x: position.x,
-//           y: position.y,
-//         }
-//       });
-//     }
-//     return reply.code(200);
-//   } catch (error) {
-//     console.error(error);
-//     return reply.code(500).send({ error: "Failed to update user" });
-//   }
-// };
+// type Player = {
+//   id : number;
+//   position: Vector2;
+// }
+
+// type PlayersMap = Record<number, Vector2>;
+
+// // TODO: MAKE THIS SYNC DB FUNCTION WORK
+export const syncPlayers = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+
+  console.log("/syncPlayers");
+  try {
+    // const players = request.body as PlayersMap;
+    const playerMap = request.body as Map<number, Vector2>;
+    // const obj = Object.entries(players);
+			//  console.log("Proceeding to sync players...", obj[0]);
+			//  if (obj.length === 0)
+			//  {
+			// throw { code: 500, message: "Error, received playersmap is empty" };
+			//  }
+
+    const players = Array.from(playerMap.entries());
+    for (const player of players) {
+      // console.log(`Updating ${id} with ${position}...`);
+      console.log(`Updating ${player}...`);
+
+
+      // const response = await request.server.prisma.player.update({
+      //   where: { id: Number(id) },
+      //   data: {
+      //     x: position.x,
+      //     y: position.y,
+      //   }
+      // });
+
+      // if (!response.ok)
+      // {
+      //   console.log("WWWWWWWWWWWWTTTTTTTTTTTTF");
+      // }
+    }
+    console.log("Finished??????");
+    return reply.code(200);
+  } catch (error) {
+    console.error(error);
+    return reply.code(500).send({ error: "Failed to update users" });
+  }
+};

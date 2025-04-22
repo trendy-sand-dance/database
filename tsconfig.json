@@ -1,7 +1,8 @@
 {
 	"extends": "@tsconfig/node22/tsconfig.json",
 	"compilerOptions": {
-	  "target": "ES6",
+	  // "target": "ES6",
+	  "target": "es2017",
 	  "module": "NodeNext",
 	  "moduleResolution": "NodeNext",
 	  "noEmitOnError": true, // Stops compiling if it runs into errors
