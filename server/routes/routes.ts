@@ -3,7 +3,8 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	// dev
 	import {getHome} from "../controllers/dev/getHome.controller";
 	import {viewDB, viewID} from "../controllers/dev/userDev/view.controller";
-	
+	import { sendReq, acceptReq } from "../controllers/dev/userDev/friendRequests.controller";
+
 	// web
 	import {dash} from "../controllers/web/dash.controller";
 	
@@ -23,6 +24,8 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/', getHome);
   fastify.get('/viewDB', viewDB);
   fastify.get('/viewID', viewID);
+  fastify.get('/sendreq/:sender/:receiver', sendReq);
+  fastify.get('/acceptreq/:sender/:receiver', acceptReq);
 
   // web
   fastify.get('/dashboard/:username', dash);

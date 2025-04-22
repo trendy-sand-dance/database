@@ -28,7 +28,12 @@ model User {
   losses 			Int @default(0)
 
   player 			Player?
-  friends 			Friend[]
+
+	// friendships where user is user1
+  friends1  Friend[] @relation("User1Friends")
+	// friendships where user is user2
+  friends2  Friend[] @relation("User2Friends")
+
 }
 
 model Player {
@@ -41,15 +46,18 @@ model Player {
 }
 
 model Friend {
-    id    		    Int 	 @unique
-	userId			Int      @unique
-	status		    Type	 @default(NO_RELATION)
+    id    		    Int 	 @id @default(autoincrement())    
+	username1		String   
+	username2		String 
+	status		    Status	 @default(NO_RELATION)
 
-	user     		 User	@relation(fields: [userId], references: [id])
+	user1     		User	@relation("User1Friends", fields: [username1], references: [username])
+	user2     		User	@relation("User2Friends", fields: [username2], references: [username])
 }
 
-enum Type {
+enum Status {
 	NO_RELATION
+	PENDING
 	SENT
 	RECEIVED
 	ACCEPTED

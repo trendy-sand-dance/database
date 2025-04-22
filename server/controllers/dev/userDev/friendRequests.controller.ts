@@ -1,57 +1,50 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-export const sendFriendRequest = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export const sendReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+		const { sender, receiver } = request.params as { sender: string, receiver: string};
 
-const user = await prisma.user.create({
-	data: {
-	  email: 'ariadne@prisma.io',
-	  name: 'Ariadne',
-	  posts: {
-		create: [
-		  {
-			title: 'My first day at Prisma',
-			categories: {
-			  create: {
-				name: 'Office',
-			  },
+		console.log('Params:', sender, receiver);
+
+		if (!sender || !receiver) {
+		  return reply.code(400).send({ error: "Missing sender or receiver in params" });
+		}
+
+		await request.server.prisma.friend.create({
+			data: {
+				username1: sender,
+				username2: receiver,
+				status: 'PENDING',
+				user1: { connect: { username: sender } },
+				user2: { connect: { username: receiver } },
 			},
-		  },
-		  {
-			title: 'How to connect to a SQLite database',
-			categories: {
-			  create: [{ name: 'Databases' }, { name: 'Tutorials' }],
-			},
-		  },
-		],
-	  },
-	},
-  })
-}
-
-export const receiveFriendRequest = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
-
-	const user = await prisma.user.create({
-		data: {
-		  email: 'ariadne@prisma.io',
-		  name: 'Ariadne',
-		  posts: {
-			create: [
-			  {
-				title: 'My first day at Prisma',
-				categories: {
-				  create: {
-					name: 'Office',
-				  },
-				},
-			  },
-			  {
-				title: 'How to connect to a SQLite database',
-				categories: {
-				  create: [{ name: 'Databases' }, { name: 'Tutorials' }],
-				},
-			  },
-			],
-		  },
-		},
-	  })
+		});
+		return reply.code(200).send({ message: "SENT FRIEND REQUEST"});
+	} catch (error) {
+		console.error(error);
+		return reply.code(500).send({ error: "Failed to send friend request" });
 	}
+};
+
+export const acceptReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+		const { sender, receiver } = request.params as { sender: string, receiver: string};
+
+		await request.server.prisma.friend.updateMany({
+			where: {
+				username1: sender,
+				username2: receiver,
+				status: 'PENDING',
+				//user1: { connect: { username: sender } },
+				//user2: { connect: { username: receiver } },
+			},
+			data: {
+				status: 'ACCEPTED',
+			},
+		});
+		return reply.code(200).send({ message: "ACCEPTED FRIEND REQUEST"});
+	} catch (error) {
+		console.error(error);
+		return reply.code(500).send({ error: "Failed to accept friend request" });
+	}
+};
