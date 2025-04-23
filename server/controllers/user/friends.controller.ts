@@ -69,9 +69,11 @@ export const acceptReq = async (request: FastifyRequest, reply: FastifyReply): P
 				return reply.code(406).send({ error: "Friend request sender can't accept their own request" });
 		await request.server.prisma.friend.updateMany({
 			where: {
-				user1Id: user,
-				user2Id: sender,
 				status: 'PENDING',
+				OR: [
+					{ user1Id: user, user2Id: sender },
+					{ user1Id: sender, user2Id: user }
+				]
 			},
 			data: {
 				status: 'ACCEPTED',
