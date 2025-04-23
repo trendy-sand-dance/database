@@ -3,8 +3,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 // param: receiver is the person receiving THIS friend request from user
 export const sendReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-		const { receiverId } = request.params as { receiverId: number};
-		const { userId } = request.body as { userId: number };
+		const { receiverId, userId } = request.params as { receiverId: number, userId: number};
 		const receiver = Number(receiverId);
 		const user = Number(userId);
 
@@ -43,8 +42,7 @@ export const sendReq = async (request: FastifyRequest, reply: FastifyReply): Pro
 // param: sender is person who sent request, this user is accepting their request
 export const acceptReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-		const { senderId } = request.params as { senderId: number};
-		const { userId } = request.body as { userId: number };
+		const { senderId, userId } = request.params as { senderId: number, userId: number};
 		const sender = Number(senderId);
 		const user = Number(userId);
 
