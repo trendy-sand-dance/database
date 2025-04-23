@@ -1,12 +1,12 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-export async function getAllFriends(username: string, request: FastifyRequest) {
+export async function getAllFriends(userId: number, request: FastifyRequest) {
 	const friendships = await request.server.prisma.friend.findMany({
 		where: {
 			status: { in: ['ACCEPTED', 'PENDING'] },
 			OR: [
-				{ username1: username},
-				{ username2: username},
+				{ user1Id: userId},
+				{ user2Id: userId},
 			],
 		},
 		include: {
@@ -16,11 +16,11 @@ export async function getAllFriends(username: string, request: FastifyRequest) {
 	});
 	// get the friend, not the user
 	const friends = friendships.map(f => {
-		const friendUser = f.username1 === username ? f.user2 : f.user1;
+		const friendUser = f.user1Id === userId ? f.user2 : f.user1;
 		return {
 			friend: friendUser,
 			status: f.status,
-			initiator: f.username1, // The user who sent the request
+			initiator: f.user1Id, // The user who sent the request
 		};
 	});
 	return friends;
@@ -33,7 +33,7 @@ export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Prom
 
 	  // for each user, get their friends:
 	  const usersWithFriends = await Promise.all(users.map(async user => {
-		const friends = await getAllFriends(user.username, request);
+		const friends = await getAllFriends(user.id, request);
 		return { ...user, friends };
 	  }));
 

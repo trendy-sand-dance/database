@@ -29,9 +29,9 @@ model User {
 
   player 			Player?
 
-	// friendships where user is user1
+	// friends1 = friendships where user is user2
+	// friend2 = friendships where user is user1
   friends1  Friend[] @relation("User1Friends")
-	// friendships where user is user2
   friends2  Friend[] @relation("User2Friends")
 
 }
@@ -47,13 +47,13 @@ model Player {
 
 model Friend {
     id    		    Int 	 @id @default(autoincrement())    
-	username1		String   
-	username2		String 
+	user1Id			Int   
+	user2Id			Int 
 	status		    Status	 @default(NO_RELATION)
-	initiator		String
+	initiator		Int
 
-	user1     		User	@relation("User1Friends", fields: [username1], references: [username])
-	user2     		User	@relation("User2Friends", fields: [username2], references: [username])
+	user1     		User	@relation("User1Friends", fields: [user1Id], references: [id])
+	user2     		User	@relation("User2Friends", fields: [user2Id], references: [id])
 }
 
 enum Status {
