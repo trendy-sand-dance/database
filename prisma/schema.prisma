@@ -24,13 +24,8 @@ model User {
   email String     @unique
   avatar String		@default("img_avatar.png")
   status Boolean     @default(false)  
-  // not null?
 
   player Player?
-}
-model UploadedFile {
-  id        Int    @id @default(autoincrement())
-  filename  String
 }
 
 model Player {
