@@ -62,7 +62,6 @@ enum Status {
 	SENT
 	RECEIVED
 	ACCEPTED
-	REJECTED
 	BLOCKED
 }
 
