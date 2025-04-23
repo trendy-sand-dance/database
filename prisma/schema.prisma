@@ -50,6 +50,7 @@ model Friend {
 	username1		String   
 	username2		String 
 	status		    Status	 @default(NO_RELATION)
+	initiator		String
 
 	user1     		User	@relation("User1Friends", fields: [username1], references: [username])
 	user2     		User	@relation("User2Friends", fields: [username2], references: [username])
