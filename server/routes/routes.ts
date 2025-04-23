@@ -3,7 +3,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	// dev
 	import {getHome} from "../controllers/dev/getHome.controller";
 	import {viewDB, viewID} from "../controllers/dev/userDev/view.controller";
-	import { sendReqDev, acceptReqDev } from "../controllers/dev/userDev/friendRequests.controller";
+	import { sendReqDev, acceptReqDev, rejectReqDev } from "../controllers/dev/userDev/friendRequests.controller";
 
 	// web
 	import {dash} from "../controllers/web/dash.controller";
@@ -12,7 +12,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {register, login, logout} from "../controllers/user/register.controller";
 	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/edit.controller"
 	import {editAvatar, deleteAvatar} from "../controllers/user/avatar.controller";
-	import {sendReq, acceptReq} from "../controllers/user/friends.controller";
+	import {sendReq, acceptReq, rejectReq, block} from "../controllers/user/friends.controller";
 
 
 // game endpoints
@@ -24,8 +24,9 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/', getHome);
   fastify.get('/viewDB', viewDB);
   fastify.get('/viewID', viewID);
-  fastify.get('/sendreq/:receiverId/:userId', sendReqDev);
-  fastify.get('/acceptreq/:senderId/:userId', acceptReqDev);
+  fastify.get('/sendReqD/:receiverId/:userId', sendReqDev);
+  fastify.get('/acceptReqD/:senderId/:userId', acceptReqDev);
+  fastify.delete('/rejectReqD/:senderId/:userId', rejectReqDev);
   
   // web
   fastify.get('/dashboard/:username', dash);
@@ -36,11 +37,12 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/logout/:username', logout);
   fastify.post('/editUsername/:username', editUsername);
   fastify.post('/editPassword/:username', editPassword);
-  fastify.post('/sendReq/:receiverId/:userId', sendReq); // person receiving a friend request
-  fastify.post('/acceptReq/:senderId/:userId', acceptReq); // sender is user who sent request, this person is accepting their request
-//  fastify.delete('/rejectreq/:username', rejectReq);
-
-
+  // user friend endpoints
+  fastify.post('/sendReq/:receiverId/:userId', sendReq); // person receiving a friend request, sent by this user
+  fastify.post('/acceptReq/:senderId/:userId', acceptReq); // sender is person who sent request, this user is accepting their request
+  fastify.delete('/rejectReq/:senderId/:userId', rejectReq); // sender is person who sent request, this user is rejecting their request
+  fastify.post('/block/:friendId/:userId', block); // friend is person who user wants to block
+  // user avatar endpoints
   fastify.post('/editEmail/:username', editEmail);
   fastify.delete('/delete/:username', deleteUser);
   fastify.post('/editAvatar/:username', editAvatar);
