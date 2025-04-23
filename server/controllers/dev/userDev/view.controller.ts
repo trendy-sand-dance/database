@@ -21,7 +21,6 @@ export async function getAllFriends(username: string, request: FastifyRequest) {
 			friend: friendUser,
 			status: f.status,
 			initiator: f.username1, // The user who sent the request
-			// You can add more fields here if needed
 		};
 	});
 	return friends;
