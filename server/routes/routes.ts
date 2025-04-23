@@ -13,7 +13,6 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/edit.controller"
 	import {editAvatar, deleteAvatar} from "../controllers/user/avatar.controller";
 	import {sendReq, acceptReq} from "../controllers/user/friends.controller";
-  import { getImage } from "../controllers/web/image.controller";
 
 
 // game endpoints
@@ -37,8 +36,8 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/logout/:username', logout);
   fastify.post('/editUsername/:username', editUsername);
   fastify.post('/editPassword/:username', editPassword);
-  fastify.post('/sendReq/:receiverId', sendReq); // person receiving a friend request
-  fastify.post('/acceptReq/:senderId', acceptReq); // sender is user who sent request, this person is accepting their request
+  fastify.post('/sendReq/:receiverId/:userId', sendReq); // person receiving a friend request
+  fastify.post('/acceptReq/:senderId/:userId', acceptReq); // sender is user who sent request, this person is accepting their request
 //  fastify.delete('/rejectreq/:username', rejectReq);
 
 
