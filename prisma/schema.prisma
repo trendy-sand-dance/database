@@ -18,19 +18,19 @@ generator client {
 }
 
 model User {
-  id    			Int     @id @default(autoincrement())
-  username  		String     @unique
+  id    			Int			@id @default(autoincrement())
+  username  		String		@unique
   password 			String
-  email 			String     @unique
+  email 			String		@unique
   avatar 			String		@default("img_avatar.png")
   status 			Boolean     @default(false)  
-  wins				Int @default(0)
-  losses 			Int @default(0)
+  wins				Int			@default(0)
+  losses 			Int			@default(0)
 
   player 			Player?
 
 	// friends1 = friendships where user is user2
-	// friend2 = friendships where user is user1
+	// friends2 = friendships where user is user1
   friends1  Friend[] @relation("User1Friends")
   friends2  Friend[] @relation("User2Friends")
 
@@ -49,7 +49,7 @@ model Friend {
     id    		    Int 	 @id @default(autoincrement())    
 	user1Id			Int   
 	user2Id			Int 
-	status		    Status	 @default(NO_RELATION)
+	status		    Status
 	initiator		Int
 
 	user1     		User	@relation("User1Friends", fields: [user1Id], references: [id])
@@ -57,11 +57,8 @@ model Friend {
 }
 
 enum Status {
-	NO_RELATION
 	PENDING
-	SENT
-	RECEIVED
-	ACCEPTED
+	FRIENDS
 	BLOCKED
 }
 

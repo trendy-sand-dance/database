@@ -3,7 +3,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 export async function getAllFriends(userId: number, request: FastifyRequest) {
 	const friendships = await request.server.prisma.friend.findMany({
 		where: {
-			status: { in: ['ACCEPTED', 'PENDING'] },
+			status: { in: ['FRIENDS', 'PENDING'] },
 			OR: [
 				{ user1Id: userId},
 				{ user2Id: userId},
@@ -18,7 +18,10 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 	const friends = friendships.map(f => {
 		const friendUser = f.user1Id === userId ? f.user2 : f.user1;
 		return {
-			friend: friendUser,
+			friend: {
+				username: friendUser.username,
+				status: friendUser.status,
+			  },
 			status: f.status,
 			initiator: f.user1Id, // The user who sent the request
 		};
@@ -28,16 +31,14 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 
 export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-	  const users = await request.server.prisma.user.findMany();
-	//  const players = await request.server.prisma.player.findMany();
+	  const allUsers = await request.server.prisma.user.findMany();
 
-	  // for each user, get their friends:
-	  const usersWithFriends = await Promise.all(users.map(async user => {
+	  const users = await Promise.all(allUsers.map(async user => {
 		const friends = await getAllFriends(user.id, request);
 		return { ...user, friends };
 	  }));
 
-	  reply.send({ users: users, userFriends: usersWithFriends });
+	  reply.send({ users: users });
 	} catch (error) {
 	  reply.status(500).send({ error: 'Failed to fetch users' });
 	}
