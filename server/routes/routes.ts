@@ -3,7 +3,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	// dev
 	import {getHome} from "../controllers/dev/getHome.controller";
 	import {viewDB, viewID} from "../controllers/dev/userDev/view.controller";
-	import { sendReqDev, acceptReqDev, rejectReqDev, viewAllFriendsDev, viewOnlyFriendsDev } from "../controllers/dev/userDev/friendRequests.controller";
+	import {sendReqDev, acceptReqDev, rejectReqDev, viewAllFriendsDev, viewOnlyFriendsDev} from "../controllers/dev/userDev/friendRequests.controller";
 
 	// web
 	import {dash} from "../controllers/web/dash.controller";
@@ -13,7 +13,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/edit.controller"
 	import {editAvatar, deleteAvatar} from "../controllers/user/avatar.controller";
 	import {sendReq, acceptReq, rejectReq, block, viewAllFriends, viewOnlyFriends} from "../controllers/user/friends.controller";
-
+	import {getStats} from "../controllers/user/stats.controller";
 
 // game endpoints
 import { getPlayer, getPlayerInfo, updatePlayer, syncPlayers } from "../controllers/game/player.controller";
@@ -39,6 +39,8 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/logout/:username', logout);
   fastify.post('/editUsername/:username', editUsername);
   fastify.post('/editPassword/:username', editPassword);
+  fastify.post('/editEmail/:username', editEmail);
+  fastify.delete('/delete/:username', deleteUser);
   // user friend endpoints
   fastify.post('/sendReq/:receiverId/:userId', sendReq); // person receiving a friend request, sent by this user
   fastify.post('/acceptReq/:senderId/:userId', acceptReq); // sender is person who sent request, this user is accepting their request
@@ -47,10 +49,10 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/viewAllFriends', viewAllFriends); 
   fastify.get('/viewOnlyFriends', viewOnlyFriends); 
   // user avatar endpoints
-  fastify.post('/editEmail/:username', editEmail);
-  fastify.delete('/delete/:username', deleteUser);
   fastify.post('/editAvatar/:username', editAvatar);
   fastify.post('/deleteAvatar/:username', deleteAvatar);
+  // user statistics endpoints
+  fastify.get('/stats/:username', getStats);
 
   // game endpoints
   // online users, game history, game options...
