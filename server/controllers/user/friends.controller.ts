@@ -176,6 +176,7 @@ export const block = async (request: FastifyRequest, reply: FastifyReply): Promi
 // view all relations with other users {pending, friends or blocked}
 export const viewAllFriends = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
+
 		const { username } = request.params as { username: string };
 		const user = await request.server.prisma.user.findUnqiue({
 			where: {
@@ -188,6 +189,7 @@ export const viewAllFriends = async (request: FastifyRequest, reply: FastifyRepl
 			//}));
 	
 	reply.send({ friends: friends });
+
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch user friends' });
 	}
@@ -196,6 +198,7 @@ export const viewAllFriends = async (request: FastifyRequest, reply: FastifyRepl
 // view only accepted friend relations with other users 
 export const viewOnlyFriends = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
+
 		const { username } = request.params as { username: string };
 		const user = await request.server.prisma.user.findUnqiue({
 			where: {
@@ -208,6 +211,7 @@ export const viewOnlyFriends = async (request: FastifyRequest, reply: FastifyRep
 		//}));
 
 		reply.send({ friends: friends });
+
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch user friends' });
 	}

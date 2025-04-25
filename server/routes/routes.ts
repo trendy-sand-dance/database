@@ -48,6 +48,7 @@ async function routes(fastify: FastifyInstance) {
   fastify.post('/block/:friendId/:userId', block); // friend is person who user wants to block
   fastify.get('/viewAllFriends/:username', viewAllFriends); 
   fastify.get('/viewOnlyFriends/:username', viewOnlyFriends); 
+
   // user avatar endpoints
   fastify.post('/editAvatar/:username', editAvatar);
   fastify.post('/deleteAvatar/:username', deleteAvatar);
