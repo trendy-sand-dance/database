@@ -46,8 +46,9 @@ async function routes(fastify: FastifyInstance) {
   fastify.post('/acceptReq/:senderId/:userId', acceptReq); // sender is person who sent request, this user is accepting their request
   fastify.delete('/rejectReq/:senderId/:userId', rejectReq); // sender is person who sent request, this user is rejecting their request
   fastify.post('/block/:friendId/:userId', block); // friend is person who user wants to block
-  fastify.get('/viewAllFriends', viewAllFriends); 
-  fastify.get('/viewOnlyFriends', viewOnlyFriends); 
+  fastify.get('/viewAllFriends/:username', viewAllFriends); 
+  fastify.get('/viewOnlyFriends/:username', viewOnlyFriends); 
+
   // user avatar endpoints
   fastify.post('/editAvatar/:username', editAvatar);
   fastify.post('/deleteAvatar/:username', deleteAvatar);
