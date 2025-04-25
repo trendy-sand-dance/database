@@ -126,14 +126,14 @@ export const rejectReqDev = async (request: FastifyRequest, reply: FastifyReply)
 
 export const viewAllFriendsDev = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-		const allUsers = await request.server.prisma.user.findMany();
+		const { username } = request.params as { username: string };
+		const user = await request.server.prisma.user.findUnique( {
+			where: { username: username }
+		});
 
-		const users = await Promise.all(allUsers.map(async user => {
 		const friends = await getAllFriends(user.id, request);
-		return { ...user, friends };
-		}));
 
-		reply.send({ users: users });
+		reply.send({ friends });
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch user friends' });
 	}
@@ -141,14 +141,14 @@ export const viewAllFriendsDev = async (request: FastifyRequest, reply: FastifyR
 
 export const viewOnlyFriendsDev = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-		const allUsers = await request.server.prisma.user.findMany();
+		const { username } = request.params as { username: string };
+		const user = await request.server.prisma.user.findUnique( {
+			where: { username: username }
+		});
 
-		const users = await Promise.all(allUsers.map(async user => {
 		const friends = await getOnlyFriends(user.id, request);
-		return { ...user, friends };
-		}));
 
-		reply.send({ users: users });
+		reply.send({ friends });
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch user friends' });
 	}

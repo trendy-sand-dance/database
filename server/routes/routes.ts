@@ -27,8 +27,8 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/sendReqD/:receiverId/:userId', sendReqDev);
   fastify.get('/acceptReqD/:senderId/:userId', acceptReqDev);
   fastify.delete('/rejectReqD/:senderId/:userId', rejectReqDev);
-  fastify.get('/viewAllFriendsD', viewAllFriendsDev); 
-  fastify.get('/viewOnlyFriendsD', viewOnlyFriendsDev); 
+  fastify.get('/viewAllFriendsD/:username', viewAllFriendsDev); 
+  fastify.get('/viewOnlyFriendsD/:username', viewOnlyFriendsDev); 
   
   // web
   fastify.get('/dashboard/:username', dash);
