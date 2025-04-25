@@ -190,6 +190,7 @@ export const viewAllFriends = async (request: FastifyRequest, reply: FastifyRepl
 
 export const viewOnlyFriends = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
+
 		const { username } = request.params as { username: string };
 		const user = await request.server.prisma.user.findUnique( {
 			where: { username: username }
@@ -198,6 +199,7 @@ export const viewOnlyFriends = async (request: FastifyRequest, reply: FastifyRep
 		const friends = await getOnlyFriends(user.id, request);
 
 		reply.send({ friends });
+
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch user friends' });
 	}
