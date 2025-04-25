@@ -29,6 +29,7 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 	return friends;
 };
 
+
 export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 	  const allUsers = await request.server.prisma.user.findMany();

@@ -173,45 +173,31 @@ export const block = async (request: FastifyRequest, reply: FastifyReply): Promi
 	}
 };
 
-// view all relations with other users {pending, friends or blocked}
 export const viewAllFriends = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
 		const { username } = request.params as { username: string };
-		const user = await request.server.prisma.user.findUnqiue({
-			where: {
-				username: username },
-			});
-			
-			//const users = await Promise.all(user.map(async user => {
-		const friends = await getAllFriends(user.id, request);
-				//return { ...user, friends };
-			//}));
-	
-	reply.send({ friends: friends });
+		const user = await request.server.prisma.user.findUnique( {
+			where: { username: username }
+		});
 
+		const friends = await getAllFriends(user.id, request);
+
+		reply.send({ friends });
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch user friends' });
 	}
 };
 
-// view only accepted friend relations with other users 
 export const viewOnlyFriends = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
 		const { username } = request.params as { username: string };
-		const user = await request.server.prisma.user.findUnqiue({
-			where: {
-				username: username },
-			});
+		const user = await request.server.prisma.user.findUnique( {
+			where: { username: username }
+		});
 
-		//const users = await Promise.all(user.map(async user => {
 		const friends = await getOnlyFriends(user.id, request);
-		//return { ...user, friends };
-		//}));
 
-		reply.send({ friends: friends });
-
+		reply.send({ friends });
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch user friends' });
 	}
