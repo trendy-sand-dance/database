@@ -1,15 +1,33 @@
 import { PrismaClient, Prisma, User } from '@prisma/client';
 import { FastifyRequest, FastifyReply } from 'fastify';
+import bcrypt from 'bcrypt';
+
+const SALT_ROUNDS = 10;
 
 export const register = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
   try {
-    const { username, password, email } = request.body as { username: string, password: string, email: string };
-    const { avatar, status } = { avatar: "img_avatar.png", status: false };
+    const {
+			username,
+			password,
+			email
+		} = request.body as {
+			username: string,
+			password: string,
+			email: string
+		};
+    const {
+			avatar,
+			status
+		} = {
+				avatar: "img_avatar.png",
+				status: false
+			};
 
+		const password_hash = await bcrypt.hash(password, SALT_ROUNDS);
     await request.server.prisma.user.create({
       data: {
         username,
-        password,
+        password: password_hash,
         email,
         avatar,
         status,

@@ -18,6 +18,7 @@ export const editUsername = async (request: FastifyRequest, reply: FastifyReply)
 	}
 };
 
+// TODO Add hashing shit here
 export const editPassword = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { username } = request.body as { username: string };
