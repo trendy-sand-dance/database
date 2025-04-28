@@ -3,7 +3,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 export async function getAllFriends(userId: number, request: FastifyRequest) {
 	const friendships = await request.server.prisma.friend.findMany({
 		where: {
-			status: { in: ['FRIENDS', 'PENDING'] },
+			status: { in: ['FRIENDS', 'PENDING', 'BLOCKED'] },
 			OR: [
 				{ user1Id: userId},
 				{ user2Id: userId},
@@ -14,7 +14,6 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 			user2: true,
 		},
 	});
-	// get the friend, not the user
 	const friends = friendships.map(f => {
 		const friendUser = f.user1Id === userId ? f.user2 : f.user1;
 		return {
@@ -23,7 +22,7 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 				status: friendUser.status,
 			  },
 			status: f.status,
-			initiator: f.user1Id, // The user who sent the request
+			initiator: f.user1Id,
 		};
 	});
 	return friends;
@@ -33,7 +32,7 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 	  const allUsers = await request.server.prisma.user.findMany();
-
+	  // const players = await request.server.prisma.player.findMany();
 	  const users = await Promise.all(allUsers.map(async user => {
 		const friends = await getAllFriends(user.id, request);
 		return { ...user, friends };
