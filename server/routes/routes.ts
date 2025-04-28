@@ -13,7 +13,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/editUser.controller"
 	import {editAvatar, deleteAvatar} from "../controllers/user/avatar.controller";
 	import {sendFriendReq, acceptFriendReq, rejectFriendReq, blockFriend, viewPlayers} from "../controllers/user/friends.controller";
-	import {getStats, updateWins, updateLosses} from "../controllers/user/stats.controller";
+	import {saveMatch} from "../controllers/user/stats.controller";
 
 // game endpoints
 import { getPlayer, getPlayerInfo, updatePlayer, syncPlayers } from "../controllers/game/player.controller";
@@ -48,10 +48,8 @@ async function routes(fastify: FastifyInstance) {
   // user avatar endpoints
   fastify.post('/editAvatar/:username', editAvatar);
   fastify.post('/deleteAvatar/:username', deleteAvatar);
-  // user statistics endpoints
-  fastify.get('/stats/:username', getStats);
-  fastify.post('/addWin/:username', updateWins);
-  fastify.post('/addLoss/:username', updateLosses);
+  // user statistics/matches endpoints
+  fastify.post('/saveMatch/:won/:lost', saveMatch);
 
   // game endpoints
   // online users, game history, game options...

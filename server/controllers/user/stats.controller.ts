@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-export const getStats = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export async function getStats(request: FastifyRequest, reply: FastifyReply) {
 	try {
 		const { username } = request.params as { username: string };
 		const user = await request.server.prisma.user.findUnique({
@@ -17,19 +17,15 @@ export const getStats = async (request: FastifyRequest, reply: FastifyReply): Pr
 	}
 };
 
-export const updateWins = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export async function updateWins(userId: number, request: FastifyRequest, reply: FastifyReply) {
 	try {
-		const { username } = request.params as { username: string };
-		const user = request.server.prisma.user.findUnique({
-			where: { username: username }
-		});
-		if (!user)
-			return reply.code(406).send({ error: "Can't find user" });
-		const winCount = user.wins;
+		const userID = Number(userId);
 		await request.server.prisma.user.update({
-			where: { username },
+			where: { id: userID },
 			data: { 
-				wins: winCount + 1,
+				wins: {
+					increment: 1,
+				}
 			}
 		});
 
@@ -39,19 +35,15 @@ export const updateWins = async (request: FastifyRequest, reply: FastifyReply): 
 	}
 };
 
-export const updateLosses = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export async function updateLosses(userId: number, request: FastifyRequest, reply: FastifyReply) {
 	try {
-		const { username } = request.params as { username: string };
-		const user = request.server.prisma.user.findUnique({
-			where: { username: username }
-		});
-		if (!user)
-			return reply.code(406).send({ error: "Can't find user" });
-		const lossCount = user.losses;
+		const userID = Number(userId);
 		await request.server.prisma.user.update({
-			where: { username },
+			where: { id: userID },
 			data: { 
-				losses: lossCount + 1,
+				losses: {
+					increment: 1,
+				}
 			}
 		});
 
@@ -61,4 +53,33 @@ export const updateLosses = async (request: FastifyRequest, reply: FastifyReply)
 	}
 };
 
-// MATCH HISTORY LET'S GOOOOOOOOOO
+// add match instance to database + update users' stats
+export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+		const { won, lost } = request.params as { won: number, lost: number };
+		const wonId = Number(won);
+		const lostId = Number(lost);
+		await request.server.prisma.match.create({
+			data: {
+				user1Id: wonId,
+				user2Id: lostId,
+				won: { connect: { id: wonId } },
+				lost: { connect: { id: lostId } },
+				date: Date.now(),
+			},
+		});
+
+		await updateWins(wonId, request, reply);
+		await updateLosses(lostId, request, reply);
+
+		return reply.code(200).send({ message: "Successfully saved played match!" });
+	} catch (error) {
+		reply.status(500).send({ error: 'Failed to save match in database' });
+	}
+};
+
+
+// view users' total wins/losses
+// view users' match history (all)
+// view users' match history with specific user
+
