@@ -52,6 +52,8 @@ export async function getOnlyFriends(userId: number, request: FastifyRequest) {
 			friend: {
 				username: friendUser.username,
 				status: friendUser.status,
+				wins: friendUser.wins,
+				losses: friendUser.losses
 			  },
 			status: f.status,
 			initiator: f.user1Id, // The user who sent the request
