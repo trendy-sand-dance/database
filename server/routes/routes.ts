@@ -12,7 +12,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {register, login, logout} from "../controllers/user/register.controller";
 	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/editUser.controller"
 	import {editAvatar, deleteAvatar} from "../controllers/user/avatar.controller";
-	import {sendReq, acceptReq, rejectReq, block, viewAllFriends, viewOnlyFriends} from "../controllers/user/friends.controller";
+	import {sendFriendReq, acceptFriendReq, rejectFriendReq, blockFriend, viewAllFriends, viewOnlyFriends} from "../controllers/user/friends.controller";
 	import {getStats, updateWins, updateLosses} from "../controllers/user/stats.controller";
 
 // game endpoints
@@ -42,10 +42,10 @@ async function routes(fastify: FastifyInstance) {
   fastify.post('/editEmail/:username', editEmail);
   fastify.delete('/delete/:username', deleteUser);
   // user friend endpoints
-  fastify.post('/sendReq/:receiverId/:userId', sendReq); // person receiving a friend request, sent by this user
-  fastify.post('/acceptReq/:senderId/:userId', acceptReq); // sender is person who sent request, this user is accepting their request
-  fastify.delete('/rejectReq/:senderId/:userId', rejectReq); // sender is person who sent request, this user is rejecting their request
-  fastify.post('/block/:friendId/:userId', block); // friend is person who user wants to block
+  fastify.post('/sendReq/:receiverId/:userId', sendFriendReq); // person receiving a friend request, sent by this user
+  fastify.post('/acceptReq/:senderId/:userId', acceptFriendReq); // sender is person who sent request, this user is accepting their request
+  fastify.delete('/rejectReq/:senderId/:userId', rejectFriendReq); // sender is person who sent request, this user is rejecting their request
+  fastify.post('/block/:friendId/:userId', blockFriend); // friend is person who user wants to block
   fastify.get('/viewAllFriends/:username', viewAllFriends); 
   fastify.get('/viewOnlyFriends/:username', viewOnlyFriends); 
 

@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { getAllFriends, getOnlyFriends } from '../utils/friendUtils.controller';
 
 // param: receiver is the person receiving THIS friend request from user
-export const sendReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export const sendFriendReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { receiverId, userId } = request.params as { receiverId: number, userId: number};
 		const receiver = Number(receiverId);
@@ -41,7 +41,7 @@ export const sendReq = async (request: FastifyRequest, reply: FastifyReply): Pro
 };
 
 // param: sender is person who sent request, this user is accepting their request
-export const acceptReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export const acceptFriendReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { senderId, userId } = request.params as { senderId: number, userId: number};
 		const sender = Number(senderId);
@@ -86,7 +86,7 @@ export const acceptReq = async (request: FastifyRequest, reply: FastifyReply): P
 };
 
 // param: sender is person who sent request, this user is rejecting their request
-export const rejectReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export const rejectFriendReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { senderId, userId } = request.params as { senderId: number, userId: number};
 		const sender = Number(senderId);
@@ -127,7 +127,7 @@ export const rejectReq = async (request: FastifyRequest, reply: FastifyReply): P
 	}
 };
 
-export const block = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export const blockFriend = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { friendId, userId } = request.params as { friendId: number, userId: number};
 		const friend = Number(friendId);
