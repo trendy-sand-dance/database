@@ -51,6 +51,7 @@ model Friend {
 	user2Id			Int 
 	status		    Status
 	initiator		Int
+	blocker			Int
 
 	user1     		User	@relation("User1Friends", fields: [user1Id], references: [id])
 	user2     		User	@relation("User2Friends", fields: [user2Id], references: [id])
