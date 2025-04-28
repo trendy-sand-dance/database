@@ -104,7 +104,7 @@ export async function getBlocked(userId: number, request: FastifyRequest) {
 	return blockedPlayers;
 };
 
-
+// DO WE BLOCK??
 // blocked questions: if friendship status is just blocked, then that is the same
 // for both blocker and blockee... then friend actions/views wont apply to either
 // what/how we want for blocking?
@@ -136,3 +136,4 @@ export async function getBlocked(userId: number, request: FastifyRequest) {
 //	}
 //	next();
 //  }
+
