@@ -20,12 +20,7 @@ export async function getRequests(userId: number, request: FastifyRequest) {
 	const requests = pendingRequests.map(f => {
 		const requestSender = f.user1Id === userId ? f.user2 : f.user1;
 		return {
-			//friend: {
 				username: requestSender.username,
-				//status: requestSender.status,
-				//},
-			//status: f.status,
-			//initiator: f.user1Id, // The user who sent the request
 		};
 	});
 	return requests;
@@ -45,16 +40,11 @@ export async function getFriends(userId: number, request: FastifyRequest) {
 			user2: true,
 		},
 	});
-	// get the friend, not the user
 	const friends = friendships.map(f => {
 		const friendUser = f.user1Id === userId ? f.user2 : f.user1;
 		return {
-			//friend: {
 				username: friendUser.username,
 				status: friendUser.status,
-			//  },
-			//status: f.status,
-			//initiator: f.user1Id, // The user who sent the request
 		};
 	});
 	return friends;
@@ -78,12 +68,7 @@ export async function getPending(userId: number, request: FastifyRequest) {
 	const requested = pendingRequests.map(f => {
 		const requestedFriends = f.user1Id === userId ? f.user2 : f.user1;
 		return {
-			//friend: {
 				username: requestedFriends.username,
-				//status: requestSender.status,
-				//},
-			//status: f.status,
-			//initiator: f.user1Id, // The user who sent the request
 		};
 	});
 	return requested;
@@ -104,16 +89,10 @@ export async function getBlocked(userId: number, request: FastifyRequest) {
 			user2: true,
 		},
 	});
-	// get the friend, not the user
 	const blockedPlayers = blocked.map(f => {
 		const blockerUser = f.user1Id === userId ? f.user2 : f.user1;
 		return {
-			//friend: {
 				username: blockerUser.username,
-				//status: blockerUser.status,
-			//  },
-			//status: f.status,
-			//initiator: f.user1Id, // The user who sent the request
 		};
 	});
 	return blockedPlayers;
