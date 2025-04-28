@@ -47,6 +47,8 @@ export async function getFriends(userId: number, request: FastifyRequest) {
 				avatar: friendUser.avatar,
 				username: friendUser.username,
 				status: friendUser.status,
+				wins: friendUser.wins,
+				losses: friendUser.losses,
 		};
 	});
 	return friends;
@@ -95,17 +97,19 @@ export async function getBlocked(userId: number, request: FastifyRequest) {
 	const blockedPlayers = blocked.map(f => {
 		const blockedUser = f.user1Id === userId ? f.user2 : f.user1;
 		return {
-				avatar: blockedUser.avatar,
+			avatar: blockedUser.avatar,
 				username: blockedUser.username,
 		};
 	});
 	return blockedPlayers;
 };
 
-// floating window endpoint
-// button for sending friend DM,  wins/losses (getStats)
-// other extra info/actions for friend specific shizzle
 
+// blocked questions: if friendship status is just blocked, then that is the same
+// for both blocker and blockee... then friend actions/views wont apply to either
+// what/how we want for blocking?
+// could use this check if necessary for whent rying to send friend request/DM
+// and for removal of extra info when relation is blocked
 
 // blocked middleware controller, add to controllers involvling displaying players info/sending messages
 // if user is blocked by player, dont go ahead with getting player info/allowing chatting
