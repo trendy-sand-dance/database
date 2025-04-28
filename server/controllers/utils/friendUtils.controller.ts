@@ -20,6 +20,7 @@ export async function getRequests(userId: number, request: FastifyRequest) {
 	const requests = pendingRequests.map(f => {
 		const requestSender = f.user1Id === userId ? f.user2 : f.user1;
 		return {
+				avatar: requestSender.avatar,
 				username: requestSender.username,
 		};
 	});
@@ -43,6 +44,7 @@ export async function getFriends(userId: number, request: FastifyRequest) {
 	const friends = friendships.map(f => {
 		const friendUser = f.user1Id === userId ? f.user2 : f.user1;
 		return {
+				avatar: friendUser.avatar,
 				username: friendUser.username,
 				status: friendUser.status,
 		};
@@ -68,6 +70,7 @@ export async function getPending(userId: number, request: FastifyRequest) {
 	const requested = pendingRequests.map(f => {
 		const requestedFriends = f.user1Id === userId ? f.user2 : f.user1;
 		return {
+				avatar: requestedFriends.avatar,
 				username: requestedFriends.username,
 		};
 	});
@@ -90,14 +93,16 @@ export async function getBlocked(userId: number, request: FastifyRequest) {
 		},
 	});
 	const blockedPlayers = blocked.map(f => {
-		const blockerUser = f.user1Id === userId ? f.user2 : f.user1;
+		const blockedUser = f.user1Id === userId ? f.user2 : f.user1;
 		return {
-				username: blockerUser.username,
+				avatar: blockedUser.avatar,
+				username: blockedUser.username,
 		};
 	});
 	return blockedPlayers;
 };
 
+// wins/losses floating window endpoint using getstats controller
 
 // blocked middleware controller, add to controllers involvling displaying players info/sending messages
 // if user is blocked by player, dont go ahead with getting player info/allowing chatting
