@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { getAllFriends, getOnlyFriends } from '../utils/friendUtils.controller';
+import { getRequests, getFriends, getPending, getBlocked } from '../utils/friendUtils.controller';
 
 // param: receiver is the person receiving THIS friend request from user
 export const sendFriendReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
@@ -31,6 +31,7 @@ export const sendFriendReq = async (request: FastifyRequest, reply: FastifyReply
 				user1: { connect: { id: user } },
 				user2: { connect: { id: receiver } },
 				initiator: user,
+				blocker: 0,
 			},
 		});
 		return reply.code(200).send({ message: "SENT FRIEND REQUEST"});
@@ -173,34 +174,21 @@ export const blockFriend = async (request: FastifyRequest, reply: FastifyReply):
 	}
 };
 
-export const viewAllFriends = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export const viewPlayers = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { username } = request.params as { username: string };
 		const user = await request.server.prisma.user.findUnique( {
 			where: { username: username }
 		});
 
-		const friends = await getAllFriends(user.id, request);
+		const requests = await getRequests(user.id, request);
+		const friends = await getFriends(user.id, request);
+		const pending = await getPending(user.id, request);
+		const blocked = await getBlocked(user.id, request);
 
-		reply.send({ friends });
+		reply.send({ requests, friends, pending, blocked });
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch user friends' });
 	}
 };
 
-export const viewOnlyFriends = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
-	try {
-
-		const { username } = request.params as { username: string };
-		const user = await request.server.prisma.user.findUnique( {
-			where: { username: username }
-		});
-
-		const friends = await getOnlyFriends(user.id, request);
-
-		reply.send({ friends });
-
-	} catch (error) {
-		reply.status(500).send({ error: 'Failed to fetch user friends' });
-	}
-};

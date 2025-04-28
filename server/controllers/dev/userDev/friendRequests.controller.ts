@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { getAllFriends, getOnlyFriends } from '../../utils/friendUtils.controller';
+//import { getAllFriends, getOnlyFriends } from '../../utils/friendUtils.controller';
 
 
 // param: receiver is the person receiving THIS friend request from user
@@ -124,32 +124,32 @@ export const rejectReqDev = async (request: FastifyRequest, reply: FastifyReply)
 	}
 };
 
-export const viewAllFriendsDev = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
-	try {
-		const { username } = request.params as { username: string };
-		const user = await request.server.prisma.user.findUnique( {
-			where: { username: username }
-		});
+//export const viewAllFriendsDev = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+//	try {
+//		const { username } = request.params as { username: string };
+//		const user = await request.server.prisma.user.findUnique( {
+//			where: { username: username }
+//		});
 
-		const friends = await getAllFriends(user.id, request);
+//		const friends = await getAllFriends(user.id, request);
 
-		reply.send({ friends });
-	} catch (error) {
-		reply.status(500).send({ error: 'Failed to fetch user friends' });
-	}
-};
+//		reply.send({ friends });
+//	} catch (error) {
+//		reply.status(500).send({ error: 'Failed to fetch user friends' });
+//	}
+//};
 
-export const viewOnlyFriendsDev = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
-	try {
-		const { username } = request.params as { username: string };
-		const user = await request.server.prisma.user.findUnique( {
-			where: { username: username }
-		});
+//export const viewOnlyFriendsDev = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+//	try {
+//		const { username } = request.params as { username: string };
+//		const user = await request.server.prisma.user.findUnique( {
+//			where: { username: username }
+//		});
 
-		const friends = await getOnlyFriends(user.id, request);
+//		const friends = await getOnlyFriends(user.id, request);
 
-		reply.send({ friends });
-	} catch (error) {
-		reply.status(500).send({ error: 'Failed to fetch user friends' });
-	}
-};
+//		reply.send({ friends });
+//	} catch (error) {
+//		reply.status(500).send({ error: 'Failed to fetch user friends' });
+//	}
+//};
