@@ -102,7 +102,10 @@ export async function getBlocked(userId: number, request: FastifyRequest) {
 	return blockedPlayers;
 };
 
-// wins/losses floating window endpoint using getstats controller
+// floating window endpoint
+// button for sending friend DM,  wins/losses (getStats)
+// other extra info/actions for friend specific shizzle
+
 
 // blocked middleware controller, add to controllers involvling displaying players info/sending messages
 // if user is blocked by player, dont go ahead with getting player info/allowing chatting
