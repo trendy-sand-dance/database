@@ -82,13 +82,47 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 
 
 
-// view users' match history (all)
+// get users' match history (all)
+export const getUserMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
 
-// view users' wins
+	} catch {
+		reply.status(500).send({ error: 'Failed to get users\' match history' });
+	}
+};
 
-// view users' losses
+// get users' wins
+export const getWonMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
 
-// view users' friend match history 
+	} catch {
+		reply.status(500).send({ error: 'Failed to get users\' won match history' });
+	}
+};
 
-// view users' specific match history with <friend> 
+// get users' losses
+export const getLostMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
 
+	} catch {
+		reply.status(500).send({ error: 'Failed to get users\' lost match history' });
+	}
+};
+
+// get users' friend match history
+export const getFriendMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+
+	} catch {
+		reply.status(500).send({ error: 'Failed to get users\' friends\' match history' });
+	}
+};
+
+// get users' specific match history with <friend>
+export const getFriendvsUser = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+
+	} catch {
+		reply.status(500).send({ error: 'Failed to get match history of user vs friend' });
+	}
+};
