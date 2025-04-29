@@ -11,7 +11,7 @@ export const getStats = async (request: FastifyRequest, reply: FastifyReply): Pr
 			}
 		});
 
-	return reply.code(200).send(user.wins, user.losses);
+	return reply.code(200).send(user);
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch user statistics' });
 	}
