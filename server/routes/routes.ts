@@ -1,9 +1,10 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 
 	// dev
-	import {getHome} from "../controllers/dev/getHome.controller";
+	import {getHome, populate} from "../controllers/dev/getHome.controller";
 	import {viewDB, viewID} from "../controllers/dev/userDev/view.controller";
 	import {sendReqDev, acceptReqDev, rejectReqDev} from "../controllers/dev/userDev/friendRequests.controller";
+	import {viewMatches} from "../controllers/dev/userDev/matchDev.controller";
 
 	// web
 	import {dash} from "../controllers/web/dash.controller";
@@ -22,8 +23,11 @@ async function routes(fastify: FastifyInstance) {
 
   // dev
   fastify.get('/', getHome);
+  fastify.get('/populate', populate);
   fastify.get('/viewDB', viewDB);
   fastify.get('/viewID', viewID);
+  fastify.get('/viewMatches', viewMatches);
+
   fastify.get('/sendReqD/:receiverId/:userId', sendReqDev);
   fastify.get('/acceptReqD/:senderId/:userId', acceptReqDev);
   fastify.delete('/rejectReqD/:senderId/:userId', rejectReqDev);
@@ -49,7 +53,7 @@ async function routes(fastify: FastifyInstance) {
   fastify.post('/editAvatar/:username', editAvatar);
   fastify.post('/deleteAvatar/:username', deleteAvatar);
   // user statistics/matches endpoints
-  fastify.post('/saveMatch/:won/:lost', saveMatch);
+  fastify.get('/saveMatch/:won/:lost', saveMatch); //NEEDS TO BE POST
 
   // game endpoints
   // online users, game history, game options...

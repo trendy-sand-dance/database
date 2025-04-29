@@ -68,10 +68,10 @@ model Match {
 	id				Int		@id @default(autoincrement())
 	user1Id			Int
 	user2Id			Int
-	date			DateTime
 
 	won				User	@relation("won", fields: [user1Id], references: [id])
 	lost			User	@relation("lost", fields: [user2Id], references: [id])			
 }
 // optional if doing more than 2 player matches: participated
+// date			DateTime
 

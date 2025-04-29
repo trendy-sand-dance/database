@@ -53,25 +53,30 @@ export async function updateLosses(userId: number, request: FastifyRequest, repl
 	}
 };
 
-// add match instance to database + update users' stats
+/**
+ * @brief add a match instance to database and update users' statistics
+ * 			in the user table of the database
+ */
 export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { won, lost } = request.params as { won: number, lost: number };
 		const wonId = Number(won);
 		const lostId = Number(lost);
+		const date = "TODAY";
+		console.log("make match between", wonId, " and ", lostId);
 		await request.server.prisma.match.create({
 			data: {
 				user1Id: wonId,
 				user2Id: lostId,
 				won: { connect: { id: wonId } },
 				lost: { connect: { id: lostId } },
-				date: Date.now(),
+				//date: date,
 			},
 		});
-
+		console.log("created match entry");
 		await updateWins(wonId, request, reply);
 		await updateLosses(lostId, request, reply);
-
+		console.log("updated user stats");
 		return reply.code(200).send({ message: "Successfully saved played match!" });
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to save match in database' });

@@ -28,15 +28,18 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 	return friends;
 };
 
-
 export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 	  const allUsers = await request.server.prisma.user.findMany();
-	  // const players = await request.server.prisma.player.findMany();
 	  const users = await Promise.all(allUsers.map(async user => {
-		const friends = await getAllFriends(user.id, request);
-		return { ...user, friends };
-	  }));
+		  const friends = await getAllFriends(user.id, request);
+		  return { ...user, friends };
+		}));
+		
+		// const players = await request.server.prisma.player.findMany();
+		//  reply.send({ users: users , players: players });
+		// const matches = await request.server.prisma.match.findMany();
+		//  reply.send({ users: users , players: players, matches: matches });
 
 	  reply.send({ users: users });
 	} catch (error) {
