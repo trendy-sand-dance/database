@@ -1,5 +1,22 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
+export async function populate(request: FastifyRequest, reply: FastifyReply) {
+	try {
+		await request.server.prisma.user.createMany({
+			data: [
+				{ username: "tim", password: "tim", email: "tim@tim.com"},
+				{ username: "bob", password: "bob", email: "bob@bob.com"},
+				{ username: "jill", password: "jill", email: "jill@jill.com"},
+				{ username: "molly", password: "molly", email: "molly@molly.com"},
+			]
+		  });
+		return reply.send({ message: "populated user table with 4 users"});
+		
+	} catch (error) {
+		return reply.code(500).send("Error populating user table");
+	}
+};
+
 export async function getAllFriends(userId: number, request: FastifyRequest) {
 	const friendships = await request.server.prisma.friend.findMany({
 		where: {
@@ -28,17 +45,27 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 	return friends;
 };
 
-
 export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 	  const allUsers = await request.server.prisma.user.findMany();
-	  // const players = await request.server.prisma.player.findMany();
-	  const users = await Promise.all(allUsers.map(async user => {
-		const friends = await getAllFriends(user.id, request);
-		return { ...user, friends };
-	  }));
 
-	  reply.send({ users: users });
+	  const users = await Promise.all(allUsers.map(async user => {
+		  const friends = await getAllFriends(user.id, request);
+		  return { ...user, friends };
+		}));
+		//  reply.send({ users: users });
+		
+		// add viewing players table
+		// const players = await request.server.prisma.player.findMany();
+		//  reply.send({ users: users , players: players });
+	
+		// add viewing matches table
+		 const matches = await request.server.prisma.match.findMany();
+		  reply.send({ users: users, matches: matches });
+
+		  	// reply with all tables
+		// reply.send({ users: users, players: players, matches: matches });
+
 	} catch (error) {
 	  reply.status(500).send({ error: 'Failed to fetch users' });
 	}

@@ -29,10 +29,11 @@ model User {
 
   player 			Player?
 
-	// friends1 = friendships where user is user2
-	// friends2 = friendships where user is user1
-  friends1  Friend[] @relation("User1Friends")
-  friends2  Friend[] @relation("User2Friends")
+  friends1  		Friend[] 	@relation("User1Friends")
+  friends2  		Friend[] 	@relation("User2Friends")
+
+  won				Match[]		@relation("won")
+  lost				Match[]		@relation("lost")
 
 }
 
@@ -62,4 +63,15 @@ enum Status {
 	FRIENDS
 	BLOCKED
 }
+
+model Match {
+	id				Int		@id @default(autoincrement())
+	user1Id			Int
+	user2Id			Int
+
+	won				User	@relation("won", fields: [user1Id], references: [id])
+	lost			User	@relation("lost", fields: [user2Id], references: [id])			
+}
+// optional if doing more than 2 player matches: participated
+//	date			DateTime
 

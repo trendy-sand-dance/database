@@ -34,7 +34,7 @@ export const sendFriendReq = async (request: FastifyRequest, reply: FastifyReply
 				blocker: 0,
 			},
 		});
-		return reply.code(200).send({ message: "SENT FRIEND REQUEST"});
+		return reply.code(200).send({ message: "Successfully sent friend request"});
 	} catch (error) {
 		console.error(error);
 		return reply.code(500).send({ error: "Failed to send friend request" });
@@ -64,7 +64,7 @@ export const acceptFriendReq = async (request: FastifyRequest, reply: FastifyRep
 			}
 		});
 		if (!initiator)
-			return reply.code(500).send({ error: " no pending request between these users found" });
+			return reply.code(500).send({ error: "No pending request between these users found" });
 		if (initiator.initiator === sender)
 				return reply.code(406).send({ error: "Friend request sender can't accept their own request" });
 		await request.server.prisma.friend.updateMany({
@@ -79,7 +79,7 @@ export const acceptFriendReq = async (request: FastifyRequest, reply: FastifyRep
 				status: 'FRIENDS',
 			},
 		});
-		return reply.code(200).send({ message: "ACCEPTED FRIEND REQUEST SUCCESSFULLY"});
+		return reply.code(200).send({ message: "Sucessfully accepted friend request"});
 	} catch (error) {
 		console.error(error);
 		return reply.code(500).send({ error: "Failed to accept friend request" });
@@ -109,7 +109,7 @@ export const rejectFriendReq = async (request: FastifyRequest, reply: FastifyRep
 			}
 		});
 		if (!initiator)
-			return reply.code(500).send({ error: " no pending request between these users found" });
+			return reply.code(500).send({ error: "No pending request between these users found" });
 		if (initiator.initiator === sender)
 				return reply.code(406).send({ error: "Friend request sender can't reject their own request" });
 		await request.server.prisma.friend.deleteMany({
@@ -121,7 +121,7 @@ export const rejectFriendReq = async (request: FastifyRequest, reply: FastifyRep
 				]
 			}
 		});
-		return reply.code(200).send({ message: "FRIEND REQUEST REJECTED SUCCESSFULLY"});
+		return reply.code(200).send({ message: "Successfully rejected friend request"});
 	} catch (error) {
 		console.error(error);
 		return reply.code(500).send({ error: "Failed to reject friend request" });
@@ -162,11 +162,10 @@ export const blockFriend = async (request: FastifyRequest, reply: FastifyReply):
 			},
 			data: {
 				status: 'BLOCKED',
+				blocker: userId,
 			},
 		});
-		// TODO
-		// function to no longer allow friend to interact with user... + unblock ?
-		return reply.code(200).send({ message: "BLOCKING FRIEND SUCCESSFUL"});
+		return reply.code(200).send({ message: "Successfully blocked friend"});
 
 	} catch (error) {
 		console.error(error);
@@ -188,7 +187,7 @@ export const viewPlayers = async (request: FastifyRequest, reply: FastifyReply):
 
 		reply.send({ requests, friends, pending, blocked });
 	} catch (error) {
-		reply.status(500).send({ error: 'Failed to fetch user friends' });
+		reply.status(500).send({ error: 'Failed to fetch players' });
 	}
 };
 
