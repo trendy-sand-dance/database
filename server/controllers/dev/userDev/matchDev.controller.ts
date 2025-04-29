@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { updateWins, updateLosses } from "../../user/stats.controller";
 import { formatMatchDate } from '../../utils/matchUtils.controller';
+import { friendshipCheck } from '../../utils/friendUtils.controller';
 
 export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
@@ -78,7 +79,22 @@ export const viewLostMatch = async (request: FastifyRequest, reply: FastifyReply
 // viewFriendMatch
 export const viewFriendMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
+		const { userId, friendId } = request.params as { userId: number, friendId: number };
+		const user = Number(userId);
+		const friend = Number(friendId);
+		const friendCheck = await friendshipCheck(user, friend, request, reply);
+		if (!friendCheck)
+			return reply.code(404).send({ error: "no friendship found" });
+		const matches = await request.server.prisma.match.findMany({
+			where: {
+				OR: [
+					{ winner: friend },
+					{ loser: friend }
+				]
+			}
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
 	} catch {
 		reply.status(500).send({ error: 'Failed to view match history' });
 	}
@@ -87,7 +103,22 @@ export const viewFriendMatch = async (request: FastifyRequest, reply: FastifyRep
 // viewFriendvsUser
 export const viewFvsU = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
+		const { userId, friendId } = request.params as { userId: number, friendId: number };
+		const user = Number(userId);
+		const friend = Number(friendId);
+		const friendCheck = await friendshipCheck(user, friend, request, reply);
+		if (!friendCheck)
+			return reply.code(404).send({ error: "no friendship found" });
+		const matches = await request.server.prisma.match.findMany({
+			where: {
+				OR: [
+					{ winner: friend, loser: user },
+					{ loser: friend, winner: user }
+				]
+			}
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
 	} catch {
 		reply.status(500).send({ error: 'Failed to view match history' });
 	}

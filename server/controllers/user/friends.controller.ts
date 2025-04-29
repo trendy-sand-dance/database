@@ -66,7 +66,7 @@ export const acceptFriendReq = async (request: FastifyRequest, reply: FastifyRep
 		if (!initiator)
 			return reply.code(500).send({ error: "No pending request between these users found" });
 		if (initiator.initiator === sender)
-				return reply.code(406).send({ error: "Friend request sender can't accept their own request" });
+			return reply.code(406).send({ error: "Friend request sender can't accept their own request" });
 		await request.server.prisma.friend.updateMany({
 			where: {
 				status: 'PENDING',

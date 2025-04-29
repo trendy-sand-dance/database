@@ -30,8 +30,8 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/viewUserMatch/:userId', viewUserMatch);
   fastify.get('/viewWonMatch/:userId', viewWonMatch);
   fastify.get('/viewLostMatch/:userId', viewLostMatch);
-  fastify.get('/viewFriendMatch/:userId/:firendId', viewFriendMatch);
-  fastify.get('/viewFvsU/:userId/:firendId', viewFvsU);
+  fastify.get('/viewFriendMatch/:userId/:friendId', viewFriendMatch);
+  fastify.get('/viewFvsU/:userId/:friendId', viewFvsU);
   fastify.get('/sendReqD/:receiverId/:userId', sendReqDev);
   fastify.get('/acceptReqD/:senderId/:userId', acceptReqDev);
   fastify.delete('/rejectReqD/:senderId/:userId', rejectReqDev);

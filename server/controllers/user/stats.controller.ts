@@ -1,4 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
+import { formatMatchDate } from '../utils/matchUtils.controller';
+import { friendshipCheck } from '../utils/friendUtils.controller';
 
 export async function getStats(request: FastifyRequest, reply: FastifyReply) {
 	try {
@@ -11,7 +13,7 @@ export async function getStats(request: FastifyRequest, reply: FastifyReply) {
 			}
 		});
 
-	return reply.code(200).send(user);
+	return reply.code(200).send(user); // check when/how this is being used and therefore what to return
 	} catch (error) {
 		return reply.status(500).send({ error: 'Failed to fetch user statistics' });
 	}
@@ -78,12 +80,21 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 	}
 };
 
-
-
 // get users' match history (all)
 export const getUserMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
+		const { userId } = request.params as { userId: number };
+		const user = Number(userId);
+		const matches = await request.server.prisma.match.findMany({
+			where: {
+				OR: [
+					{ winner: user },
+					{ loser: user }
+				]
+			}
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
 	} catch {
 		reply.status(500).send({ error: 'Failed to get users\' match history' });
 	}
@@ -92,7 +103,13 @@ export const getUserMatches = async (request: FastifyRequest, reply: FastifyRepl
 // get users' wins
 export const getWonMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
+		const { userId } = request.params as { userId: number };
+		const user = Number(userId);
+		const matches = await request.server.prisma.match.findMany({
+			where: { winner: user },
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
 	} catch {
 		reply.status(500).send({ error: 'Failed to get users\' won match history' });
 	}
@@ -101,7 +118,13 @@ export const getWonMatches = async (request: FastifyRequest, reply: FastifyReply
 // get users' losses
 export const getLostMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
+		const { userId } = request.params as { userId: number };
+		const user = Number(userId);
+		const matches = await request.server.prisma.match.findMany({
+			where: { loser: user },
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
 	} catch {
 		reply.status(500).send({ error: 'Failed to get users\' lost match history' });
 	}
@@ -110,7 +133,22 @@ export const getLostMatches = async (request: FastifyRequest, reply: FastifyRepl
 // get users' friend match history
 export const getFriendMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
+		const { userId, friendId } = request.params as { userId: number, friendId: number };
+		const user = Number(userId);
+		const friend = Number(friendId);
+		const friendCheck = await friendshipCheck(user, friend, request, reply);
+		if (!friendCheck)
+			return reply.code(404).send({ error: "no friendship found" });
+		const matches = await request.server.prisma.match.findMany({
+			where: {
+				OR: [
+					{ winner: friend },
+					{ loser: friend }
+				]
+			}
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
 	} catch {
 		reply.status(500).send({ error: 'Failed to get users\' friends\' match history' });
 	}
@@ -119,7 +157,22 @@ export const getFriendMatches = async (request: FastifyRequest, reply: FastifyRe
 // get users' specific match history with <friend>
 export const getFriendvsUser = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
+		const { userId, friendId } = request.params as { userId: number, friendId: number };
+		const user = Number(userId);
+		const friend = Number(friendId);
+		const friendCheck = await friendshipCheck(user, friend, request, reply);
+		if (!friendCheck)
+			return reply.code(404).send({ error: "no friendship found" });
+		const matches = await request.server.prisma.match.findMany({
+			where: {
+				OR: [
+					{ winner: friend, loser: user },
+					{ loser: friend, winner: user }
+				]
+			}
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
 	} catch {
 		reply.status(500).send({ error: 'Failed to get match history of user vs friend' });
 	}

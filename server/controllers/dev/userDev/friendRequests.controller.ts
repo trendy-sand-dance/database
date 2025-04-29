@@ -32,6 +32,7 @@ export const sendReqDev = async (request: FastifyRequest, reply: FastifyReply): 
 				user1: { connect: { id: user } },
 				user2: { connect: { id: receiver } },
 				initiator: user,
+				blocker: 0,
 			},
 		});
 		return reply.code(200).send({ message: "SENT FRIEND REQUEST"});

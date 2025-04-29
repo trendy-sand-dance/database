@@ -132,7 +132,18 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 	return friends;
 };
 
-
+export async function friendshipCheck(userId: number, friendId: number, request: FastifyRequest, reply: FastifyReply) { 
+	const friendship = await request.server.prisma.friend.findFirst({
+		where: {
+			status: 'FRIENDS',
+			OR: [
+				{ user1Id: userId, user2Id: friendId },
+				{ user1Id: friendId, user2Id: userId }
+			]
+		},
+	});
+	return friendship;
+};
 
 // sarah notes - ill get back to this
 // DO WE BLOCK??
