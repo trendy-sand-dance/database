@@ -74,6 +74,6 @@ model Match {
 	lost			User	@relation("lost", fields: [loser], references: [id])			
 }
 
-
 // optional if doing more than 2 player matches: participated
+
 

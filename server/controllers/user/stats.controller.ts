@@ -13,7 +13,7 @@ export async function getStats(request: FastifyRequest, reply: FastifyReply) {
 
 	return reply.code(200).send(user);
 	} catch (error) {
-		reply.status(500).send({ error: 'Failed to fetch user statistics' });
+		return reply.status(500).send({ error: 'Failed to fetch user statistics' });
 	}
 };
 
@@ -31,7 +31,7 @@ export async function updateWins(userId: number, request: FastifyRequest, reply:
 
 	return reply.code(200).send({ message: "Successfully updated user win count" });
 	} catch (error) {
-		reply.status(500).send({ error: 'Failed to update user win count' });
+		return reply.status(500).send({ error: 'Failed to update user win count' });
 	}
 };
 
@@ -49,7 +49,7 @@ export async function updateLosses(userId: number, request: FastifyRequest, repl
 
 	return reply.code(200).send({ message: "Successfully updated user loss count" });
 	} catch (error) {
-		reply.status(500).send({ error: 'Failed to update user loss count' });
+		return reply.status(500).send({ error: 'Failed to update user loss count' });
 	}
 };
 
@@ -76,14 +76,19 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 
 		return reply.code(200).send({ message: "Successfully saved played match!" });
 	} catch (error) {
-		reply.status(500).send({ error: 'Failed to save match in database' });
+		return reply.status(500).send({ error: 'Failed to save match in database' });
 	}
 };
 
 
-// view users' total wins/losses
 
 // view users' match history (all)
 
-// view users' match history with specific user
+// view users' wins
+
+// view users' losses
+
+// view users' friend match history 
+
+// view users' specific match history with <friend> 
 
