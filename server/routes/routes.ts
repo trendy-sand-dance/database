@@ -26,13 +26,13 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/populate', populate);
   fastify.get('/viewDB', viewDB);
   fastify.get('/viewID', viewID);
+  
   fastify.get('/viewMatches', viewMatches);
   fastify.get('/makeMatch/:won/:lost', makeMatch);
-
   fastify.get('/sendReqD/:receiverId/:userId', sendReqDev);
   fastify.get('/acceptReqD/:senderId/:userId', acceptReqDev);
   fastify.delete('/rejectReqD/:senderId/:userId', rejectReqDev);
-
+  
   // web
   fastify.get('/dashboard/:username', dash);
   

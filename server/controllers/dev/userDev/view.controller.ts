@@ -48,6 +48,7 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 	  const allUsers = await request.server.prisma.user.findMany();
+
 	  const users = await Promise.all(allUsers.map(async user => {
 		  const friends = await getAllFriends(user.id, request);
 		  return { ...user, friends };
