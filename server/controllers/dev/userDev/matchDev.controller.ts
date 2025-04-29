@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { updateWins, updateLosses } from "../../user/stats.controller";
+import { formatMatchDate } from '../../utils/matchUtils.controller';
 
 export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
@@ -20,35 +21,57 @@ export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): P
 		
 		return reply.code(200).send({ message: "Successfully saved played match!" });
 	} catch (error) {
-		reply.status(500).send({ error: 'Failed to save match in database' });
+		return reply.status(500).send({ error: 'Failed to save match in database' });
 	}
 };
-
 
 // viewUserMatch
 export const viewUserMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
+		const { userId } = request.params as { userId: number };
+		const user = Number(userId);
+		const matches = await request.server.prisma.match.findMany({
+			where: {
+				OR: [
+					{ winner: user },
+					{ loser: user }
+				]
+			}
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
 	} catch {
-		reply.status(500).send({ error: 'Failed to view match history' });
+		return reply.status(500).send({ error: 'Failed to view match history' });
 	}
 };
 
 // viewWonMatch
 export const viewWonMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
+		const { userId } = request.params as { userId: number };
+		const user = Number(userId);
+		const matches = await request.server.prisma.match.findMany({
+			where: { winner: user },
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
 	} catch {
-		reply.status(500).send({ error: 'Failed to view match history' });
+		return reply.status(500).send({ error: 'Failed to view match history' });
 	}
 };
 
 // viewLostMatch
 export const viewLostMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-
+		const { userId } = request.params as { userId: number };
+		const user = Number(userId);
+		const matches = await request.server.prisma.match.findMany({
+			where: { loser: user },
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
 	} catch {
-		reply.status(500).send({ error: 'Failed to view match history' });
+		return reply.status(500).send({ error: 'Failed to view match history' });
 	}
 };
 

@@ -26,14 +26,12 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/populate', populate);
   fastify.get('/viewDB', viewDB);
   fastify.get('/viewID', viewID);
-  
   fastify.get('/makeMatch/:won/:lost', makeMatch);
-  fastify.get('/viewUserMatch', viewUserMatch);
-  fastify.get('/viewWonMatch', viewWonMatch);
-  fastify.get('/viewLostMatch', viewLostMatch);
-  fastify.get('/viewFriendMatch/:firendId', viewFriendMatch);
-  fastify.get('/viewFvsU/:firendId', viewFvsU);
-  
+  fastify.get('/viewUserMatch/:userId', viewUserMatch);
+  fastify.get('/viewWonMatch/:userId', viewWonMatch);
+  fastify.get('/viewLostMatch/:userId', viewLostMatch);
+  fastify.get('/viewFriendMatch/:userId/:firendId', viewFriendMatch);
+  fastify.get('/viewFvsU/:userId/:firendId', viewFvsU);
   fastify.get('/sendReqD/:receiverId/:userId', sendReqDev);
   fastify.get('/acceptReqD/:senderId/:userId', acceptReqDev);
   fastify.delete('/rejectReqD/:senderId/:userId', rejectReqDev);
@@ -60,11 +58,11 @@ async function routes(fastify: FastifyInstance) {
   fastify.post('/deleteAvatar/:username', deleteAvatar);
   // user statistics/matches endpoints
   fastify.post('/saveMatch/:won/:lost', saveMatch);
-  fastify.get('/getUserMatches', getUserMatches);
-  fastify.get('/getWonMatches', getWonMatches);
-  fastify.get('/getLostMatches', getLostMatches);
-  fastify.get('/getFriendMatches/:friendId', getFriendMatches);
-  fastify.get('/getFriendvsUser/:friendId', getFriendvsUser);
+  fastify.get('/getUserMatches/:userId', getUserMatches);
+  fastify.get('/getWonMatches/:userId', getWonMatches);
+  fastify.get('/getLostMatches/:userId', getLostMatches);
+  fastify.get('/getFriendMatches/:userId/:friendId', getFriendMatches);
+  fastify.get('/getFriendvsUser/:userId/:friendId', getFriendvsUser);
 
   // game endpoints
   // online users, game history, game options...

@@ -28,8 +28,7 @@ export async function updateWins(userId: number, request: FastifyRequest, reply:
 				}
 			}
 		});
-
-	return reply.code(200).send({ message: "Successfully updated user win count" });
+		reply.code(200);
 	} catch (error) {
 		return reply.status(500).send({ error: 'Failed to update user win count' });
 	}
@@ -46,8 +45,7 @@ export async function updateLosses(userId: number, request: FastifyRequest, repl
 				}
 			}
 		});
-
-	return reply.code(200).send({ message: "Successfully updated user loss count" });
+		reply.code(200);
 	} catch (error) {
 		return reply.status(500).send({ error: 'Failed to update user loss count' });
 	}

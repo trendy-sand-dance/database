@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { formatDate } from '../../utils/matchUtils.controller';
+import { formatMatchDate } from '../../utils/matchUtils.controller';
 import { getAllFriends } from '../../utils/friendUtils.controller';
 
 export async function populate(request: FastifyRequest, reply: FastifyReply) {
@@ -35,14 +35,14 @@ export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Prom
 	
 		// add viewing matches table
 		const matches = await request.server.prisma.match.findMany();
-		const formattedMatches = matches.map(formatDate);
-		reply.send({ users: users, matches: formattedMatches });
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ users: users, matches: formattedMatches });
 
 		  	// reply with all tables
 		// reply.send({ users: users, players: players, matches: matches });
 
 	} catch (error) {
-	  reply.status(500).send({ error: 'Failed to fetch users' });
+	  return reply.status(500).send({ error: 'Failed to fetch users' });
 	}
   };
   
