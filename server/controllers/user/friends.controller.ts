@@ -162,7 +162,7 @@ export const blockFriend = async (request: FastifyRequest, reply: FastifyReply):
 			},
 			data: {
 				status: 'BLOCKED',
-				blocker: userId,
+				blocker: user,
 			},
 		});
 		return reply.code(200).send({ message: "Successfully blocked friend"});
