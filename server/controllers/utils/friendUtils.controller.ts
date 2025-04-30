@@ -51,6 +51,11 @@ export async function getFriends(userId: number, request: FastifyRequest) {
 				losses: friendUser.losses,
 		};
 	});
+
+	// Sort by online (status: true) first, then offline (status: false)
+	friends.sort((a, b) => {
+		return (b.status ? 1 : 0) - (a.status ? 1 : 0);
+	});
 	return friends;
 };
 
