@@ -41,7 +41,7 @@ export const viewUserMatch = async (request: FastifyRequest, reply: FastifyReply
 		});
 		const formattedMatches = matches.map(formatMatchDate);
 		return reply.send({ matches: formattedMatches });
-	} catch {
+	} catch(error) {
 		return reply.status(500).send({ error: 'Failed to view match history' });
 	}
 };
@@ -56,7 +56,7 @@ export const viewWonMatch = async (request: FastifyRequest, reply: FastifyReply)
 		});
 		const formattedMatches = matches.map(formatMatchDate);
 		return reply.send({ matches: formattedMatches });
-	} catch {
+	} catch(error) {
 		return reply.status(500).send({ error: 'Failed to view match history' });
 	}
 };
@@ -71,7 +71,7 @@ export const viewLostMatch = async (request: FastifyRequest, reply: FastifyReply
 		});
 		const formattedMatches = matches.map(formatMatchDate);
 		return reply.send({ matches: formattedMatches });
-	} catch {
+	} catch(error) {
 		return reply.status(500).send({ error: 'Failed to view match history' });
 	}
 };
@@ -95,7 +95,7 @@ export const viewFriendMatch = async (request: FastifyRequest, reply: FastifyRep
 		});
 		const formattedMatches = matches.map(formatMatchDate);
 		return reply.send({ matches: formattedMatches });
-	} catch {
+	} catch(error) {
 		reply.status(500).send({ error: 'Failed to view match history' });
 	}
 };
@@ -119,7 +119,7 @@ export const viewFvsU = async (request: FastifyRequest, reply: FastifyReply): Pr
 		});
 		const formattedMatches = matches.map(formatMatchDate);
 		return reply.send({ matches: formattedMatches });
-	} catch {
+	} catch(error) {
 		reply.status(500).send({ error: 'Failed to view match history' });
 	}
 };
