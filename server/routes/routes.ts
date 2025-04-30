@@ -4,7 +4,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {getHome} from "../controllers/dev/getHome.controller";
 	import {populate, viewDB, viewID} from "../controllers/dev/userDev/view.controller";
 	import {sendReqDev, acceptReqDev, rejectReqDev} from "../controllers/dev/userDev/friendRequests.controller";
-	import {viewMatches, makeMatch} from "../controllers/dev/userDev/matchDev.controller";
+	import {makeMatch, viewUserMatch, viewWonMatch, viewLostMatch, viewFriendMatch, viewFvsU} from "../controllers/dev/userDev/matchDev.controller";
 
 	// web
 	import {dash} from "../controllers/web/dash.controller";
@@ -14,7 +14,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/editUser.controller"
 	import {editAvatar, deleteAvatar} from "../controllers/user/avatar.controller";
 	import {sendFriendReq, acceptFriendReq, rejectFriendReq, blockFriend, viewPlayers} from "../controllers/user/friends.controller";
-	import {saveMatch} from "../controllers/user/stats.controller";
+	import {saveMatch, getUserMatches, getWonMatches, getLostMatches, getFriendMatches, getFriendvsUser	} from "../controllers/user/stats.controller";
 
 // game endpoints
 import { getPlayer, getPlayerInfo, updatePlayer, syncPlayers } from "../controllers/game/player.controller";
@@ -26,9 +26,12 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/populate', populate);
   fastify.get('/viewDB', viewDB);
   fastify.get('/viewID', viewID);
-  
-  fastify.get('/viewMatches', viewMatches);
   fastify.get('/makeMatch/:won/:lost', makeMatch);
+  fastify.get('/viewUserMatch/:userId', viewUserMatch);
+  fastify.get('/viewWonMatch/:userId', viewWonMatch);
+  fastify.get('/viewLostMatch/:userId', viewLostMatch);
+  fastify.get('/viewFriendMatch/:userId/:friendId', viewFriendMatch);
+  fastify.get('/viewFvsU/:userId/:friendId', viewFvsU);
   fastify.get('/sendReqD/:receiverId/:userId', sendReqDev);
   fastify.get('/acceptReqD/:senderId/:userId', acceptReqDev);
   fastify.delete('/rejectReqD/:senderId/:userId', rejectReqDev);
@@ -55,6 +58,11 @@ async function routes(fastify: FastifyInstance) {
   fastify.post('/deleteAvatar/:username', deleteAvatar);
   // user statistics/matches endpoints
   fastify.post('/saveMatch/:won/:lost', saveMatch);
+  fastify.get('/getUserMatches/:userId', getUserMatches);
+  fastify.get('/getWonMatches/:userId', getWonMatches);
+  fastify.get('/getLostMatches/:userId', getLostMatches);
+  fastify.get('/getFriendMatches/:userId/:friendId', getFriendMatches);
+  fastify.get('/getFriendvsUser/:userId/:friendId', getFriendvsUser);
 
   // game endpoints
   // online users, game history, game options...

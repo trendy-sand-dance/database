@@ -104,7 +104,46 @@ export async function getBlocked(userId: number, request: FastifyRequest) {
 	return blockedPlayers;
 };
 
+export async function getAllFriends(userId: number, request: FastifyRequest) {
+	const friendships = await request.server.prisma.friend.findMany({
+		where: {
+			status: { in: ['FRIENDS', 'PENDING', 'BLOCKED'] },
+			OR: [
+				{ user1Id: userId},
+				{ user2Id: userId},
+			],
+		},
+		include: {
+			user1: true, 
+			user2: true,
+		},
+	});
+	const friends = friendships.map(f => {
+		const friendUser = f.user1Id === userId ? f.user2 : f.user1;
+		return {
+			friend: {
+				username: friendUser.username,
+				status: friendUser.status,
+			  },
+			status: f.status,
+			initiator: f.user1Id,
+		};
+	});
+	return friends;
+};
 
+export async function friendshipCheck(userId: number, friendId: number, request: FastifyRequest, reply: FastifyReply) { 
+	const friendship = await request.server.prisma.friend.findFirst({
+		where: {
+			status: 'FRIENDS',
+			OR: [
+				{ user1Id: userId, user2Id: friendId },
+				{ user1Id: friendId, user2Id: userId }
+			]
+		},
+	});
+	return friendship;
+};
 
 // sarah notes - ill get back to this
 // DO WE BLOCK??

@@ -66,12 +66,15 @@ enum Status {
 
 model Match {
 	id				Int		@id @default(autoincrement())
-	user1Id			Int
-	user2Id			Int
+	winner			Int
+	loser			Int
+	date			DateTime
 
-	won				User	@relation("won", fields: [user1Id], references: [id])
-	lost			User	@relation("lost", fields: [user2Id], references: [id])			
+	won				User	@relation("won", fields: [winner], references: [id])
+	lost			User	@relation("lost", fields: [loser], references: [id])			
 }
+
+// optional add scores, how do we pass that info?
 // optional if doing more than 2 player matches: participated
-//	date			DateTime
+
 
