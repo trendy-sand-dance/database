@@ -95,7 +95,7 @@ export const getUserMatches = async (request: FastifyRequest, reply: FastifyRepl
 		});
 		const formattedMatches = matches.map(formatMatchDate);
 		return reply.send({ matches: formattedMatches });
-	} catch {
+	} catch(error) {
 		reply.status(500).send({ error: 'Failed to get users\' match history' });
 	}
 };
@@ -110,7 +110,7 @@ export const getWonMatches = async (request: FastifyRequest, reply: FastifyReply
 		});
 		const formattedMatches = matches.map(formatMatchDate);
 		return reply.send({ matches: formattedMatches });
-	} catch {
+	} catch(error) {
 		reply.status(500).send({ error: 'Failed to get users\' won match history' });
 	}
 };
@@ -125,7 +125,7 @@ export const getLostMatches = async (request: FastifyRequest, reply: FastifyRepl
 		});
 		const formattedMatches = matches.map(formatMatchDate);
 		return reply.send({ matches: formattedMatches });
-	} catch {
+	} catch(error) {
 		reply.status(500).send({ error: 'Failed to get users\' lost match history' });
 	}
 };
@@ -149,7 +149,7 @@ export const getFriendMatches = async (request: FastifyRequest, reply: FastifyRe
 		});
 		const formattedMatches = matches.map(formatMatchDate);
 		return reply.send({ matches: formattedMatches });
-	} catch {
+	} catch(error) {
 		reply.status(500).send({ error: 'Failed to get users\' friends\' match history' });
 	}
 };
@@ -173,7 +173,7 @@ export const getFriendvsUser = async (request: FastifyRequest, reply: FastifyRep
 		});
 		const formattedMatches = matches.map(formatMatchDate);
 		return reply.send({ matches: formattedMatches });
-	} catch {
+	} catch(error) {
 		reply.status(500).send({ error: 'Failed to get match history of user vs friend' });
 	}
 };
