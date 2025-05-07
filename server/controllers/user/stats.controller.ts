@@ -53,21 +53,44 @@ export async function updateLosses(userId: number, request: FastifyRequest, repl
 	}
 };
 
+export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+		const { player1, player2 } = request.params as { player1: number, player2: number };
+		const player1Id = Number(player1);
+		const player2Id = Number(player2);
+
+		await request.server.prisma.match.create({
+			data: {
+				player1: player1Id,
+				player2: player2Id,
+				status: 'INPROGRESS',
+				date: new Date(),
+			},
+		});
+
+		return reply.status(200).send({ message: 'Created match instance in database' });
+	} catch (error) {
+		return reply.status(500).send({ error: 'Failed to create match instance in database' });
+	}
+};
+
 /**
- * @brief add a match instance to database and update users' statistics
+ * @brief update a match instance when match is finished and update users' statistics
  * 			in the user table of the database
  */
 export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-		const { won, lost } = request.params as { won: number, lost: number };
+		const { match, won, lost } = request.params as { match: number, won: number, lost: number };
+		const matchId = Number(match);
 		const wonId = Number(won);
 		const lostId = Number(lost);
 
-		await request.server.prisma.match.create({
+		await request.server.prisma.match.update({
+			where: { id: matchId },
 			data: {
+				status: 'FINISHED',
 				won: { connect: { id: wonId } },
 				lost: { connect: { id: lostId } },
-				date: new Date(),
 			},
 		});
 
@@ -77,6 +100,18 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 		return reply.code(200).send({ message: "Successfully saved played match!" });
 	} catch (error) {
 		return reply.status(500).send({ error: 'Failed to save match in database' });
+	}
+};
+
+export const getInProgressMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+		const matches = await request.server.prisma.match.findMany({
+			where: { status: 'INPROGRESS' },
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		reply.status(200).send({ matches: formattedMatches, message: 'Successfully got \'in progress\' match instances' });
+	} catch (error) {
+		reply.status(500).send({ error: 'Failed to get \'in progress match\' instances' });
 	}
 };
 

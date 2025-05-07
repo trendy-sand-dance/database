@@ -4,7 +4,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {getHome} from "../controllers/dev/getHome.controller";
 	import {populate, viewDB, viewID} from "../controllers/dev/userDev/view.controller";
 	import {sendReqDev, acceptReqDev, rejectReqDev} from "../controllers/dev/userDev/friendRequests.controller";
-	import {makeMatch, viewUserMatch, viewWonMatch, viewLostMatch, viewFriendMatch, viewFvsU} from "../controllers/dev/userDev/matchDev.controller";
+	import {makeMatchD, saveMatchD, viewUserMatch, viewWonMatch, viewLostMatch, viewFriendMatch, viewFvsU} from "../controllers/dev/userDev/matchDev.controller";
 
 	// web
 	import {dash} from "../controllers/web/dash.controller";
@@ -14,7 +14,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/editUser.controller"
 	import {editAvatar, deleteAvatar} from "../controllers/user/avatar.controller";
 	import {sendFriendReq, acceptFriendReq, rejectFriendReq, blockFriend, viewPlayers} from "../controllers/user/friends.controller";
-	import {saveMatch, getUserMatches, getWonMatches, getLostMatches, getFriendMatches, getFriendvsUser	} from "../controllers/user/stats.controller";
+	import {makeMatch, saveMatch, getUserMatches, getInProgressMatches, getWonMatches, getLostMatches, getFriendMatches, getFriendvsUser	} from "../controllers/user/stats.controller";
 
 // game endpoints
 import { getPlayer, getPlayerInfo, updatePlayer, syncPlayers } from "../controllers/game/player.controller";
@@ -26,7 +26,8 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/populate', populate);
   fastify.get('/viewDB', viewDB);
   fastify.get('/viewID', viewID);
-  fastify.get('/makeMatch/:won/:lost', makeMatch);
+  fastify.get('/makeMatchD/:player1/:player2', makeMatchD);
+  fastify.get('/saveMatchD/:match/:won/:lost', saveMatchD);
   fastify.get('/viewUserMatch/:userId', viewUserMatch);
   fastify.get('/viewWonMatch/:userId', viewWonMatch);
   fastify.get('/viewLostMatch/:userId', viewLostMatch);
@@ -57,8 +58,10 @@ async function routes(fastify: FastifyInstance) {
   fastify.post('/editAvatar/:username', editAvatar);
   fastify.post('/deleteAvatar/:username', deleteAvatar);
   // user statistics/matches endpoints
-  fastify.post('/saveMatch/:won/:lost', saveMatch);
+  fastify.post('/makeMatch/:player1/:player2', makeMatch);
+  fastify.post('/saveMatch/:id/:won/:lost', saveMatch);
   fastify.get('/getUserMatches/:userId', getUserMatches);
+  fastify.get('/getInProgressMatches', getInProgressMatches);
   fastify.get('/getWonMatches/:userId', getWonMatches);
   fastify.get('/getLostMatches/:userId', getLostMatches);
   fastify.get('/getFriendMatches/:userId/:friendId', getFriendMatches);

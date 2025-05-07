@@ -3,23 +3,47 @@ import { updateWins, updateLosses } from "../../user/stats.controller";
 import { formatMatchDate } from '../../utils/matchUtils.controller';
 import { friendshipCheck } from '../../utils/friendUtils.controller';
 
-export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+
+export const makeMatchD = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-		const { won, lost } = request.params as { won: number, lost: number };
-		const wonId = Number(won);
-		const lostId = Number(lost);
-	
+		const { player1, player2 } = request.params as { player1: number, player2: number };
+		const player1Id = Number(player1);
+		const player2Id = Number(player2);
+
 		await request.server.prisma.match.create({
 			data: {
-				won: { connect: { id: wonId } },
-				lost: { connect: { id: lostId } },
+				player1: player1Id,
+				player2: player2Id,
+				status: 'INPROGRESS',
 				date: new Date(),
 			},
 		});
-		
+
+		return reply.status(200).send({ message: 'Created match instance in database' });
+	} catch (error) {
+		return reply.status(500).send({ error: 'Failed to create match instance in database' });
+	}
+};
+
+export const saveMatchD = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+		const { match, won, lost } = request.params as { match: number, won: number, lost: number };
+		const matchId = Number(match);
+		const wonId = Number(won);
+		const lostId = Number(lost);
+
+		await request.server.prisma.match.update({
+			where: { id: matchId },
+			data: {
+				status: 'FINISHED',
+				won: { connect: { id: wonId } },
+				lost: { connect: { id: lostId } },
+			},
+		});
+
 		await updateWins(wonId, request, reply);
 		await updateLosses(lostId, request, reply);
-		
+
 		return reply.code(200).send({ message: "Successfully saved played match!" });
 	} catch (error) {
 		return reply.status(500).send({ error: 'Failed to save match in database' });
