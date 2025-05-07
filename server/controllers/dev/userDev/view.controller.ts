@@ -7,11 +7,27 @@ export async function populate(request: FastifyRequest, reply: FastifyReply) {
 		await request.server.prisma.user.createMany({
 			data: [
 				{ username: "tim", password: "tim", email: "tim@tim.com"},
-				{ username: "bob", password: "bob", email: "bob@bob.com"},
+				{ username: "bill", password: "bill", email: "bill@bill.com"},
 				{ username: "jill", password: "jill", email: "jill@jill.com"},
 				{ username: "molly", password: "molly", email: "molly@molly.com"},
 			]
 		  });
+		  const createdUsers = await request.server.prisma.user.findMany({
+			where: {
+			  username: { in: ["tim", "bill", "jill", "molly"] }
+			}
+		  });
+		  await Promise.all(
+			createdUsers.map(user =>
+			  request.server.prisma.player.create({
+				data: {
+				  userId: user.id,
+				  // set x, y etc
+				}
+			  })
+			)
+		  );
+		
 		return reply.send({ message: "populated user table with 4 users"});
 		
 	} catch (error) {
@@ -27,19 +43,13 @@ export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Prom
 		  const friends = await getAllFriends(user.id, request);
 		  return { ...user, friends };
 		}));
-		//  reply.send({ users: users });
-		
-		// add viewing players table
-		// const players = await request.server.prisma.player.findMany();
-		//  reply.send({ users: users , players: players });
+
+		const players = await request.server.prisma.player.findMany();
 	
-		// add viewing matches table
 		const matches = await request.server.prisma.match.findMany();
 		const formattedMatches = matches.map(formatMatchDate);
-		return reply.send({ users: users, matches: formattedMatches });
 
-		  	// reply with all tables
-		// reply.send({ users: users, players: players, matches: matches });
+		reply.send({ users: users, players: players, matches: formattedMatches });
 
 	} catch (error) {
 	  return reply.status(500).send({ error: 'Failed to fetch users' });
