@@ -22,6 +22,7 @@ export async function getRequests(userId: number, request: FastifyRequest) {
 		return {
 				avatar: requestSender.avatar,
 				username: requestSender.username,
+				id: requestSender.id,
 		};
 	});
 	return requests;
@@ -46,6 +47,7 @@ export async function getFriends(userId: number, request: FastifyRequest) {
 		return {
 				avatar: friendUser.avatar,
 				username: friendUser.username,
+				id: friendUser.id,
 				status: friendUser.status,
 				wins: friendUser.wins,
 				losses: friendUser.losses,
@@ -79,6 +81,7 @@ export async function getPending(userId: number, request: FastifyRequest) {
 		return {
 				avatar: requestedFriends.avatar,
 				username: requestedFriends.username,
+				id: requestedFriends.id,
 		};
 	});
 	return requested;
@@ -104,6 +107,7 @@ export async function getBlocked(userId: number, request: FastifyRequest) {
 		return {
 			avatar: blockedUser.avatar,
 				username: blockedUser.username,
+				id: blockedUser.id,
 		};
 	});
 	return blockedPlayers;
@@ -129,6 +133,7 @@ export async function getAllFriends(userId: number, request: FastifyRequest) {
 			friend: {
 				username: friendUser.username,
 				status: friendUser.status,
+				id: friendUser.id,
 			  },
 			status: f.status,
 			initiator: f.user1Id,
