@@ -184,8 +184,9 @@ export const viewPlayers = async (request: FastifyRequest, reply: FastifyReply):
 		const friends = await getFriends(user.id, request);
 		const pending = await getPending(user.id, request);
 		const blocked = await getBlocked(user.id, request);
+		const userId = user.id;
 
-		reply.send({ requests, friends, pending, blocked });
+		reply.send({ requests, friends, pending, blocked, userId });
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch players' });
 	}
