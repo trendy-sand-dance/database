@@ -13,7 +13,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {register, login, logout} from "../controllers/user/register.controller";
 	import {editUsername, editPassword, editEmail, deleteUser} from "../controllers/user/editUser.controller"
 	import {editAvatar, deleteAvatar} from "../controllers/user/avatar.controller";
-	import {sendFriendReq, acceptFriendReq, rejectFriendReq, blockFriend, viewPlayers} from "../controllers/user/friends.controller";
+	import {sendFriendReq, acceptFriendReq, rejectFriendReq, blockFriend, viewPlayers, deleteAssociation} from "../controllers/user/friends.controller";
 	import {makeMatch, saveMatch, getUserMatches, getInProgressMatches, getWonMatches, getLostMatches, getFriendMatches, getFriendvsUser	} from "../controllers/user/stats.controller";
 
 // game endpoints
@@ -49,11 +49,16 @@ async function routes(fastify: FastifyInstance) {
   fastify.post('/editEmail/:username', editEmail);
   fastify.delete('/delete/:username', deleteUser);
   // user friend endpoints
+
+
   fastify.post('/sendReq/:receiverId/:userId', sendFriendReq); // person receiving a friend request, sent by this user
   fastify.post('/acceptReq/:senderId/:userId', acceptFriendReq); // sender is person who sent request, this user is accepting their request
   fastify.delete('/rejectReq/:senderId/:userId', rejectFriendReq); // sender is person who sent request, this user is rejecting their request
+  fastify.delete('/deletefriend/:senderId/:userId', deleteAssociation); 
   fastify.post('/block/:friendId/:userId', blockFriend); // friend is person who user wants to block
   fastify.get('/viewPlayers/:username', viewPlayers); 
+
+
   // user avatar endpoints
   fastify.post('/editAvatar/:username', editAvatar);
   fastify.post('/deleteAvatar/:username', deleteAvatar);
