@@ -59,7 +59,7 @@ export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): P
 		const player1Id = Number(player1);
 		const player2Id = Number(player2);
 
-		await request.server.prisma.match.create({
+		const match = await request.server.prisma.match.create({
 			data: {
 				player1: player1Id,
 				player2: player2Id,
@@ -68,7 +68,7 @@ export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): P
 			},
 		});
 
-		return reply.status(200).send({ message: 'Created match instance in database' });
+		return reply.status(200).send({ message: 'Created match instance in database', matchId: match.id });
 	} catch (error) {
 		return reply.status(500).send({ error: 'Failed to create match instance in database' });
 	}
@@ -80,22 +80,21 @@ export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): P
  */
 export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
-		const { match, won, lost } = request.params as { match: number, won: number, lost: number };
-		const matchId = Number(match);
-		const wonId = Number(won);
-		const lostId = Number(lost);
+		const { matchId, winnerId, loserId } = request.params as { matchId: number, winnerId: number, loserId: number };
+
+    console.log(`matchId, winnerId, loserId: ${matchId}, ${winnerId}, ${loserId}`)
 
 		await request.server.prisma.match.update({
-			where: { id: matchId },
+			where: { id: Number(matchId) },
 			data: {
 				status: 'FINISHED',
-				won: { connect: { id: wonId } },
-				lost: { connect: { id: lostId } },
+				won: { connect: { id: Number(winnerId) } },
+				lost: { connect: { id: Number(loserId) } },
 			},
 		});
 
-		await updateWins(wonId, request, reply);
-		await updateLosses(lostId, request, reply);
+		await updateWins(winnerId, request, reply);
+		await updateLosses(loserId, request, reply);
 
 		return reply.code(200).send({ message: "Successfully saved played match!" });
 	} catch (error) {
