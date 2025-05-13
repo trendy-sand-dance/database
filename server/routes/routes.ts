@@ -59,7 +59,7 @@ async function routes(fastify: FastifyInstance) {
   fastify.post('/deleteAvatar/:username', deleteAvatar);
   // user statistics/matches endpoints
   fastify.post('/makeMatch/:player1/:player2', makeMatch);
-  fastify.post('/saveMatch/:id/:won/:lost', saveMatch);
+  fastify.post('/saveMatch/:matchId/:winnerId/:loserId', saveMatch);
   fastify.get('/getUserMatches/:userId', getUserMatches);
   fastify.get('/getInProgressMatches', getInProgressMatches);
   fastify.get('/getWonMatches/:userId', getWonMatches);
