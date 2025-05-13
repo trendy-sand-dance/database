@@ -35,6 +35,35 @@ export async function populate(request: FastifyRequest, reply: FastifyReply) {
 	}
 };
 
+// export async function makefriends(request: FastifyRequest, reply: FastifyReply) {
+// 	try {
+// 		await request.server.prisma.user.createMany({
+// 			data: [
+// 				{ username: "tim", password: "tim", email: "tim@tim.com"},
+// 				{ username: "bill", password: "bill", email: "bill@bill.com"},
+// 				{ username: "jill", password: "jill", email: "jill@jill.com"},
+// 				{ username: "molly", password: "molly", email: "molly@molly.com"},
+// 			]
+// 		  });
+		
+// 		  await request.server.prisma.friend.create({
+// 			data: {
+// 				status: 'PENDING',
+// 				user1: { connect: { id: 1 } },
+// 				user2: { connect: { id: 4 } },
+// 				initiator: 1,
+// 				blocker: 0,
+// 			}
+
+		
+// 		return reply.send({ message: "populated user table with 4 users"});
+		
+// 	} catch (error) {
+// 		return reply.code(500).send("Error populating user table");
+// 	}
+// };
+
+
 export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 	  const allUsers = await request.server.prisma.user.findMany();
