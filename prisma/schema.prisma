@@ -7,6 +7,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
+
 model User {
   id    			Int			@id @default(autoincrement())
   username  		String		@unique
@@ -25,30 +26,11 @@ model User {
   won				Match[]		@relation("won")
   lost				Match[]		@relation("lost")
 
-  chat				Chat[]		@relation("chatting")
+  chatUser1			Chat[]		@relation("user1Chats")
+  chatUser2			Chat[]		@relation("user2Chats")
 
 }
 
-// user1 is the logged in user looking at their chat history with another player (user2)
-model Chat {
-
-	id 				Int			@id @default(autoincrement())
-	user1Id			Int	
-	user2Id			Int
-
-	messageId		Int 		@default(autoincrement())
-	messageArray	Message[]		@relation("messages")
-	user			User			@relation("chatting", fields: [user1Id], references: [id])
-}
-
-model Message {
-	
-	id				Int			@id @default(autoincrement())
-	received		String?
-	sent			String?
-	date			DateTime
-	messageArray	Chat		@relation("messages", fields: [messageId], references: [id])
-}
 
 model Player {
     id            Int  	 @id @default(autoincrement())
@@ -58,6 +40,7 @@ model Player {
 
     user          User   @relation(fields: [userId], references: [id])
 }
+
 
 model Friend {
     id    		    Int 	 @id @default(autoincrement())    
@@ -77,6 +60,7 @@ enum Status {
 	BLOCKED
 }
 
+
 model Match {
 	
 	id				Int		@id @default(autoincrement())
@@ -95,4 +79,26 @@ model Match {
 enum State {
 	INPROGRESS
 	FINISHED
+}
+
+
+model Chat {
+
+	id 				Int			@id @default(autoincrement())
+	user1Id			Int	
+	user2Id			Int
+
+	messages		Message[]
+	user1			User			@relation("user1Chats", fields: [user1Id], references: [id])
+	user2			User			@relation("user2Chats", fields: [user2Id], references: [id])
+}
+
+model Message {
+	
+	id				Int			@id @default(autoincrement())
+	chatId			Int
+	chat			Chat		@relation(fields: [chatId], references: [id])
+	received		String?
+	sent			String?
+	date			DateTime
 }
