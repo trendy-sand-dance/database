@@ -23,25 +23,25 @@ export const chatDev = async (request: FastifyRequest, reply: FastifyReply): Pro
 	}
 };
 
-export async function getAllChats(userId: number, request: FastifyRequest) {
-	const allChats = await request.server.prisma.chat.findMany({
-		where: {
-			user1Id: userId,
-		},
-	});
-//	const chats = allChats.map(f => {
-//		const chatUser = f.user1Id === userId ? f.user2 : f.user1;
-//		return {
-//			chat: {
-//				username: userId.username,
-//				status: friendUser.status,
-//				id: friendUser.id,
-//			  },
-//			status: f.status,
-//			initiator: f.user1Id,
-//		};
+//export async function getAllChats(userId: number, request: FastifyRequest) {
+//	const allChats = await request.server.prisma.chat.findMany({
+//		where: {
+//			user1Id: userId,
+//		},
 //	});
-//	return chats;
+////	const chats = allChats.map(f => {
+////		const chatUser = f.user1Id === userId ? f.user2 : f.user1;
+////		return {
+////			chat: {
+////				username: userId.username,
+////				status: friendUser.status,
+////				id: friendUser.id,
+////			  },
+////			status: f.status,
+////			initiator: f.user1Id,
+////		};
+////	});
+////	return chats;
 
-	return allChats;
-};
+//	return allChats;
+//};

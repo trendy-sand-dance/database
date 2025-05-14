@@ -29,8 +29,30 @@ model User {
 
 }
 
+// user1 is the logged in user looking at their chat history with another player (user2)
+model Chat {
+
+	id 				Int		@id @default(autoincrement())
+	user1Id			Int		@unique
+	user2Id			Int
+
+	messageArray	Message[]		@relation("messages")
+	date			DateTime
+	user			User	@relation(fields: [user1Id], references: [id])
+}
+
+model Message {
+	
+	id				Int			@id @default(autoincrement())
+	userId			Int
+	received		String?
+	sent			String?
+	date			DateTime
+	messageArray	Chat		@relation("messages", fields: [userId], references: [user1Id])
+}
+
 model Player {
-    id            Int   @id @default(autoincrement())
+    id            Int  	 @id @default(autoincrement())
     userId        Int     @unique
     x             Int @default(0)
     y             Int @default(0)
@@ -74,17 +96,4 @@ model Match {
 enum State {
 	INPROGRESS
 	FINISHED
-}
-
-// user1 is the logged in user looking at their chat history with another player (user2)
-model Chat {
-
-	id 				Int		@id @default(autoincrement())
-	user1Id			Int
-	user2Id			Int
-
-	messRec			String[]
-	messSent		String[]
-	date			DateTime
-	user			User	@relation(fields: [user1Id], references: [id])
 }

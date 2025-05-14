@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { formatChatDate } from '../../utils/dateUtils.controller';
+import { formatChatDate } from '../utils/dateUtils.controller';
 
 
 // chat endpoints

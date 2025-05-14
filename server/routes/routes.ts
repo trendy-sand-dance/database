@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-
+//, viewChat
 	// dev
 	import {getHome} from "../controllers/dev/getHome.controller";
-	import {populate, viewDB, viewID, viewChat} from "../controllers/dev/userDev/view.controller";
+	import {populate, viewDB, viewID} from "../controllers/dev/userDev/view.controller";
 	import {sendReqDev, acceptReqDev, rejectReqDev} from "../controllers/dev/userDev/friendRequests.controller";
 	import {makeMatchD, saveMatchD, viewUserMatch, viewWonMatch, viewLostMatch, viewFriendMatch, viewFvsU} from "../controllers/dev/userDev/matchDev.controller";
 	import {chatDev} from "../controllers/dev/userDev/chatDev.controller";
@@ -28,7 +28,7 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/populate', populate);
   fastify.get('/viewDB', viewDB);
   fastify.get('/viewID', viewID);
-  fastify.get('/viewChat', viewChat);
+//  fastify.get('/viewChat', viewChat);
   fastify.get('/makeMatchD/:player1/:player2', makeMatchD);
   fastify.get('/saveMatchD/:match/:won/:lost', saveMatchD);
   fastify.get('/viewUserMatch/:userId', viewUserMatch);
