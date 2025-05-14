@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { formatMatchDate } from '../../utils/matchUtils.controller';
+import { formatChatDate, formatMatchDate } from '../../utils/dateUtils.controller';
 import { getAllFriends } from '../../utils/friendUtils.controller';
+import { getAllChats } from 'chatDev.controller';
 
 export async function populate(request: FastifyRequest, reply: FastifyReply) {
 	try {
@@ -79,6 +80,28 @@ export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Prom
 		const formattedMatches = matches.map(formatMatchDate);
 
 		reply.send({ users: users, players: players, matches: formattedMatches });
+
+	} catch (error) {
+	  return reply.status(500).send({ error: 'Failed to fetch users' });
+	}
+  };
+
+export const viewChat = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+	  const allUsers = await request.server.prisma.user.findMany();
+
+	  const users = await Promise.all(allUsers.map(async user => {
+		  const chats = await getAllChats(user.id, request);
+		  return { ...user, chats };
+		//  const formattedChatDate = chats.map(formatChatDate); // how does this work viewing the date correctly?
+		}));
+
+		//const players = await request.server.prisma.player.findMany();
+	
+		//const matches = await request.server.prisma.match.findMany();
+		//const formattedMatches = matches.map(formatMatchDate);
+
+		reply.send({ users: users });
 
 	} catch (error) {
 	  return reply.status(500).send({ error: 'Failed to fetch users' });

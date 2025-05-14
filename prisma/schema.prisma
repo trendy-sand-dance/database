@@ -25,6 +25,8 @@ model User {
   won				Match[]		@relation("won")
   lost				Match[]		@relation("lost")
 
+  chat				Chat[]
+
 }
 
 model Player {
@@ -74,13 +76,15 @@ enum State {
 	FINISHED
 }
 
+// user1 is the logged in user looking at their chat history with another player (user2)
 model Chat {
 
-	id 				Int		@id @deault(autoincrement())
-	user1			Int
-	user2			Int
+	id 				Int		@id @default(autoincrement())
+	user1Id			Int
+	user2Id			Int
 
 	messRec			String[]
 	messSent		String[]
 	date			DateTime
+	user			User	@relation(fields: [user1Id], references: [id])
 }
