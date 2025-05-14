@@ -3,7 +3,6 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 export const chatDev = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try  {
 		const { user1Id, user2Id } = request.params as { user1Id: number, user2Id: number };
-		console.log("user 1 = ", user1Id, "user2Id = ", user2Id);
 		const user1  = Number(user1Id);
 		const user2  = Number(user2Id);
 
@@ -14,12 +13,16 @@ export const chatDev = async (request: FastifyRequest, reply: FastifyReply): Pro
 				messages: {
 					create: [
 						{
-							sent: "hello!", 
-							date: new Date(),
+							text: "hello!",
+							senderId: user1,
+							receiverId: user2,
+							timestamp: new Date(),
 						},
 						{
-							received: "hi there!", 
-							date: new Date(),
+							text: "hiiiii!",
+							senderId: user2,
+							receiverId: user1,
+							timestamp: new Date(),
 						},
 					],
 				},

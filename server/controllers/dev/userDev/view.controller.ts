@@ -35,35 +35,6 @@ export async function populate(request: FastifyRequest, reply: FastifyReply) {
 	}
 };
 
-// export async function makefriends(request: FastifyRequest, reply: FastifyReply) {
-// 	try {
-// 		await request.server.prisma.user.createMany({
-// 			data: [
-// 				{ username: "tim", password: "tim", email: "tim@tim.com"},
-// 				{ username: "bill", password: "bill", email: "bill@bill.com"},
-// 				{ username: "jill", password: "jill", email: "jill@jill.com"},
-// 				{ username: "molly", password: "molly", email: "molly@molly.com"},
-// 			]
-// 		  });
-		
-// 		  await request.server.prisma.friend.create({
-// 			data: {
-// 				status: 'PENDING',
-// 				user1: { connect: { id: 1 } },
-// 				user2: { connect: { id: 4 } },
-// 				initiator: 1,
-// 				blocker: 0,
-// 			}
-
-		
-// 		return reply.send({ message: "populated user table with 4 users"});
-		
-// 	} catch (error) {
-// 		return reply.code(500).send("Error populating user table");
-// 	}
-// };
-
-
 export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 	  const allUsers = await request.server.prisma.user.findMany();
@@ -84,11 +55,10 @@ export const viewDB = async (request: FastifyRequest, reply: FastifyReply): Prom
 	  return reply.status(500).send({ error: 'Failed to fetch users' });
 	}
   };
-
   
-  export const viewID = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
-	  try {
-		  const { id } = request.params as { id: string };
+export const viewID = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+		const { id } = request.params as { id: string };
 		const user = await request.server.prisma.user.findUnique({ where: { id: parseInt(id, 10) } });
 		reply.send(user);
 	} catch (error) {
@@ -105,15 +75,12 @@ export const viewChat = async (request: FastifyRequest, reply: FastifyReply): Pr
 			const chats = await getAllChats(user.id, request);
 			return { ...user, chats };
 		}));
-
-
-
 		reply.send({ users: users });
-
 	} catch (error) {
+		console.log(error);
 		return reply.status(500).send({ error: 'Failed to fetch users' });
 	}
-	};
+};
 
 export async function getAllChats(userId: number, request: FastifyRequest) {
 	const allChats = await request.server.prisma.chat.findMany({
@@ -124,11 +91,18 @@ export async function getAllChats(userId: number, request: FastifyRequest) {
 			]
 		},
 		include: {
-			messages: true,
+			messages: {
+				orderBy: {timestamp: 'asc'},
+				include: {
+					sender: { select: { id: true, username: true } },
+					receiver: { select: { id: true, username: true } },
+				} 
+			},
 			user1: { select: { id: true, username: true } },
 			user2: { select: { id: true, username: true } }
 		}
 	});
+
 	const chats = allChats.map(chat => {
 		const chatUser = chat.user1Id === userId ? chat.user2 : chat.user1;
 		return {
@@ -137,9 +111,14 @@ export async function getAllChats(userId: number, request: FastifyRequest) {
 				id: chatUser.id,
 				username: chatUser.username,
 			},
-			messages: chat.messages
+			messages: chat.messages.map(msg => ({
+				id: msg.id,
+				text: msg.text,
+				timestamp: msg.timestamp,
+				sender: msg.sender,
+				receiver: msg.receiver,
+			})),
 		};
 	}); 
 	return chats;
-
 };
