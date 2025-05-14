@@ -25,30 +25,29 @@ model User {
   won				Match[]		@relation("won")
   lost				Match[]		@relation("lost")
 
-  chat				Chat[]
+  chat				Chat[]		@relation("chatting")
 
 }
 
 // user1 is the logged in user looking at their chat history with another player (user2)
 model Chat {
 
-	id 				Int		@id @default(autoincrement())
-	user1Id			Int		@unique
+	id 				Int			@id @default(autoincrement())
+	user1Id			Int	
 	user2Id			Int
 
+	messageId		Int 		@default(autoincrement())
 	messageArray	Message[]		@relation("messages")
-	date			DateTime
-	user			User	@relation(fields: [user1Id], references: [id])
+	user			User			@relation("chatting", fields: [user1Id], references: [id])
 }
 
 model Message {
 	
 	id				Int			@id @default(autoincrement())
-	userId			Int
 	received		String?
 	sent			String?
 	date			DateTime
-	messageArray	Chat		@relation("messages", fields: [userId], references: [user1Id])
+	messageArray	Chat		@relation("messages", fields: [messageId], references: [id])
 }
 
 model Player {

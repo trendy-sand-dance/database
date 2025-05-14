@@ -4,6 +4,7 @@ import { formatChatDate } from '../../utils/dateUtils.controller';
 export const chatDev = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try  {
 		const { user1Id, user2Id } = request.params as { user1Id: number, user2Id: number };
+		console.log("user 1 = ", user1Id, "user2Id = ", user2Id);
 		const user1  = Number(user1Id);
 		const user2  = Number(user2Id);
 
@@ -11,9 +12,6 @@ export const chatDev = async (request: FastifyRequest, reply: FastifyReply): Pro
 			data: {
 				user1Id: user1,
 				user2Id: user2,
-				messRec: ["first message received", "second message"],
-				messSent: ["first message sent", "Second sent message"],
-				date: new Date(),
 				user: { connect: { id: Number(user1) } },
 			},
 		});
