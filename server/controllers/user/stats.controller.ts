@@ -84,6 +84,8 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 
     console.log(`matchId, winnerId, loserId: ${matchId}, ${winnerId}, ${loserId}`)
 
+	// TO ADD: if tournament bool true update db bool true here, tournament bool gets passed from gameserver
+
 		await request.server.prisma.match.update({
 			where: { id: Number(matchId) },
 			data: {
@@ -92,7 +94,6 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 				lost: { connect: { id: Number(loserId) } },
 			},
 		});
-
 		await updateWins(winnerId, request, reply);
 		await updateLosses(loserId, request, reply);
 
@@ -111,6 +112,24 @@ export const getInProgressMatches = async (request: FastifyRequest, reply: Fasti
 		reply.status(200).send({ matches: formattedMatches, message: 'Successfully got \'in progress\' match instances' });
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to get \'in progress match\' instances' });
+	}
+};
+
+// get users' tournament win count
+export const getUserTourWins = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+	try {
+		const { userId } = request.params as { userId: number };
+		const user = Number(userId);
+		const matches = await request.server.prisma.match.findMany({
+			where: {
+				tournament: true,
+				winner: user,
+			}
+		});
+		const formattedMatches = matches.map(formatMatchDate);
+		return reply.send({ matches: formattedMatches });
+	} catch(error) {
+		reply.status(500).send({ error: 'Failed to get users\' tournament win history' });
 	}
 };
 
