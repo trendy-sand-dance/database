@@ -59,6 +59,7 @@ model Match {
 	id				Int		@id @default(autoincrement())
 	player1			Int
 	player2			Int
+	tournament		Boolean @default(false)
 	winner			Int?
 	loser			Int?
 	status			State
