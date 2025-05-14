@@ -73,3 +73,14 @@ enum State {
 	INPROGRESS
 	FINISHED
 }
+
+model Chat {
+
+	id 				Int		@id @deault(autoincrement())
+	user1			Int
+	user2			Int
+
+	messRec			String[]
+	messSent		String[]
+	date			DateTime
+}
