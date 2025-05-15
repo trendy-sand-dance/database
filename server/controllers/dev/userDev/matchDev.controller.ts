@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { updateWins, updateLosses } from "../../user/stats.controller";
-import { formatMatchDate } from '../../utils/matchUtils.controller';
+import { formatMatchDate } from '../../utils/dateUtils.controller';
 import { friendshipCheck } from '../../utils/friendUtils.controller';
 
 

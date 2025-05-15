@@ -12,3 +12,10 @@ export function formatMatchDate(match) {
 	  date: dayjs.tz(match.date, "Europe/Berlin").format('YYYY-MM-DD HH:mm:ss'),
 	};
   };
+
+export function formatChatDate(chat) {
+return {
+	...chat,
+	date: dayjs.tz(chat.date, "Europe/Berlin").format('YYYY-MM-DD HH:mm:ss'),
+	};
+};

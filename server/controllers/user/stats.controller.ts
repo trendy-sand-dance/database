@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { formatMatchDate } from '../utils/matchUtils.controller';
+import { formatMatchDate } from '../utils/dateUtils.controller';
 import { friendshipCheck } from '../utils/friendUtils.controller';
 
 export async function getStats(request: FastifyRequest, reply: FastifyReply) {
