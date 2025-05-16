@@ -17,7 +17,7 @@ import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 	import {makeMatch, saveMatch, getUserMatches, getInProgressMatches, getWonMatches, getLostMatches, getFriendMatches, getFriendvsUser	} from "../controllers/user/stats.controller";
 
 // game endpoints
-import { getPlayer, getPlayerInfo, updatePlayer, syncPlayers } from "../controllers/game/player.controller";
+import { getUserInfo, getPlayer, getPlayerInfo, updatePlayer, syncPlayers } from "../controllers/game/player.controller";
 
 async function routes(fastify: FastifyInstance) {
 
@@ -79,6 +79,7 @@ async function routes(fastify: FastifyInstance) {
   fastify.put('/game/players', syncPlayers);
 
   fastify.get('/game/playerinfo/:id', getPlayerInfo);
+  fastify.get('/game/userinfo/:id', getUserInfo);
 
 };
 
