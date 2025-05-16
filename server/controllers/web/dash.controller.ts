@@ -1,6 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 
-const GAMESERVER_URL: string = "http://gameserver:3000";
 export const dash = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 
   try {
