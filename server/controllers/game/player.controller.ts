@@ -18,6 +18,31 @@ export const getPlayer = async (request: FastifyRequest, reply: FastifyReply): P
   }
 };
 
+export const getUserInfo = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+
+  try {
+
+    const { id } = request.params as { id: number };
+
+    const user = await request.server.prisma.user.findUnique({
+      where: { id: Number(id) },
+      select: {
+        id: true,
+        username: true,
+        status: true,
+        avatar: true,
+        wins: true,
+        losses: true,
+        player: true,
+      },
+    })
+    return reply.code(200).send({ user });
+  } catch (error) {
+    console.error(error);
+    return reply.code(500).send({ error: "Failed to load user" });
+  }
+};
+
 export const getPlayerInfo = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 
   try {
@@ -84,11 +109,11 @@ export const syncPlayers = async (request: FastifyRequest, reply: FastifyReply):
     // const players = request.body as PlayersMap;
     const playerMap = request.body as Map<number, Vector2>;
     // const obj = Object.entries(players);
-			//  console.log("Proceeding to sync players...", obj[0]);
-			//  if (obj.length === 0)
-			//  {
-			// throw { code: 500, message: "Error, received playersmap is empty" };
-			//  }
+    //  console.log("Proceeding to sync players...", obj[0]);
+    //  if (obj.length === 0)
+    //  {
+    // throw { code: 500, message: "Error, received playersmap is empty" };
+    //  }
 
     const players = Array.from(playerMap.entries());
     for (const player of players) {
