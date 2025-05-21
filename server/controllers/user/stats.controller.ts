@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { formatMatchDate } from '../utils/dateUtils.controller';
+import { formatMatchDate, formatMatchHistory } from '../utils/dateUtils.controller';
 import { friendshipCheck } from '../utils/friendUtils.controller';
 
 export async function getStats(request: FastifyRequest, reply: FastifyReply) {
@@ -142,16 +142,31 @@ export const getUserMatches = async (request: FastifyRequest, reply: FastifyRepl
 			where: {
 				OR: [
 					{ winner: user },
-					{ loser: user }
-				]
+					{ loser: user },
+				],
+			},
+			include: {
+				won: {
+					select: { username: true }
+				},
+				lost: {
+					select: { username: true }
+				},
 			}
-		});
-		const formattedMatches = matches.map(formatMatchDate);
+	});
+
+		console.log("Logging matches: ", matches);
+	// const requestSender = f.user1Id === userId ? f.user2 : f.user1;
+
+	const formattedMatches = matches.map(match => formatMatchHistory(match, userId));
 		return reply.send({ matches: formattedMatches });
 	} catch(error) {
 		reply.status(500).send({ error: 'Failed to get users\' match history' });
 	}
 };
+
+
+
 
 // get users' wins
 export const getWonMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {

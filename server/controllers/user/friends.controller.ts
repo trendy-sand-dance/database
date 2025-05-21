@@ -300,16 +300,18 @@ export const viewPlayers = async (request: FastifyRequest, reply: FastifyReply):
 		const user = await request.server.prisma.user.findUnique( {
 			where: { username: username }
 		});
-
+		
+		
 		const requests = await getRequests(user.id, request);
 		const friends = await getFriends(user.id, request);
 		const pending = await getPending(user.id, request);
 		const blocked = await getBlocked(user.id, request);
 		const userId = user.id;
-
+		
 		reply.send({ requests, friends, pending, blocked, userId });
 	} catch (error) {
 		reply.status(500).send({ error: 'Failed to fetch players' });
 	}
 };
+
 
