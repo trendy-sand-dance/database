@@ -14,7 +14,7 @@ import { dash } from "../controllers/web/dash.controller";
 import { register, login, logout } from "../controllers/user/register.controller";
 import { editUsername, editPassword, editEmail, deleteUser } from "../controllers/user/editUser.controller"
 import { editAvatar, deleteAvatar } from "../controllers/user/avatar.controller";
-import { sendFriendReq, acceptFriendReq, rejectFriendReq, blockFriend, viewPlayers, deleteAssociation } from "../controllers/user/friends.controller";
+import { sendFriendReq, acceptFriendReq, areFriends, rejectFriendReq, blockFriend, viewPlayers, deleteAssociation } from "../controllers/user/friends.controller";
 import { makeMatch, saveMatch, getUserMatches, getInProgressMatches, getWonMatches, getLostMatches, getFriendMatches, getFriendvsUser } from "../controllers/user/stats.controller";
 //import {createChat, retrieveChat, updateChat, deleteChat, blockedChat} from "../controllers/user/chat.controller";
 // 	import {sendFriendReq, acceptFriendReq, rejectFriendReq, blockFriend, viewPlayers} from "../controllers/user/friends.controller";
@@ -66,6 +66,7 @@ async function routes(fastify: FastifyInstance) {
   fastify.delete('/deletefriend/:senderId/:userId', deleteAssociation);
   fastify.post('/block/:friendId/:userId', blockFriend); // friend is person who user wants to block
   fastify.get('/viewPlayers/:username', viewPlayers);
+  fastify.get('/areFriends/:userId1/:userId2', areFriends);
 
   // user statistics/matches endpoints
   fastify.post('/makeMatch/:player1/:player2', makeMatch);
