@@ -16,10 +16,13 @@ import { editUsername, editPassword, editEmail, deleteUser } from "../controller
 import { editAvatar, deleteAvatar } from "../controllers/user/avatar.controller";
 import { sendFriendReq, acceptFriendReq, areFriends, rejectFriendReq, blockFriend, viewPlayers, deleteAssociation } from "../controllers/user/friends.controller";
 import { makeMatch, saveMatch, getUserMatches, getInProgressMatches, getWonMatches, getLostMatches, getFriendMatches, getFriendvsUser } from "../controllers/user/stats.controller";
-//import {createChat, retrieveChat, updateChat, deleteChat, blockedChat} from "../controllers/user/chat.controller";
 // 	import {sendFriendReq, acceptFriendReq, rejectFriendReq, blockFriend, viewPlayers} from "../controllers/user/friends.controller";
 // 	import {saveMatch, getUserMatches, getWonMatches, getLostMatches, getFriendMatches, getFriendvsUser	} from "../controllers/user/stats.controller";
 import { getUser } from '../controllers/user/user.controller';
+
+// chat endpoints
+import { getBlocked } from "../controllers/user/chat.controller";
+//import {createChat, retrieveChat, updateChat, deleteChat, blockedChat} from "../controllers/user/chat.controller";
 
 // game endpoints
 import { getPlayer, getPlayerInfo, getUserInfo, updatePlayer, syncPlayers } from "../controllers/game/player.controller";
@@ -79,6 +82,7 @@ async function routes(fastify: FastifyInstance) {
   fastify.get('/getFriendvsUser/:userId/:friendId', getFriendvsUser);
 
   // chat endpoints
+  fastify.get('/blocked/:userId', getBlocked); // give chatMS array of users this person has blocked
   // user1 is the logged in user looking at their chat history with another player (user2)
   //  fastify.post('createChat/:user1Id/:user2Id', createChat);
   //  fastify.post('retrieveChat/:user1Id/:user2Id', retrieveChat);
