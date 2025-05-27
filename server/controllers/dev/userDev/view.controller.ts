@@ -6,23 +6,27 @@ export async function populate(request: FastifyRequest, reply: FastifyReply) {
 	try {
 		await request.server.prisma.user.createMany({
 			data: [
-				{ username: "tim", password: "tim", email: "tim@tim.com"},
-				{ username: "bill", password: "bill", email: "bill@bill.com"},
-				{ username: "jill", password: "jill", email: "jill@jill.com"},
-				{ username: "molly", password: "molly", email: "molly@molly.com"},
+				{ username: "baas", password: "baas", email: "baas@baas.com"},
+				{ username: "sander", password: "sander", email: "sander@sander.com"},
+				{ username: "iris", password: "iris", email: "iris@iris.com"},
+				{ username: "inge", password: "inge", email: "inge@inge.com"},
 			]
 		  });
 		  const createdUsers = await request.server.prisma.user.findMany({
+			orderBy: {
+				id: 'asc'
+			},
 			where: {
-			  username: { in: ["tim", "bill", "jill", "molly"] }
+			  username: { in: ["baas", "sander", "iris", "inge"] },
 			}
 		  });
 		  await Promise.all(
 			createdUsers.map(user =>
 			  request.server.prisma.player.create({
 				data: {
+				  id: user.id,
 				  userId: user.id,
-				  // set x, y etc
+				//   set x, y etc
 				}
 			  })
 			)
