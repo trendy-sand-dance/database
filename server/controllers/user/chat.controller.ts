@@ -30,9 +30,9 @@ export const getBlocked = async (request: FastifyRequest, reply: FastifyReply): 
 		const { userId } = request.params as { userId: number };
 		const user = Number(userId);
 		const blocked = await getBlockedIds(user, request);
-		reply.send({ blocked });
+		return reply.send({ blocked });
 	} catch (error) {
-	reply.status(500).send({ error: 'Failed to fetch id\'s of blocked users' });
+		return reply.status(500).send({ error: 'Failed to fetch id\'s of blocked users' });
 	}
 };
 
