@@ -19,3 +19,20 @@ return {
 	date: dayjs.tz(chat.date, "Europe/Berlin").format('YYYY-MM-DD HH:mm:ss'),
 	};
 };
+
+
+export function formatMatchHistory(match, userId) {
+
+	let opponentUsername;
+
+	if (match.winner == userId)
+		opponentUsername = match.lost.username;
+	else
+		opponentUsername = match.won.username;
+
+	return {
+			...match,
+			date: dayjs.tz(match.date, "Europe/Berlin").format('YYYY-MM-DD HH:mm:ss'),
+			opponent: opponentUsername
+			};
+	};
