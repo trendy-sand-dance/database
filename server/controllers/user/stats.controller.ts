@@ -81,10 +81,7 @@ export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): P
 export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { matchId, winnerId, loserId } = request.params as { matchId: number, winnerId: number, loserId: number };
-
-    console.log(`matchId, winnerId, loserId: ${matchId}, ${winnerId}, ${loserId}`)
-
-	// TO ADD: if tournament bool true update db bool true here, tournament bool gets passed from gameserver
+    const body = request.body as { matchId: number, players: {winnerId: number, loserId: number}, tournament : boolean};
 
 		await request.server.prisma.match.update({
 			where: { id: Number(matchId) },
@@ -92,6 +89,7 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 				status: 'FINISHED',
 				won: { connect: { id: Number(winnerId) } },
 				lost: { connect: { id: Number(loserId) } },
+        tournament: body.tournament,
 			},
 		});
 		await updateWins(winnerId, request, reply);
