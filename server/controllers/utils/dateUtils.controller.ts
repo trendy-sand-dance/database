@@ -22,13 +22,17 @@ return {
 
 
 export function formatMatchHistory(match, userId) {
-	const opponentUsername =
-				match.won?.id === userId
-					? match.lost?.username
-					: match.won?.username;
+
+	let opponentUsername;
+
+	if (match.winner == userId)
+		opponentUsername = match.lost.username;
+	else
+		opponentUsername = match.won.username;
+
 	return {
-		...match,
-		date: dayjs.tz(match.date, "Europe/Berlin").format('YYYY-MM-DD HH:mm:ss'),
-		opponent: opponentUsername
-		};
+			...match,
+			date: dayjs.tz(match.date, "Europe/Berlin").format('YYYY-MM-DD HH:mm:ss'),
+			opponent: opponentUsername
+			};
 	};
