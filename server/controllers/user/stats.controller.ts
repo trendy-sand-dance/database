@@ -32,18 +32,23 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 	try {
 		const { matchId, winnerId, loserId } = request.params as { matchId: number, winnerId: number, loserId: number };
 		const body = request.body as { matchId: number, players: {winnerId: number, loserId: number}, tournament : boolean, highScore: number, lowScore: number};
-		const score1 = Number(highScore);
-		const score2 = Number(lowScore);
+		const scoreHigh = Number(highScore);
+		const scoreLow = Number(lowScore);
 
 		await request.server.prisma.match.update({
-			where: { id: Number(matchId) },
+			where: { id: Number(matchId),
+				OR: [
+					{ player1: winnerId, player2: loserId },
+					{ player1: loserId, player2: winnerId }
+				]
+			 },
 			data: {
 				status: 'FINISHED',
 				won: { connect: { id: Number(winnerId) } },
 				lost: { connect: { id: Number(loserId) } },
 				tournament: body.tournament,
-				highScore: score1,
-				lowScore: score2,
+				highScore: scoreHigh,
+				lowScore: scoreLow,
 			},
 		});
 		await updateWins(winnerId, request, reply);
