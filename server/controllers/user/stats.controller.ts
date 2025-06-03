@@ -1,57 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { formatMatchDate, formatMatchHistory } from '../utils/dateUtils.controller';
 import { friendshipCheck } from '../utils/friendUtils.controller';
-
-export async function getStats(request: FastifyRequest, reply: FastifyReply) {
-	try {
-		const { username } = request.params as { username: string };
-		const user = await request.server.prisma.user.findUnique({
-			where: { username },
-			select: {
-				wins: true, 
-				losses: true,
-			}
-		});
-
-	return reply.code(200).send(user); // check when/how this is being used and therefore what to return
-	} catch (error) {
-		return reply.status(500).send({ error: 'Failed to fetch user statistics' });
-	}
-};
-
-export async function updateWins(userId: number, request: FastifyRequest, reply: FastifyReply) {
-	try {
-		const userID = Number(userId);
-		await request.server.prisma.user.update({
-			where: { id: userID },
-			data: { 
-				wins: {
-					increment: 1,
-				}
-			}
-		});
-		reply.code(200);
-	} catch (error) {
-		return reply.status(500).send({ error: 'Failed to update user win count' });
-	}
-};
-
-export async function updateLosses(userId: number, request: FastifyRequest, reply: FastifyReply) {
-	try {
-		const userID = Number(userId);
-		await request.server.prisma.user.update({
-			where: { id: userID },
-			data: { 
-				losses: {
-					increment: 1,
-				}
-			}
-		});
-		reply.code(200);
-	} catch (error) {
-		return reply.status(500).send({ error: 'Failed to update user loss count' });
-	}
-};
+import { getStats, updateWins, updateLosses } from '../utils/matchUtils.controller';
 
 export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
@@ -81,7 +31,9 @@ export const makeMatch = async (request: FastifyRequest, reply: FastifyReply): P
 export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
 		const { matchId, winnerId, loserId } = request.params as { matchId: number, winnerId: number, loserId: number };
-    const body = request.body as { matchId: number, players: {winnerId: number, loserId: number}, tournament : boolean};
+		const body = request.body as { matchId: number, players: {winnerId: number, loserId: number}, tournament : boolean, highScore: number, lowScore: number};
+		const score1 = Number(highScore);
+		const score2 = Number(lowScore);
 
 		await request.server.prisma.match.update({
 			where: { id: Number(matchId) },
@@ -89,7 +41,9 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 				status: 'FINISHED',
 				won: { connect: { id: Number(winnerId) } },
 				lost: { connect: { id: Number(loserId) } },
-        tournament: body.tournament,
+				tournament: body.tournament,
+				highScore: score1,
+				lowScore: score2,
 			},
 		});
 		await updateWins(winnerId, request, reply);
@@ -162,9 +116,6 @@ export const getUserMatches = async (request: FastifyRequest, reply: FastifyRepl
 		reply.status(500).send({ error: 'Failed to get users\' match history' });
 	}
 };
-
-
-
 
 // get users' wins
 export const getWonMatches = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
