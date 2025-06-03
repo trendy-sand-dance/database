@@ -32,16 +32,11 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 	try {
 		const { matchId, winnerId, loserId } = request.params as { matchId: number, winnerId: number, loserId: number };
 		const body = request.body as { matchId: number, players: {winnerId: number, loserId: number}, tournament : boolean, highScore: number, lowScore: number};
-		const scoreHigh = Number(highScore);
-		const scoreLow = Number(lowScore);
+		const scoreHigh = Number(body.highScore);
+		const scoreLow = Number(body.lowScore);
 
 		await request.server.prisma.match.update({
-			where: { id: Number(matchId),
-				OR: [
-					{ player1: winnerId, player2: loserId },
-					{ player1: loserId, player2: winnerId }
-				]
-			 },
+			where: { id: Number(matchId) },
 			data: {
 				status: 'FINISHED',
 				won: { connect: { id: Number(winnerId) } },
@@ -56,6 +51,7 @@ export const saveMatch = async (request: FastifyRequest, reply: FastifyReply): P
 
 		return reply.code(200).send({ message: "Successfully saved played match!" });
 	} catch (error) {
+		console.error(error);
 		return reply.status(500).send({ error: 'Failed to save match in database' });
 	}
 };
