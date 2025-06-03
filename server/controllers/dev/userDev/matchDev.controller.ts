@@ -1,8 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { updateWins, updateLosses } from "../../user/stats.controller";
 import { formatMatchDate } from '../../utils/dateUtils.controller';
 import { friendshipCheck } from '../../utils/friendUtils.controller';
-
+import { getStats, updateWins, updateLosses } from '../../utils/matchUtils.controller';
 
 export const makeMatchD = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
@@ -31,16 +30,24 @@ export const saveMatchD = async (request: FastifyRequest, reply: FastifyReply): 
 		const matchId = Number(match);
 		const wonId = Number(won);
 		const lostId = Number(lost);
-
+		const scoreHigh = 11;
+		const scoreLow = 3;
+		
 		await request.server.prisma.match.update({
-			where: { id: matchId },
+			where: { id: Number(matchId),
+				OR: [
+					{ player1: wonId, player2: lostId },
+					{ player1: lostId, player2: wonId }
+				]
+			 },
 			data: {
 				status: 'FINISHED',
 				won: { connect: { id: wonId } },
 				lost: { connect: { id: lostId } },
+				highScore: scoreHigh,
+				lowScore: scoreLow,
 			},
 		});
-
 		await updateWins(wonId, request, reply);
 		await updateLosses(lostId, request, reply);
 
