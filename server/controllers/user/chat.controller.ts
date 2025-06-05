@@ -30,15 +30,9 @@ export const getBlocked = async (request: FastifyRequest, reply: FastifyReply): 
 		const { userId } = request.params as { userId: number };
 		const user = Number(userId);
 		const blocked = await getBlockedIds(user, request);
-		return reply.send({ blocked });
+		return reply.send(blocked.map(p => p.id));
 	} catch (error) {
 		return reply.status(500).send({ error: 'Failed to fetch id\'s of blocked users' });
 	}
 };
-
-// chat endpoints
-//  fastify.post('createChat/:user1/:user2', createChat);
-//  fastify.post('retrieveChat/:user1/:user2', retrieveChat);
-//  fastify.post('updateChat/:user1/:user2', updateChat);
-//  fastify.post('deleteChat/:user1/:user2', deleteChat);
-//  fastify.post('blockedChat/:user1/:user2', blockedChat);
+ 
