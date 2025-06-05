@@ -331,6 +331,7 @@ export const areFriends = async (request: FastifyRequest, reply: FastifyReply): 
 
     reply.code(200).send({ friend: !!areFriends, status: status });
   } catch (error) {
+	console.log(error);
     reply.status(500).send({ error: 'Failed to check if ids are friends' });
   }
 }
@@ -353,6 +354,7 @@ export const viewPlayers = async (request: FastifyRequest, reply: FastifyReply):
 		
 		reply.send({ requests, friends, pending, blocked, userId });
 	} catch (error) {
+		console.log(error);
 		reply.status(500).send({ error: 'Failed to fetch players' });
 	}
 };

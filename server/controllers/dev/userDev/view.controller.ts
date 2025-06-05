@@ -6,10 +6,10 @@ export async function populate(request: FastifyRequest, reply: FastifyReply) {
 	try {
 		await request.server.prisma.user.createMany({
 			data: [
-				{ username: "baas", password: "baas", email: "baas@baas.com"},
-				{ username: "sander", password: "sander", email: "sander@sander.com"},
-				{ username: "iris", password: "iris", email: "iris@iris.com"},
-				{ username: "inge", password: "inge", email: "inge@inge.com"},
+				{ username: "dan", password: "dan", email: "dan@dan.com"},
+				{ username: "pat", password: "pat", email: "pat@pat.com"},
+				{ username: "pip", password: "pip", email: "pip@pip.com"},
+				{ username: "tom", password: "tom", email: "tom@tom.com"},
 			]
 		  });
 		  const createdUsers = await request.server.prisma.user.findMany({
@@ -17,7 +17,7 @@ export async function populate(request: FastifyRequest, reply: FastifyReply) {
 				id: 'asc'
 			},
 			where: {
-			  username: { in: ["baas", "sander", "iris", "inge"] },
+			  username: { in: ["dan", "pat", "pip", "tom"] },
 			}
 		  });
 		  await Promise.all(
@@ -35,6 +35,7 @@ export async function populate(request: FastifyRequest, reply: FastifyReply) {
 		return reply.send({ message: "populated user table with 4 users"});
 		
 	} catch (error) {
+		console.log(error);
 		return reply.code(500).send("Error populating user table");
 	}
 };
