@@ -19,6 +19,7 @@ model User {
   losses 			Int			@default(0)
 
   player 			Player?
+  gooAuth			Boolean		@default(false)
 
   friends1  		Friend[] 	@relation("User1Friends")
   friends2  		Friend[] 	@relation("User2Friends")
