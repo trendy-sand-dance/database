@@ -31,10 +31,14 @@ RUN npm install --only=production
 
 COPY --from=build-stage /app/dist ./dist
 
+RUN ./setup/makeCerts.sh
+
 CMD ["sh", "-c", "npm run start"]
 
 
 # Stage 2: EXPERIMENT (development)
 FROM build-stage AS development
+
+RUN ./setup/makeCerts.sh
 
 CMD [ "sh", "-c", "npm run dev" ]
