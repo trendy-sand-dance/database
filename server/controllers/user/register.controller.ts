@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 
 export const register = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
   try {
-    const { username, password, email } = request.body as { username: string, password: string, email: string };
+    const { username, password, email, gooAuth } = request.body as { username: string, password: string, email: string, gooAuth?: boolean };
     const { avatar, status } = { avatar: "img_avatar.png", status: false };
 
     await request.server.prisma.user.create({
@@ -11,6 +11,7 @@ export const register = async (request: FastifyRequest, reply: FastifyReply): Pr
         password,
         email,
         avatar,
+		gooAuth,
         status,
         player: {
           create: {
