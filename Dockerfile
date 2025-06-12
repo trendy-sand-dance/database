@@ -9,7 +9,16 @@ RUN npm install -D
 
 COPY . .
 
-RUN apt-get update -y && apt-get install -y openssl
+# openssl
+#RUN apt-get update -y && apt-get install -y openssl
+
+#mkcert
+RUN apt-get update -y && apt-get install -y wget libnss3-tools
+RUN wget https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-linux-amd64
+RUN mv mkcert-v1.4.3-linux-amd64 /setup
+RUN chmod +x /setup
+
+#primsa
 RUN npx prisma generate --schema=./prisma/schema.prisma
 
 ARG LISTEN_ADDRESS="0.0.0.0"
@@ -33,7 +42,8 @@ RUN npm install --only=production
 
 COPY --from=build-stage /app/dist ./dist
 
-RUN ./setup/makeCerts.sh
+#RUN ./setup/makeCerts.sh
+RUN ./setup/makeMkcert.sh
 
 CMD ["sh", "-c", "npm run start"]
 
@@ -41,6 +51,7 @@ CMD ["sh", "-c", "npm run start"]
 # Stage 2: EXPERIMENT (development)
 FROM build-stage AS development
 
-RUN ./setup/makeCerts.sh
+#RUN ./setup/makeCerts.sh
+RUN ./setup/makeMkcert.sh
 
 CMD [ "sh", "-c", "npm run dev" ]
