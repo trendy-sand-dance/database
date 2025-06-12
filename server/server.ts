@@ -16,9 +16,7 @@ const PORT: number = process.env.LISTEN_PORT ? parseInt(process.env.LISTEN_PORT,
 
 import fs from 'fs';
 const key =  './setup/server.key';
-console.log("key path == ", key);
 const cert = './setup/server.crt';
-console.log("cert path == ", cert);
 
 const fastify: FastifyInstance = Fastify({
   logger: {
