@@ -2,16 +2,28 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 
 export const register = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
   try {
-    const { username, password, email, gooAuth } = request.body as { username: string, password: string, email: string, gooAuth?: boolean };
+    const { username, password, email, gooAuth } = request.body as { username: string, password?: string, email: string, gooAuth?: boolean };
     const { avatar, status } = { avatar: "img_avatar.png", status: false };
+
+		if (password == null && gooAuth == null)
+		{
+    	return reply.code(418).send({ error: "password cannot be empty!" });
+		}
+
+		let password_tmp = "";
+
+		if (password && !gooAuth)
+		{
+			password_tmp = password;
+		}
 
     await request.server.prisma.user.create({
       data: {
         username,
-        password,
+        password: password_tmp,
         email,
         avatar,
-		gooAuth,
+				gooAuth,
         status,
         player: {
           create: {
@@ -54,12 +66,18 @@ export const login_old = async (request: FastifyRequest, reply: FastifyReply): P
 
 export const login = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
   try {
-    const { username, password } = request.body as { username: string, password: string };
+    const { username, password, gooAuth } = request.body as { username: string, password: string, gooAuth?: boolean};
+
+
+		let passwd = password;
+
+		if (gooAuth)
+			passwd = "";
 
     const user = await request.server.prisma.user.findUnique({
       where: {
         username: username,
-        password: password
+        password: passwd
       },
       omit: {
         password: true,
