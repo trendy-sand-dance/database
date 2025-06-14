@@ -81,7 +81,7 @@ export const login_google = async (request: FastifyRequest, reply: FastifyReply)
 
 		// set user's status.
 		user = await request.server.prisma.user.update({
-			where: { username: username },
+			where: { email: email },
 			data: {	status: true },
 		});
 
