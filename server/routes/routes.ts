@@ -11,7 +11,7 @@ import { chatDev } from "../controllers/dev/userDev/chatDev.controller";
 import { dash } from "../controllers/web/dash.controller";
 
 // user endpoints
-import { register, login, logout } from "../controllers/user/register.controller";
+import { register, login, logout, login_google } from "../controllers/user/register.controller";
 import { editUsername, editPassword, editEmail, deleteUser } from "../controllers/user/editUser.controller"
 import { editAvatar, deleteAvatar } from "../controllers/user/avatar.controller";
 import { sendFriendReq, acceptFriendReq, areFriends, rejectFriendReq, blockFriend, viewPlayers, deleteAssociation } from "../controllers/user/friends.controller";
@@ -53,6 +53,7 @@ async function routes(fastify: FastifyInstance) {
   // user management endpoints
   fastify.post('/register', register);
   fastify.post('/login', login);
+  fastify.post('/login_google', login_google);
   fastify.get('/logout/:username', logout);
   fastify.post('/editUsername/:username', editUsername);
   fastify.post('/editPassword/:username', editPassword);

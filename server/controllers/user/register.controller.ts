@@ -1,3 +1,4 @@
+import { PrismaClient, User } from '@prisma/client';
 import { FastifyRequest, FastifyReply } from 'fastify';
 
 export const register = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
@@ -27,32 +28,57 @@ export const register = async (request: FastifyRequest, reply: FastifyReply): Pr
 };
 
 
-export const login_old = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export const login_google = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
   try {
-    const { username, password } = request.body as { username: string, password: string };
+    const { username, email } = request.body as { username: string, email: string };
 
+		let code = 200;
+
+		// try to find the user.
     const user = await request.server.prisma.user.findUnique({
-      where: { username: username, password: password }
-    });
-    if (!user)
-      return reply.code(406).send({ error: "Invalid credentials" });
-
-    await request.server.prisma.user.update({
       where: {
-        username: username
+        username: username,
+        email: email
       },
-      data: {
-        status: true
+      omit: {
+        password: true,
       },
     });
-    return reply.code(200).send({ message: "Login successful" });
+
+
+		// create user if doens't exist.
+    if (!user)
+		{
+			const { avatar, status } = { avatar: "img_avatar.png", status: false };
+			await request.server.prisma.user.create({
+				data: {
+					username,
+					email,
+					avatar,
+					status,
+					player: {
+						create: {
+						}
+					}
+				},
+			});
+			code = 201;
+		}
+
+		// set user's status.
+		await request.server.prisma.user.update({
+			where: { username: username },
+			data: {	status: true },
+		});
+
+		return reply.code(code).send(user);
   } catch (error) {
     console.error(error);
     return reply.code(500).send({ error: "Failed to log user in" });
   }
 };
 
-export const login = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
+export const login = async (request: FastifyRequest, reply: FastifyReply): Promise<User> => {
   try {
     const { username, password } = request.body as { username: string, password: string };
 
