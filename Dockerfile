@@ -13,10 +13,11 @@ COPY . .
 #RUN apt-get update -y && apt-get install -y openssl
 
 #mkcert
-RUN apt-get update -y && apt-get install -y wget libnss3-tools
-RUN wget https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-linux-amd64
-RUN mv mkcert-v1.4.3-linux-amd64 /setup
-RUN chmod +x /setup
+RUN apt-get update -y && apt-get install mkcert libnss3-tools wget -y
+#RUN wget https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-linux-amd64
+#RUN mv mkcert-v1.4.3-linux-amd64 /setup
+#RUN mv mkcert-v1.4.3-linux-amd64 /setup
+#RUN chmod +x /setup
 
 #primsa
 RUN npx prisma generate --schema=./prisma/schema.prisma
