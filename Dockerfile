@@ -10,14 +10,10 @@ RUN npm install -D
 COPY . .
 
 # openssl
-#RUN apt-get update -y && apt-get install -y openssl
+RUN apt-get update -y && apt-get install -y openssl
 
 #mkcert
-RUN apt-get update -y && apt-get install mkcert libnss3-tools wget -y
-#RUN wget https://github.com/FiloSottile/mkcert/releases/download/v1.4.3/mkcert-v1.4.3-linux-amd64
-#RUN mv mkcert-v1.4.3-linux-amd64 /setup
-#RUN mv mkcert-v1.4.3-linux-amd64 /setup
-#RUN chmod +x /setup
+RUN apt-get update -y && apt-get install mkcert libnss3-tools -y
 
 #primsa
 RUN npx prisma generate --schema=./prisma/schema.prisma
@@ -27,7 +23,7 @@ ARG LISTEN_PORT=8002
 
 ENV LISTEN_ADDRESS=${LISTEN_ADDRESS}
 ENV LISTEN_PORT=${LISTEN_PORT}
-ENV NODE_EXTRA_CA_CERTS=/setup/server.crt
+ENV NODE_EXTRA_CA_CERTS=/setup/cert.pem
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 RUN npm run build

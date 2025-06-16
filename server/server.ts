@@ -15,8 +15,8 @@ const ADDRESS: string = process.env.LISTEN_ADDRESS ? process.env.LISTEN_ADDRESS 
 const PORT: number = process.env.LISTEN_PORT ? parseInt(process.env.LISTEN_PORT, 10) : 3000;
 
 import fs from 'fs';
-const key = './server+3-key.pem';
-const cert = './server+3.pem';
+const key = './setup/key.pem';
+const cert = './setup/cert.pem';
 
 const fastify: FastifyInstance = Fastify({
   logger: {
