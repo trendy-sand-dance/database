@@ -8,6 +8,7 @@ declare module "fastify" {
 	interface FastifyRequest {
 		server: FastifyInstance;
 	}
+	// TODO: delete since its not being used anywhere
 	interface UserRequest {
 		username: string;
 		password: string;
