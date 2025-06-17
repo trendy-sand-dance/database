@@ -1,0 +1,37 @@
+# basic caddy doc gives the port like this with the reverse_proxy port underneath
+#:8002
+
+# would this work for multiple ports?
+#reverse_proxy :8000
+#reverse_proxy :8001
+#reverse_proxy :8003
+#reverse_proxy :8004
+
+# this way to add multiple ports?
+ https://localhost:8002 {
+ 	reverse_proxy :8000
+ 	reverse_proxy :8001
+ 	reverse_proxy :8003
+ 	reverse_proxy :8004
+ }
+
+# add localhost?
+ https://localhost:8002 {
+ 	reverse_proxy localhost:8000
+ 	reverse_proxy localhost:8001
+ 	reverse_proxy localhost:8003
+ 	reverse_proxy localhost:8004
+ }
+
+
+# handle_path 
+#handle_path /jellyfin/* {
+#	reverse_proxy localhost:8096
+#}
+
+
+# basics Caddyfile
+
+localhost
+
+respond "Hello world"
