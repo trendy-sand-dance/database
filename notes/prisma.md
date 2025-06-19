@@ -81,7 +81,7 @@ REMEMBER
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_FILE_PATH")
 }
 
 generator client {

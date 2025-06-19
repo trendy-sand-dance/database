@@ -9,7 +9,7 @@ RUN npm install -D
 
 COPY . .
 
-RUN apt-get update -y 
+RUN apt-get update -y
 RUN npx prisma generate --schema=./prisma/schema.prisma
 
 ARG LISTEN_ADDRESS="0.0.0.0"
