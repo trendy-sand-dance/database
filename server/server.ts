@@ -14,10 +14,6 @@ import { FastifyStaticOptions } from '@fastify/static';
 const ADDRESS: string = process.env.LISTEN_ADDRESS ? process.env.LISTEN_ADDRESS : '0.0.0.0';
 const PORT: number = process.env.LISTEN_PORT ? parseInt(process.env.LISTEN_PORT, 10) : 3000;
 
-import fs from 'fs';
-const key = './setup/key.pem';
-const cert = './setup/cert.pem';
-
 const fastify: FastifyInstance = Fastify({
   logger: {
     transport: {
@@ -29,11 +25,7 @@ const fastify: FastifyInstance = Fastify({
 			}
 		},
 		level: 'info'
-	},
-	https: {
-     key: fs.readFileSync(key),
-     cert: fs.readFileSync(cert),
-   }
+	}
 });
 
 fastify.register(dbConnector);

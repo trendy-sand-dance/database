@@ -23,8 +23,8 @@ ARG LISTEN_PORT=8002
 
 ENV LISTEN_ADDRESS=${LISTEN_ADDRESS}
 ENV LISTEN_PORT=${LISTEN_PORT}
-ENV NODE_EXTRA_CA_CERTS=/setup/cert.pem
-ENV NODE_TLS_REJECT_UNAUTHORIZED=0
+#ENV NODE_EXTRA_CA_CERTS=/setup/cert.pem
+#ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
 RUN npm run build
 
@@ -39,16 +39,10 @@ RUN npm install --only=production
 
 COPY --from=build-stage /app/dist ./dist
 
-#RUN ./setup/makeCerts.sh
-RUN ./setup/makeMkcert.sh
-
 CMD ["sh", "-c", "npm run start"]
 
 
 # Stage 2: EXPERIMENT (development)
 FROM build-stage AS development
-
-#RUN ./setup/makeCerts.sh
-RUN ./setup/makeMkcert.sh
 
 CMD [ "sh", "-c", "npm run dev" ]
