@@ -1,15 +1,33 @@
 import { PrismaClient, Prisma, User } from '@prisma/client';
 import { FastifyRequest, FastifyReply } from 'fastify';
+import bcrypt from 'bcrypt';
+
+const SALT_ROUNDS = 10;
 
 export const register = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
   try {
-    const { username, password, email } = request.body as { username: string, password: string, email: string };
-    const { avatar, status } = { avatar: "img_avatar.png", status: false };
+    const {
+			username,
+			password,
+			email
+		} = request.body as {
+			username: string,
+			password: string,
+			email: string
+		};
+    const {
+			avatar,
+			status
+		} = {
+				avatar: "img_avatar.png",
+				status: false
+			};
 
+		const password_hash = await bcrypt.hash(password, SALT_ROUNDS);
     await request.server.prisma.user.create({
       data: {
         username,
-        password,
+        password: password_hash,
         email,
         avatar,
         status,
@@ -97,19 +115,22 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
     const { username, password } = request.body as { username: string, password: string };
 
     const user = await request.server.prisma.user.findUnique({
+			// we only need to username to be unique, instead of also the password.
       where: {
         username: username,
-        password: password
-      },
-      omit: {
-        password: true,
       },
       include: {
         player: true,
       }
     });
-    if (!user)
-      return reply.code(406).send({ error: "Invalid credentials" });
+
+
+		// await console.log("db_password: ", user.password);
+		// await console.log("password: ", password);
+		// await console.log("password_hash: ", password_hash);
+  	const isMatch = user && (await bcrypt.compare(password, user.password))
+    if (!user || !isMatch)
+			return reply.code(406).send({ error: "Invalid credentials" });
 
     await request.server.prisma.user.update({
       where: {
@@ -119,8 +140,9 @@ export const login = async (request: FastifyRequest, reply: FastifyReply): Promi
         status: true
       },
     });
-    return reply.code(200).send(user);
-  } catch (error) {
+
+		return reply.code(200).send(user);
+	} catch (error) {
     console.error(error);
     return reply.code(500).send({ error: "Failed to log user in" });
   }
