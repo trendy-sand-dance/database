@@ -9,8 +9,6 @@ services:
       LISTEN_PORT: 3000
       LISTEN_ADDRESS: '0.0.0.0'
       DATABASE_URL: "file:/app/server/database/database.db" # or the regular file?
-    ports:
-      - "8002:3000"
     volumes:
       - database_data:/app/server/database
       - ./server:/app/server  # Mount local project folder into the container
