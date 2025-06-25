@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { getRequests, getFriends, getPending, getBlocked } from '../utils/friendUtils.controller';
 
-// param: receiver is the person receiving THIS friend request from user
+// param: receiver is the person receiving THIS friend request from another user
 export const sendFriendReq = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
   try {
     const { receiverId, userId } = request.params as { receiverId: number, userId: number };
@@ -322,9 +322,6 @@ export const areFriends = async (request: FastifyRequest, reply: FastifyReply): 
 
     // const status: string = areFriends.status;
 
-    console.log("STATUSSSSSSSSSSSSSSSSSSSS");
-    console.log("areFriends", areFriends);
-    // console.log("From DB: status", status);
     let status = null;
     if (areFriends)
       status = areFriends.status;
@@ -334,9 +331,7 @@ export const areFriends = async (request: FastifyRequest, reply: FastifyReply): 
 	console.log(error);
     reply.status(500).send({ error: 'Failed to check if ids are friends' });
   }
-}
-
-
+};
 
 export const viewPlayers = async (request: FastifyRequest, reply: FastifyReply): Promise<any> => {
 	try {
@@ -344,7 +339,6 @@ export const viewPlayers = async (request: FastifyRequest, reply: FastifyReply):
 		const user = await request.server.prisma.user.findUnique( {
 			where: { username: username }
 		});
-		
 		
 		const requests = await getRequests(user.id, request);
 		const friends = await getFriends(user.id, request);

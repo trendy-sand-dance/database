@@ -11,7 +11,7 @@ export async function getStats(request: FastifyRequest, reply: FastifyReply) {
 			}
 		});
 
-	return reply.code(200).send(user); // check when/how this is being used and therefore what to return
+	return reply.code(200).send(user);
 	} catch (error) {
 		return reply.status(500).send({ error: 'Failed to fetch user statistics' });
 	}
