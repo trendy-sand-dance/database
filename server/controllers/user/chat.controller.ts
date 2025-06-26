@@ -1,5 +1,4 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { formatChatDate } from '../utils/dateUtils.controller';
 
 export async function hasBeenBlocked(user: number, request: FastifyRequest) {
 	const whoBlockedMe = await request.server.prisma.friend.findMany({
@@ -23,7 +22,7 @@ export async function hasBeenBlocked(user: number, request: FastifyRequest) {
 		};
 	});
 	return beenBlocked;
-}
+};
 
 export async function getBlockedIds(user: number, request: FastifyRequest) {
 	const blocked = await request.server.prisma.friend.findMany({
